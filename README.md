@@ -175,23 +175,31 @@ GeoVisionAI/
 
 ## Screenshots
 
-### Landing page and analysis workflow
+The repository includes the full set of project screenshots from the provided image folder. These are stored under `docs/screenshots/` and displayed here in project order.
 
-![Landing page](docs/screenshots/1.jpeg)
+### Landing page and project overview
 
-![Dashboard features](docs/screenshots/2.jpeg)
+| No. | Screenshot |
+|-----|------------|
+| 1 | ![Screenshot 1](docs/screenshots/1.jpeg) |
+| 2 | ![Screenshot 2](docs/screenshots/2.jpeg) |
+| 3 | ![Screenshot 3](docs/screenshots/3.jpeg) |
+| 4 | ![Screenshot 4](docs/screenshots/4.jpeg) |
+| 5 | ![Screenshot 5](docs/screenshots/5.jpeg) |
+| 6 | ![Screenshot 6](docs/screenshots/6.jpeg) |
+| 7 | ![Screenshot 7](docs/screenshots/7.jpeg) |
+| 8 | ![Screenshot 8](docs/screenshots/8.jpeg) |
+| 9 | ![Screenshot 9](docs/screenshots/9.jpeg) |
+| 10 | ![Screenshot 10](docs/screenshots/10.jpeg) |
+| 11 | ![Screenshot 11](docs/screenshots/11.jpeg) |
+| 12 | ![Screenshot 12](docs/screenshots/12.jpeg) |
+| 13 | ![Screenshot 13](docs/screenshots/13.jpeg) |
+| 14 | ![Screenshot 14](docs/screenshots/14.jpeg) |
+| 15 | ![Screenshot 15](docs/screenshots/15.jpeg) |
+| 16 | ![Screenshot 16](docs/screenshots/16.jpeg) |
+| 18 | ![Screenshot 18](docs/screenshots/18.jpeg) |
 
-![Analysis overview](docs/screenshots/3.jpeg)
-
-### Dashboard and process flow
-
-![Project workflow flow](docs/screenshots/4.jpeg)
-
-![Platform features](docs/screenshots/5.jpeg)
-
-![Urban analysis UI](docs/screenshots/6.jpeg)
-
-> The project includes the provided numbered screenshots in the repository under `docs/screenshots/` so the GitHub README can display the portfolio and workflow visually.
+> The project includes all available numbered screenshots from the shared source folder in the correct numerical order so the README presents the full workflow and portfolio visually.
 
 ---
 
