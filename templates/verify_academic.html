@@ -1,0 +1,663 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Academic Status - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .verify-container {
+            max-width: 800px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .verify-header {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .verify-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .verify-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .benefits-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .benefit-item {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 2px solid #e8f5e9;
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: #e8f5e9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: #2e7d32;
+            font-size: 1.5rem;
+        }
+
+        .verification-methods {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 50px;
+        }
+
+        .method-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 20px;
+        }
+
+        .method-tab {
+            padding: 15px 30px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .method-tab.active {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .method-content {
+            display: none;
+        }
+
+        .method-content.active {
+            display: block;
+        }
+
+        .method-description {
+            background: #e8f5e9;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .verification-form {
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group label.required:after {
+            content: " *";
+            color: #e53935;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #2e7d32;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        .form-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .btn-verify {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-verify:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(46, 125, 50, 0.2);
+        }
+
+        .btn-verify:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .verification-status {
+            text-align: center;
+            padding: 60px 40px;
+            display: none;
+        }
+
+        .status-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 2.5rem;
+        }
+
+        .status-icon.pending {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+
+        .status-icon.verified {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-icon.rejected {
+            background: #ffebee;
+            color: #e53935;
+        }
+
+        .status-details {
+            background: #f8f9ff;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .verify-container {
+                margin: 80px auto 30px;
+                padding: 0 15px;
+            }
+            
+            .verify-header {
+                padding: 40px 20px;
+            }
+            
+            .verification-methods {
+                padding: 30px 20px;
+            }
+            
+            .method-tabs {
+                flex-direction: column;
+            }
+            
+            .method-tab {
+                border-radius: 8px;
+                text-align: left;
+            }
+            
+            .benefits-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'home' %}#pricing">Pricing</a></li>
+                <li><a href="{% url 'academic_request' %}">Academic</a></li>
+                <li><a href="{% url 'verify_academic' %}" class="active">Verify</a></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Verification Content -->
+    <div class="verify-container">
+        <div class="verify-header">
+            <h1>Verify Academic Status</h1>
+            <p>Confirm your academic eligibility to unlock special benefits and discounts</p>
+        </div>
+
+        <div class="benefits-summary">
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fas fa-percentage"></i></div>
+                <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Up to 75% Off</h3>
+                <p style="color: #666; margin: 0; font-size: 0.9rem;">Special academic pricing</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fas fa-database"></i></div>
+                <h3 style="margin: 0 0 10px 0; color: #2c3e50;">2x Credits</h3>
+                <p style="color: #666; margin: 0; font-size: 0.9rem;">Double analysis credits</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fas fa-users"></i></div>
+                <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Team Access</h3>
+                <p style="color: #666; margin: 0; font-size: 0.9rem;">Collaboration features</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fas fa-chart-line"></i></div>
+                <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Priority Support</h3>
+                <p style="color: #666; margin: 0; font-size: 0.9rem;">Dedicated assistance</p>
+            </div>
+        </div>
+
+        <div class="verification-methods" id="verificationForm">
+            <h2 style="margin-top: 0; margin-bottom: 30px; color: #2c3e50;">Verification Methods</h2>
+            
+            <div class="method-tabs">
+                <button class="method-tab active" data-method="email">Email Verification</button>
+                <button class="method-tab" data-method="institution">Institution Code</button>
+                <button class="method-tab" data-method="manual">Manual Review</button>
+            </div>
+
+            <!-- Email Verification Method -->
+            <div class="method-content active" id="emailMethod">
+                <div class="method-description">
+                    <h4 style="margin-top: 0; color: #2e7d32;">Academic Email Verification</h4>
+                    <p style="color: #555; margin: 0;">Verify instantly using your academic institution email address (.edu, .ac.* domains)</p>
+                </div>
+                
+                <div class="verification-form">
+                    <div class="form-group">
+                        <label for="academicEmail" class="required">Academic Email Address</label>
+                        <input type="email" id="academicEmail" class="form-control" placeholder="name@university.edu" required>
+                        <div class="form-text">Must be a valid academic institution email</div>
+                    </div>
+                    
+                    <button class="btn-verify" onclick="verifyEmail()">
+                        <i class="fas fa-envelope"></i>
+                        Send Verification Email
+                    </button>
+                </div>
+            </div>
+
+            <!-- Institution Code Method -->
+            <div class="method-content" id="institutionMethod">
+                <div class="method-description">
+                    <h4 style="margin-top: 0; color: #2e7d32;">Institution Verification Code</h4>
+                    <p style="color: #555; margin: 0;">If your institution has a partnership with GreenSpace AI, use the provided verification code</p>
+                </div>
+                
+                <div class="verification-form">
+                    <div class="form-group">
+                        <label for="institutionCode" class="required">Institution Code</label>
+                        <input type="text" id="institutionCode" class="form-control" placeholder="UNIV-XXXX-XXXX" required>
+                        <div class="form-text">Contact your institution's IT department for the code</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="personalEmail" class="required">Personal Email</label>
+                        <input type="email" id="personalEmail" class="form-control" placeholder="your.email@gmail.com" required>
+                        <div class="form-text">This email will be used for your account</div>
+                    </div>
+                    
+                    <button class="btn-verify" onclick="verifyInstitutionCode()">
+                        <i class="fas fa-university"></i>
+                        Verify Institution Code
+                    </button>
+                </div>
+            </div>
+
+            <!-- Manual Review Method -->
+            <div class="method-content" id="manualMethod">
+                <div class="method-description">
+                    <h4 style="margin-top: 0; color: #2e7d32;">Manual Verification</h4>
+                    <p style="color: #555; margin: 0;">Submit documentation for manual review (3-5 business days processing)</p>
+                </div>
+                
+                <div class="verification-form">
+                    <div class="form-group">
+                        <label for="fullName" class="required">Full Name</label>
+                        <input type="text" id="fullName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="manualEmail" class="required">Email Address</label>
+                        <input type="email" id="manualEmail" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="documentType" class="required">Document Type</label>
+                        <select id="documentType" class="form-control" required>
+                            <option value="">Select document</option>
+                            <option value="student_id">Student ID</option>
+                            <option value="transcript">Transcript</option>
+                            <option value="enrollment">Enrollment Letter</option>
+                            <option value="faculty_id">Faculty ID</option>
+                            <option value="employment">Employment Letter</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="uploadDoc" class="required">Upload Document</label>
+                        <input type="file" id="uploadDoc" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                        <div class="form-text">PDF, JPG, or PNG up to 10MB</div>
+                    </div>
+                    
+                    <button class="btn-verify" onclick="submitManualReview()">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit for Review
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- QR Code Alternative -->
+        <div class="qr-code">
+            <h3 style="margin-top: 0; color: #2c3e50;">Mobile Verification</h3>
+            <p style="color: #666; margin-bottom: 25px;">Scan this QR code to verify on your mobile device</p>
+            
+            <div class="qr-placeholder">
+                <i class="fas fa-qrcode"></i>
+            </div>
+            
+            <p style="color: #666; font-size: 0.9rem;">Point your camera at the QR code or download the verification app</p>
+            
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+                <button class="btn-verify" style="width: auto; padding: 12px 25px; font-size: 1rem;">
+                    <i class="fab fa-apple"></i> App Store
+                </button>
+                <button class="btn-verify" style="width: auto; padding: 12px 25px; font-size: 1rem; background: #2196f3;">
+                    <i class="fab fa-google-play"></i> Play Store
+                </button>
+            </div>
+        </div>
+
+        <!-- Verification Status -->
+        <div class="verification-status" id="statusPending">
+            <div class="status-icon pending">
+                <i class="fas fa-clock"></i>
+            </div>
+            <h2 style="color: #2c3e50; margin-bottom: 15px;">Verification Pending</h2>
+            <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">
+                We've sent a verification email to <strong id="pendingEmail"></strong>. 
+                Please click the link in the email to complete your verification.
+            </p>
+            <button class="btn-verify" onclick="resendVerification()" style="width: auto; padding: 12px 30px;">
+                <i class="fas fa-redo"></i> Resend Email
+            </button>
+        </div>
+
+        <div class="verification-status" id="statusVerified">
+            <div class="status-icon verified">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 style="color: #2c3e50; margin-bottom: 15px;">Verification Complete!</h2>
+            <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">
+                Your academic status has been verified. You now have access to all academic benefits.
+            </p>
+            
+            <div class="status-details">
+                <div class="detail-item">
+                    <span class="detail-label">Verification Method:</span>
+                    <span class="detail-value" id="verifiedMethod">Email</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Institution:</span>
+                    <span class="detail-value" id="verifiedInstitution">University of Example</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Benefits Activated:</span>
+                    <span class="detail-value">Academic Discount, Double Credits</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Valid Until:</span>
+                    <span class="detail-value">December 31, 2024</span>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 40px;">
+                <a href="{% url 'upgrade_plan' %}" class="btn-verify" style="width: auto; padding: 12px 30px; text-decoration: none;">
+                    <i class="fas fa-rocket"></i> Upgrade Now
+                </a>
+                <a href="{% url 'home' %}" class="btn-verify" style="width: auto; padding: 12px 30px; background: #f5f5f5; color: #2c3e50; text-decoration: none;">
+                    <i class="fas fa-home"></i> Return Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile navigation toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Method tabs
+        document.querySelectorAll('.method-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const method = this.dataset.method;
+                
+                // Update active tab
+                document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding content
+                document.querySelectorAll('.method-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${method}Method`).classList.add('active');
+            });
+        });
+
+        // Email verification
+        function verifyEmail() {
+            const email = document.getElementById('academicEmail').value;
+            
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid academic email address.');
+                return;
+            }
+
+            // Check if it's an academic email
+            if (!email.includes('.edu') && !email.includes('.ac.')) {
+                const proceed = confirm('This email does not appear to be an academic email. Do you want to continue?');
+                if (!proceed) return;
+            }
+
+            showVerificationStatus('pending', email);
+        }
+
+        // Institution code verification
+        function verifyInstitutionCode() {
+            const code = document.getElementById('institutionCode').value;
+            const email = document.getElementById('personalEmail').value;
+            
+            if (!code || !email) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Validate code format
+            if (!code.match(/^[A-Z]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/)) {
+                alert('Please enter a valid institution code format (UNIV-XXXX-XXXX)');
+                return;
+            }
+
+            showVerificationStatus('verified');
+            document.getElementById('verifiedMethod').textContent = 'Institution Code';
+        }
+
+        // Manual review submission
+        function submitManualReview() {
+            const name = document.getElementById('fullName').value;
+            const email = document.getElementById('manualEmail').value;
+            const docType = document.getElementById('documentType').value;
+            const fileInput = document.getElementById('uploadDoc');
+            
+            if (!name || !email || !docType || !fileInput.files.length) {
+                alert('Please fill in all required fields and upload a document.');
+                return;
+            }
+
+            showVerificationStatus('pending', email);
+        }
+
+        // Show verification status
+        function showVerificationStatus(status, email = '') {
+            document.getElementById('verificationForm').style.display = 'none';
+            document.querySelectorAll('.verification-status').forEach(el => el.style.display = 'none');
+            
+            if (status === 'pending') {
+                document.getElementById('pendingEmail').textContent = email;
+                document.getElementById('statusPending').style.display = 'block';
+            } else if (status === 'verified') {
+                document.getElementById('statusVerified').style.display = 'block';
+            }
+        }
+
+        // Resend verification email
+        function resendVerification() {
+            const email = document.getElementById('pendingEmail').textContent;
+            alert(`Verification email resent to ${email}`);
+        }
+
+        // Check URL for verification status
+        function checkUrlStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            const method = urlParams.get('method');
+            const email = urlParams.get('email');
+            
+            if (status === 'verified') {
+                if (method) document.getElementById('verifiedMethod').textContent = method;
+                if (email) document.getElementById('pendingEmail').textContent = email;
+                showVerificationStatus('verified');
+            } else if (status === 'pending') {
+                if (email) document.getElementById('pendingEmail').textContent = email;
+                showVerificationStatus('pending', email);
+            }
+        }
+
+        // Initialize
+        checkUrlStatus();
+
+        // Email validation visual feedback
+        document.getElementById('academicEmail').addEventListener('blur', function() {
+            const email = this.value.toLowerCase();
+            if (email && (email.includes('.edu') || email.includes('.ac.'))) {
+                this.style.borderColor = '#4caf50';
+            } else if (email) {
+                this.style.borderColor = '#ff9800';
+            }
+        });
+
+        // Institution code format validation
+        document.getElementById('institutionCode').addEventListener('input', function() {
+            const code = this.value.toUpperCase();
+            this.value = code;
+            
+            if (code.length >= 14) {
+                this.style.borderColor = code.match(/^[A-Z]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/) ? '#4caf50' : '#f44336';
+            }
+        });
+    </script>
+</body>
+</html>

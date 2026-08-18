@@ -1,0 +1,133 @@
+/* Dashboard Card Styling */
+html,
+body {
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+}
+
+.container-fluid {
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+    background-color: #fff;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-weight: 600;
+    color: #495057;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Tab Styling */
+.nav-tabs {
+    border-bottom: 2px solid #e9ecef;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem !important;
+}
+
+.nav-tabs .nav-link {
+    color: #6c757d;
+    font-weight: 500;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    padding: 0.75rem 1.25rem;
+    transition: all 0.2s;
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--primary-color);
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: 600;
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+    background-color: transparent;
+}
+
+/* Map Controls */
+.map-controls {
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.map-legend {
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Advanced Analysis Stats */
+.advanced-analysis-container .display-6 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.advanced-analysis-container .card {
+    border-left: 4px solid var(--bs-success);
+}
+
+/* Accordion Styling */
+.accordion-item {
+    border: none;
+    border-bottom: 1px solid #e9ecef;
+    background-color: transparent;
+}
+
+.accordion-button {
+    font-weight: 600;
+    color: #495057;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--primary-color);
+    background-color: rgba(26, 188, 156, 0.05);
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+/* Layout Improvements */
+.container-fluid {
+    background-color: #f8f9fa;
+}
+
+/* Scrollbar Styling */
+.overflow-auto::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.overflow-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+}

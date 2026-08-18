@@ -1,0 +1,473 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4 bg-light">
+    <!-- Header -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">Temporal Analysis Dashboard</h1>
+            <p class="mb-0 text-muted">Analysis ID: {{ result_id }} | Tracking changes from {{ years|first }} to {{
+                years|last }}</p>
+        </div>
+        <div class="btn-group shadow-sm">
+            <button onclick="downloadReport()" class="btn btn-sm btn-outline-primary bg-white">
+                <i class="fas fa-download fa-sm text-primary-50"></i> Generate Report
+            </button>
+            <button onclick="shareResults()" class="btn btn-sm btn-outline-secondary bg-white">
+                <i class="fas fa-share-alt fa-sm"></i> Share
+            </button>
+        </div>
+    </div>
+
+    <!-- Top Row: Navigation & Summary -->
+    <div class="row mb-4">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4 h-100">
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-white border-bottom-primary">
+                    <h6 class="m-0 font-weight-bold text-primary">Timeline Control</h6>
+                    <div class="dropdown no-arrow">
+                        <span class="badge bg-primary" id="current-view-label">2024 - Spring</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Year Slider / Selector -->
+                    <label class="small font-weight-bold text-muted">Select Year:</label>
+                    <div class="d-flex justify-content-between mb-3 px-2">
+                        {% for y in years %}
+                        <button class="btn btn-sm btn-outline-primary year-btn" data-year="{{ y }}"
+                            onclick="setYear('{{ y }}')">
+                            {{ y }}
+                        </button>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Season Selector -->
+                    <label class="small font-weight-bold text-muted">Select Season:</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="season" id="season-spring" autocomplete="off"
+                            checked onclick="setSeason('spring')">
+                        <label class="btn btn-outline-success" for="season-spring"><i
+                                class="fas fa-seedling me-1"></i>Spring</label>
+
+                        <input type="radio" class="btn-check" name="season" id="season-summer" autocomplete="off"
+                            onclick="setSeason('summer')">
+                        <label class="btn btn-outline-warning" for="season-summer"><i
+                                class="fas fa-sun me-1"></i>Summer</label>
+
+                        <input type="radio" class="btn-check" name="season" id="season-autumn" autocomplete="off"
+                            onclick="setSeason('autumn')">
+                        <label class="btn btn-outline-secondary" for="season-autumn"><i
+                                class="fab fa-canadian-maple-leaf me-1"></i>Autumn</label>
+
+                        <input type="radio" class="btn-check" name="season" id="season-winter" autocomplete="off"
+                            onclick="setSeason('winter')">
+                        <label class="btn btn-outline-info" for="season-winter"><i
+                                class="fas fa-snowflake me-1"></i>Winter</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4 h-100">
+                <div class="card-header py-3 bg-white border-bottom-success">
+                    <h6 class="m-0 font-weight-bold text-success">Quick Stats (<span class="year-display"></span>)</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center mb-3">
+                        <div class="col-6 border-end">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Vegetation</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="stat-veg-area">--</div>
+                            <small class="text-muted">km²</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Urban</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="stat-urban-area">--</div>
+                            <small class="text-muted">km²</small>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h6 class="small font-weight-bold">Change from Previous Year <span class="float-end"
+                                id="stat-change-val">--%</span></h6>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%"
+                                id="stat-change-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Long-Term Trends Row -->
+    <div class="row mb-4">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-white">
+                    <h6 class="m-0 font-weight-bold text-primary">Vegetation Trend Analysis (All Years)</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-white">
+                    <h6 class="m-0 font-weight-bold text-danger">Temperature Trend (Spring)</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="tempTrendChart"></canvas>
+                    <p class="text-center small text-muted mt-2">Trend of average LST over the selected period.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deep Dive Row (Images & Specific Breakdown) -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-white">
+                    <h6 class="m-0 font-weight-bold text-dark">Visual Comparison: <span class="year-display"></span>
+                        <span class="season-display"></span></h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <span class="badge bg-secondary mb-1">RGB Composite</span>
+                            <img id="img-rgb" src="" class="img-fluid rounded border shadow-sm" alt="RGB"
+                                onerror="this.src='/static/img/no-image.png'">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <span class="badge bg-primary mb-1">Classification Mask</span>
+                            <img id="img-mask" src="" class="img-fluid rounded border shadow-sm" alt="Mask"
+                                onerror="this.src='/static/img/no-image.png'">
+                        </div>
+                    </div>
+                    <div id="class-legend" class="mt-3 d-flex flex-wrap gap-2 justify-content-center">
+                        <!-- JS populated -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-white">
+                    <h6 class="m-0 font-weight-bold text-warning">Detailed Composition</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="composition-table" width="100%"
+                            cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Land Cover Class</th>
+                                    <th>Area (km²)</th>
+                                    <th>% Cover</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // --- Data Ingestion ---
+    const resultData = JSON.parse('{{ result_data|escapejs }}');
+    const resultId = '{{ result_id }}';
+    const availableYears = {{ years| safe }}; // List of ints/strings
+
+    // State
+    let state = {
+        year: availableYears[availableYears.length - 1].toString(), // Default to last year
+        season: 'spring'
+    };
+
+    // Config
+    const CLASS_COLORS = {
+        'Background': '#000000',
+        'Agricultural Land': '#3cb043',
+        'Grasses & Bushes': '#ffff00',
+        'Urban Area': '#ff0000',
+        'Soil': '#8b4513',
+        'Water': '#0000ff',
+        'Trees': '#008000'
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("Temporal Dashboard initialized.", resultData);
+        initializeUI();
+        renderTrendCharts();
+        updateView();
+    });
+
+    // --- Interaction ---
+    function setYear(y) {
+        state.year = y.toString();
+
+        // Update Buttons UI
+        document.querySelectorAll('.year-btn').forEach(b => {
+            if (b.dataset.year === state.year) {
+                b.classList.remove('btn-outline-primary');
+                b.classList.add('btn-primary');
+            } else {
+                b.classList.add('btn-outline-primary');
+                b.classList.remove('btn-primary');
+            }
+        });
+
+        updateView();
+    }
+
+    function setSeason(s) {
+        state.season = s;
+        updateView();
+    }
+
+    // --- View Updates ---
+    function updateView() {
+        // Labels
+        document.getElementById('current-view-label').textContent = `${state.year} - ${state.season.charAt(0).toUpperCase() + state.season.slice(1)}`;
+        document.querySelectorAll('.year-display').forEach(el => el.textContent = state.year);
+        document.querySelectorAll('.season-display').forEach(el => el.textContent = state.season.charAt(0).toUpperCase() + state.season.slice(1));
+
+        // Images
+        const rgbUrl = `/api/new-image/${state.year}/${state.season}/`; // Use Image-New as base satellite image
+        const maskUrl = `/api/mask-image/${resultId}/${state.year}/${state.season}/`;
+
+        // Add timestamp to prevent caching issues if re-processing happens
+        const ts = new Date().getTime();
+        document.getElementById('img-rgb').src = `${rgbUrl}?t=${ts}`;
+        document.getElementById('img-mask').src = `${maskUrl}?t=${ts}`;
+
+        // Data Lookup
+        let currentStats = null;
+        if (resultData.area_dict && resultData.area_dict[state.year] && resultData.area_dict[state.year][state.season]) {
+            currentStats = resultData.area_dict[state.year][state.season];
+        }
+
+        if (currentStats) {
+            updateStatsBox(currentStats);
+            updateCompositionTable(currentStats.classes);
+        } else {
+            console.warn(`No stats for ${state.year} ${state.season}`);
+            // Clear inputs
+            document.getElementById('stat-veg-area').textContent = "N/A";
+            document.querySelector('#composition-table tbody').innerHTML = '<tr><td colspan="3" class="text-center">No data available for this selection</td></tr>';
+        }
+
+        renderLegend();
+    }
+
+    function updateStatsBox(stats) {
+        const vegClasses = ['Trees', 'Grasses & Bushes', 'Agricultural Land'];
+        let vegArea = 0;
+        let urbanArea = 0;
+        let total = stats.total_area_km2 || 0;
+
+        Object.keys(stats.classes).forEach(c => {
+            if (vegClasses.includes(c)) vegArea += stats.classes[c].area_km2;
+            if (c === 'Urban Area') urbanArea += stats.classes[c].area_km2;
+        });
+
+        document.getElementById('stat-veg-area').textContent = vegArea.toFixed(2);
+        document.getElementById('stat-urban-area').textContent = urbanArea.toFixed(2);
+
+        // Simple Change Calc (vs previous year same season)
+        const prevYear = (parseInt(state.year) - 1).toString();
+        if (resultData.area_dict[prevYear] && resultData.area_dict[prevYear][state.season]) {
+            const prevStats = resultData.area_dict[prevYear][state.season];
+            let prevVeg = 0;
+            Object.keys(prevStats.classes).forEach(c => {
+                if (vegClasses.includes(c)) prevVeg += prevStats.classes[c].area_km2;
+            });
+
+            const change = vegArea - prevVeg;
+            const pct = prevVeg > 0 ? (change / prevVeg) * 100 : 0;
+
+            const label = document.getElementById('stat-change-val');
+            const bar = document.getElementById('stat-change-bar');
+
+            label.textContent = (change > 0 ? '+' : '') + pct.toFixed(1) + '%';
+            label.className = change >= 0 ? 'float-end text-success' : 'float-end text-danger';
+
+            bar.className = change >= 0 ? 'progress-bar bg-success' : 'progress-bar bg-danger';
+            bar.style.width = Math.min(Math.abs(pct), 100) + '%';
+        } else {
+            document.getElementById('stat-change-val').textContent = '--';
+            document.getElementById('stat-change-bar').style.width = '0%';
+        }
+    }
+
+    function updateCompositionTable(classes) {
+        const tbody = document.querySelector('#composition-table tbody');
+        tbody.innerHTML = '';
+
+        // Calculate total for percentages
+        let total = 0;
+        Object.values(classes).forEach(stats => total += stats.area_km2);
+
+        Object.entries(classes).forEach(([className, data]) => {
+            if (className === 'Background') return;
+
+            const tr = document.createElement('tr');
+            const pct = total > 0 ? (data.area_km2 / total * 100).toFixed(1) : 0;
+            const color = CLASS_COLORS[className] || '#ccc';
+
+            tr.innerHTML = `
+                <td><span style="display:inline-block;width:10px;height:10px;background:${color};margin-right:5px;border-radius:50%"></span>${className}</td>
+                <td>${data.area_km2.toFixed(3)}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <span class="me-2">${pct}%</span>
+                        <div class="progress flex-grow-1" style="height: 5px;">
+                            <div class="progress-bar" style="width: ${pct}%; background-color: ${color}"></div>
+                        </div>
+                    </div>
+                </td>
+             `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // --- Charts ---
+    function renderTrendCharts() {
+        // Prepare Data
+        const years = availableYears.sort();
+        const datasets = [];
+
+        // We will plot "Green Space" vs "Urban"
+        const vegData = [];
+        const urbanData = [];
+
+        years.forEach(y => {
+            // Check Spring for trend (most consistent)
+            if (resultData.area_dict[y] && resultData.area_dict[y]['spring']) {
+                const stats = resultData.area_dict[y]['spring'].classes;
+                let v = 0; let u = 0;
+                if (stats['Trees']) v += stats['Trees'].area_km2;
+                if (stats['Grasses & Bushes']) v += stats['Grasses & Bushes'].area_km2;
+                if (stats['Agricultural Land']) v += stats['Agricultural Land'].area_km2;
+                if (stats['Urban Area']) u += stats['Urban Area'].area_km2;
+
+                vegData.push(v);
+                urbanData.push(u);
+            } else {
+                vegData.push(null); urbanData.push(null);
+            }
+        });
+
+        // Veg Trend Chart
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'Vegetation (Spring)',
+                        data: vegData,
+                        borderColor: '#1cc88a',
+                        backgroundColor: 'rgba(28, 200, 138, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Urban Area (Spring)',
+                        data: urbanData,
+                        borderColor: '#4e73df',
+                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                        fill: true,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: { title: { display: true, text: 'Area (km²)' } }
+                }
+            }
+        });
+
+        // Temperature Trend Chart
+        if (resultData.temperature_data) {
+            const tempCtx = document.getElementById('tempTrendChart').getContext('2d');
+            const tempData = [];
+
+            years.forEach(y => {
+                // Try to find spring temperature average
+                // Data structure: year -> season -> list of records
+                if (resultData.temperature_data[y] && resultData.temperature_data[y]['spring']) {
+                    const records = resultData.temperature_data[y]['spring'];
+                    // Calculate mean of Aqua_Day if available
+                    const sum = records.reduce((a, b) => a + (b.Aqua_Day || 0), 0);
+                    const avg = records.length ? sum / records.length : null;
+                    tempData.push(avg);
+                } else {
+                    tempData.push(null);
+                }
+            });
+
+            new Chart(tempCtx, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Avg LST (Spring) °C',
+                        data: tempData,
+                        borderColor: '#e74a3b',
+                        borderDash: [5, 5],
+                        fill: false
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                }
+            });
+        }
+    }
+
+    function renderLegend() {
+        const container = document.getElementById('class-legend');
+        container.innerHTML = '';
+        Object.entries(CLASS_COLORS).forEach(([name, color]) => {
+            if (name === 'Background') return;
+            const el = document.createElement('div');
+            el.className = "badge bg-white text-dark border";
+            el.style.fontWeight = "normal";
+            el.innerHTML = `<span style="display:inline-block;width:10px;height:10px;background:${color};border-radius:50%;margin-right:5px"></span>${name}`;
+            container.appendChild(el);
+        });
+    }
+
+    function initializeUI() {
+        // Set initial Year Button
+        setYear(state.year);
+    }
+
+    function downloadReport() {
+        alert("Report generation started...");
+        // API call to custom reporting endpoint (to be implemented)
+    }
+
+    function shareResults() {
+        navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard!");
+    }
+</script>
+{% endblock %}

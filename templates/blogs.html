@@ -1,0 +1,202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & Updates - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .blog-container { max-width: 1200px; margin: 100px auto 50px; padding: 0 20px; }
+        .blog-header { background: linear-gradient(135deg, #388e3c, #4caf50); color: white; padding: 60px 40px; border-radius: 15px; margin-bottom: 40px; text-align: center; }
+        .blog-header h1 { font-size: 2.5rem; margin-bottom: 15px; }
+        .blog-header p { font-size: 1.1rem; opacity: 0.9; max-width: 700px; margin: 0 auto; }
+        
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; margin-bottom: 60px; }
+        .blog-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
+        .blog-card:hover { transform: translateY(-5px); }
+        .blog-image { height: 200px; background: #e8f5e9; display: flex; align-items: center; justify-content: center; color: #388e3c; font-size: 3rem; }
+        .blog-content { padding: 25px; }
+        .blog-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: #666; font-size: 0.9rem; }
+        .blog-category { padding: 5px 15px; background: #e8f5e9; color: #388e3c; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .blog-content h3 { margin: 0 0 15px 0; color: #2c3e50; }
+        .blog-content p { color: #666; margin-bottom: 20px; line-height: 1.6; }
+        .blog-actions { display: flex; justify-content: space-between; align-items: center; }
+        .btn-read { padding: 10px 25px; background: #388e3c; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        
+        .newsletter-section { background: #e8f5e9; padding: 50px; border-radius: 15px; text-align: center; margin-bottom: 60px; }
+        .newsletter-form { max-width: 500px; margin: 30px auto 0; }
+        .newsletter-input { width: 100%; padding: 15px; border: 2px solid #c8e6c9; border-radius: 8px; font-size: 1rem; margin-bottom: 15px; }
+        .btn-subscribe { width: 100%; padding: 15px; background: #388e3c; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        
+        .categories-sidebar { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .categories-sidebar h3 { margin-top: 0; margin-bottom: 20px; color: #2c3e50; }
+        .category-list { list-style: none; padding: 0; margin: 0; }
+        .category-list li { padding: 12px 0; border-bottom: 1px solid #eee; }
+        .category-list li:last-child { border-bottom: none; }
+        .category-list a { color: #388e3c; text-decoration: none; display: flex; justify-content: space-between; }
+        
+        @media (max-width: 768px) { 
+            .blog-container { margin: 80px auto 30px; padding: 0 15px; }
+            .blog-header { padding: 40px 20px; }
+            .blog-grid { grid-template-columns: 1fr; }
+            .newsletter-section { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'blogs' %}" class="active">Blog</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <div class="blog-container">
+        <div class="blog-header">
+            <h1>Blog & Updates</h1>
+            <p>Latest insights, tutorials, and news about geospatial AI</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 300px; gap: 40px;">
+            <div>
+                <div class="blog-grid">
+                    <div class="blog-card">
+                        <div class="blog-image"><i class="fas fa-chart-line"></i></div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar"></i> Jan 15, 2024</span>
+                                <span class="blog-category">Tutorial</span>
+                            </div>
+                            <h3>How to Train Custom Models for Urban Planning</h3>
+                            <p>Learn how to create specialized AI models for detecting specific urban features like parking lots, parks, and building types.</p>
+                            <div class="blog-actions">
+                                <span><i class="far fa-clock"></i> 8 min read</span>
+                                <button class="btn-read">Read Article</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="blog-card">
+                        <div class="blog-image"><i class="fas fa-leaf"></i></div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar"></i> Jan 10, 2024</span>
+                                <span class="blog-category">Case Study</span>
+                            </div>
+                            <h3>Monitoring Deforestation with AI: A Success Story</h3>
+                            <p>How an environmental NGO used GreenSpace AI to detect illegal logging activities across 10,000+ sq km of rainforest.</p>
+                            <div class="blog-actions">
+                                <span><i class="far fa-clock"></i> 6 min read</span>
+                                <button class="btn-read">Read Article</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="blog-card">
+                        <div class="blog-image"><i class="fas fa-cogs"></i></div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar"></i> Jan 5, 2024</span>
+                                <span class="blog-category">Product Update</span>
+                            </div>
+                            <h3>New Model Architecture: Vision Transformers for Satellite Imagery</h3>
+                            <p>Introducing our latest ViT-based models that achieve 95%+ accuracy for complex pattern recognition tasks.</p>
+                            <div class="blog-actions">
+                                <span><i class="far fa-clock"></i> 5 min read</span>
+                                <button class="btn-read">Read Article</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="newsletter-section">
+                    <h2 style="color: #2c3e50; margin-top: 0;">Stay Updated</h2>
+                    <p style="color: #666;">Subscribe to our newsletter for the latest tutorials, case studies, and product updates.</p>
+                    <div class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email address">
+                        <button class="btn-subscribe"><i class="fas fa-paper-plane"></i> Subscribe</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="categories-sidebar">
+                <h3>Categories</h3>
+                <ul class="category-list">
+                    <li><a href="#">Tutorials <span>12</span></a></li>
+                    <li><a href="#">Case Studies <span>24</span></a></li>
+                    <li><a href="#">Product Updates <span>8</span></a></li>
+                    <li><a href="#">Research Papers <span>15</span></a></li>
+                    <li><a href="#">Industry News <span>18</span></a></li>
+                </ul>
+                
+                <h3 style="margin-top: 40px;">Popular Tags</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
+                    <span style="padding: 5px 15px; background: #e8f5e9; color: #388e3c; border-radius: 20px; font-size: 0.85rem;">Land Cover</span>
+                    <span style="padding: 5px 15px; background: #e8f5e9; color: #388e3c; border-radius: 20px; font-size: 0.85rem;">Change Detection</span>
+                    <span style="padding: 5px 15px; background: #e8f5e9; color: #388e3c; border-radius: 20px; font-size: 0.85rem;">Urban Planning</span>
+                    <span style="padding: 5px 15px; background: #e8f5e9; color: #388e3c; border-radius: 20px; font-size: 0.85rem;">Agriculture</span>
+                </div>
+                
+                <h3 style="margin-top: 40px;">Follow Us</h3>
+                <div style="display: flex; gap: 15px; margin-top: 15px;">
+                    <a href="#" style="color: #666; font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" style="color: #666; font-size: 1.5rem;"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" style="color: #666; font-size: 1.5rem;"><i class="fab fa-github"></i></a>
+                    <a href="#" style="color: #666; font-size: 1.5rem;"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.hamburger').addEventListener('click', () => {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Blog interactions
+        document.querySelectorAll('.btn-read').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const articleTitle = this.closest('.blog-card').querySelector('h3').textContent;
+                alert(`Opening article: ${articleTitle}\n(In a real implementation, this would navigate to the article page.)`);
+            });
+        });
+
+        // Newsletter subscription
+        document.querySelector('.btn-subscribe').addEventListener('click', function() {
+            const email = document.querySelector('.newsletter-input').value;
+            if (email && email.includes('@')) {
+                alert(`Thank you for subscribing!\nYou'll receive our next newsletter at ${email}`);
+                document.querySelector('.newsletter-input').value = '';
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        });
+
+        // Category filtering
+        document.querySelectorAll('.category-list a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const category = this.textContent.split(' ')[0];
+                alert(`Filtering articles by category: ${category}`);
+            });
+        });
+    </script>
+</body>
+</html>

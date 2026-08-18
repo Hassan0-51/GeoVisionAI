@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+media/
+staticfiles/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.*
+!.env.example
+venv/
+env/
+
+# Large ML model files (too large for GitHub - use Git LFS or separate storage)
+storage/models/*.pth
+storage/models/*.pt
+storage/models/*.h5
+storage/models/*.pkl
+storage/models/*.bin
+*.pth
+*.pt
+
+# Uploaded/generated data
+media/
+analysis_results/
+
+db.sqlite3
+
+# Pipeline logs & debug files
+pipeline_*.log
+debug_*.py
+test_local_integration.py
+sample.py

@@ -1,0 +1,877 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .legal-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .legal-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .legal-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .legal-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .last-updated {
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Main content wrapper */
+        .legal-main-wrapper {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        /* Fixed TOC sidebar */
+        .toc-nav {
+            flex: 0 0 280px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 120px;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .toc-nav h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+
+        .toc-links {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toc-links a {
+            display: block;
+            color: #3498db;
+            text-decoration: none;
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        .toc-links a:hover {
+            color: #2980b9;
+            background: #f8f9fa;
+            border-left-color: #3498db;
+        }
+
+        .toc-links a.active {
+            color: #2c3e50;
+            background: #e8f4fc;
+            border-left-color: #3498db;
+            font-weight: 500;
+        }
+
+        /* Main content area */
+        .legal-content {
+            flex: 1;
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .legal-section {
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #eee;
+            scroll-margin-top: 100px; /* For anchor links */
+        }
+
+        .legal-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .legal-section h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            font-size: 1.8rem;
+        }
+
+        .legal-section h3 {
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .legal-text {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .legal-text p {
+            margin-bottom: 15px;
+        }
+
+        .legal-text ul, .legal-text ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        .legal-text li {
+            margin-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-list {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .definition-list dt {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        .definition-list dd {
+            color: #555;
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .notice-box {
+            background: #fff3cd;
+            border: 1px solid #ffecb5;
+            color: #856404;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .notice-box i {
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .contact-legal {
+            background: #e8f4fc;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .contact-legal a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-legal a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .legal-main-wrapper {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .toc-nav {
+                position: static;
+                width: 100%;
+                max-height: none;
+                top: 0;
+            }
+            
+            .toc-links {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .legal-container {
+                margin: 80px auto 30px;
+                padding: 0 15px;
+            }
+            
+            .legal-header {
+                padding: 40px 20px;
+            }
+            
+            .legal-header h1 {
+                font-size: 2rem;
+            }
+            
+            .legal-content {
+                padding: 30px 20px;
+            }
+            
+            .toc-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .legal-section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .legal-section h3 {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .legal-container {
+                padding: 0 10px;
+            }
+            
+            .legal-header {
+                padding: 30px 15px;
+            }
+            
+            .legal-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .legal-content {
+                padding: 25px 15px;
+            }
+            
+            .toc-nav {
+                padding: 20px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .legal-container {
+                margin: 0;
+                padding: 0;
+                max-width: 100%;
+            }
+            
+            .legal-header, .toc-nav {
+                break-inside: avoid;
+            }
+            
+            .toc-nav {
+                position: static;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            
+            .legal-section {
+                break-inside: avoid;
+            }
+            
+            .notice-box {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Terms of Service Content -->
+    <div class="legal-container">
+        <!-- Header -->
+        <div class="legal-header">
+            <h1>Terms of Service</h1>
+            <p>Please read these terms carefully before using GreenSpace AI's services</p>
+            <div class="last-updated">
+                <i class="fas fa-calendar-alt"></i>
+                Last Updated: January 15, 2024
+            </div>
+        </div>
+
+        <!-- Main Content Wrapper -->
+        <div class="legal-main-wrapper">
+            <!-- Table of Contents Sidebar -->
+            <div class="toc-nav">
+                <h3><i class="fas fa-bookmark"></i> Table of Contents</h3>
+                <div class="toc-links">
+                    <a href="#agreement" class="active">1. Agreement to Terms</a>
+                    <a href="#eligibility">2. Eligibility</a>
+                    <a href="#accounts">3. User Accounts</a>
+                    <a href="#services">4. Services Description</a>
+                    <a href="#subscriptions">5. Subscriptions & Payments</a>
+                    <a href="#intellectual">6. Intellectual Property</a>
+                    <a href="#user-content">7. User Content</a>
+                    <a href="#acceptable-use">8. Acceptable Use</a>
+                    <a href="#api-terms">9. API Terms</a>
+                    <a href="#third-party">10. Third-Party Services</a>
+                    <a href="#termination">11. Termination</a>
+                    <a href="#disclaimers">12. Disclaimers</a>
+                    <a href="#limitation">13. Limitation of Liability</a>
+                    <a href="#indemnification">14. Indemnification</a>
+                    <a href="#governing-law">15. Governing Law</a>
+                    <a href="#disputes">16. Dispute Resolution</a>
+                    <a href="#changes">17. Changes to Terms</a>
+                    <a href="#contact">18. Contact Information</a>
+                </div>
+            </div>
+
+            <!-- Legal Content -->
+            <div class="legal-content">
+                <div class="notice-box">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Important Notice:</strong> These Terms of Service constitute a legally binding agreement between you and GreenSpace AI. By accessing or using our services, you acknowledge that you have read, understood, and agree to be bound by these terms.
+                    </div>
+                </div>
+
+                <!-- Section 1 -->
+                <div class="legal-section" id="agreement">
+                    <h2>1. Agreement to Terms</h2>
+                    <div class="legal-text">
+                        <p>By accessing or using GreenSpace AI's website, platform, API, or any related services (collectively, the "Services"), you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing the Services.</p>
+                        
+                        <p>These terms apply to all users of the Services, including without limitation users who are browsers, vendors, customers, merchants, and/or contributors of content. Additional terms and conditions may apply to specific services, which will be presented to you when you access those services.</p>
+                        
+                        <div class="highlight-box">
+                            <p><strong>Enterprise Customers:</strong> If you are using our Services under an enterprise agreement, those agreement terms will supersede these Terms of Service where they differ.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="legal-section" id="eligibility">
+                    <h2>2. Eligibility</h2>
+                    <div class="legal-text">
+                        <p>You must be at least 18 years old to use our Services. By using the Services, you represent and warrant that:</p>
+                        <ul>
+                            <li>You are at least 18 years of age</li>
+                            <li>You have the legal capacity to enter into these terms</li>
+                            <li>You are not a person barred from receiving the Services under the laws of the United States or other applicable jurisdiction</li>
+                            <li>Your use of the Services will not violate any applicable law or regulation</li>
+                        </ul>
+                        
+                        <p>If you are using the Services on behalf of an entity, organization, or company, you represent and warrant that you have the authority to bind that entity to these Terms and you agree to be bound by these Terms on behalf of that entity.</p>
+                    </div>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="legal-section" id="accounts">
+                    <h2>3. User Accounts</h2>
+                    <div class="legal-text">
+                        <p>To access certain features of the Services, you must register for an account. When you register, you agree to:</p>
+                        <ul>
+                            <li>Provide accurate, current, and complete information</li>
+                            <li>Maintain and promptly update your account information</li>
+                            <li>Maintain the security of your password and accept all risks of unauthorized access</li>
+                            <li>Notify us immediately of any unauthorized use of your account</li>
+                            <li>You are responsible for all activities that occur under your account</li>
+                        </ul>
+                        
+                        <p>We reserve the right to disable any user account at any time in our sole discretion, including if we believe that you have violated these Terms or if your account poses a security risk to our Services.</p>
+                    </div>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="legal-section" id="services">
+                    <h2>4. Services Description</h2>
+                    <div class="legal-text">
+                        <p>GreenSpace AI provides:</p>
+                        <ul>
+                            <li><strong>Satellite Imagery Analysis:</strong> AI-powered analysis of satellite and aerial imagery for land cover classification, change detection, and feature extraction</li>
+                            <li><strong>Custom Model Training:</strong> Tools and infrastructure for training custom deep learning models on specialized datasets</li>
+                            <li><strong>GIS Integration:</strong> APIs and tools for integrating analysis results with geographic information systems</li>
+                            <li><strong>Data Processing:</strong> Processing and enhancement of geospatial data</li>
+                            <li><strong>Analytics & Reporting:</strong> Generation of insights and reports from analyzed data</li>
+                        </ul>
+                        
+                        <p>We reserve the right to modify, suspend, or discontinue any aspect of the Services at any time, including the availability of any feature, database, or content.</p>
+                    </div>
+                </div>
+
+                <!-- Section 5 -->
+                <div class="legal-section" id="subscriptions">
+                    <h2>5. Subscriptions & Payments</h2>
+                    <div class="legal-text">
+                        <h3>5.1 Subscription Plans</h3>
+                        <p>We offer various subscription plans, including free and paid tiers. Details of current subscription plans, features, and pricing are available on our Pricing page.</p>
+                        
+                        <h3>5.2 Billing</h3>
+                        <p>For paid subscriptions:</p>
+                        <ul>
+                            <li>Payments are billed in advance on a recurring basis</li>
+                            <li>You authorize us to charge your chosen payment method</li>
+                            <li>All fees are non-refundable except as required by law</li>
+                            <li>Prices are subject to change with 30 days notice</li>
+                        </ul>
+                        
+                        <h3>5.3 Free Trials</h3>
+                        <p>We may offer free trials of paid subscriptions. Your subscription will automatically convert to a paid subscription at the end of the trial period unless you cancel before the trial ends.</p>
+                        
+                        <h3>5.4 Taxes</h3>
+                        <p>All fees are exclusive of taxes, which we will charge as applicable. You are responsible for all taxes associated with your purchases.</p>
+                    </div>
+                </div>
+
+                <!-- Section 6 -->
+                <div class="legal-section" id="intellectual">
+                    <h2>6. Intellectual Property</h2>
+                    <div class="legal-text">
+                        <div class="definition-list">
+                            <dl>
+                                <dt>Our Intellectual Property</dt>
+                                <dd>The Services and all contents, features, and functionality (including but not limited to all information, software, text, displays, images, video, and audio, and the design, selection, and arrangement thereof) are owned by GreenSpace AI, its licensors, or other providers of such material and are protected by United States and international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.</dd>
+                                
+                                <dt>Your Intellectual Property</dt>
+                                <dd>You retain all intellectual property rights in the data, images, and content you upload to our Services. By uploading content, you grant us a limited license to use, process, and store that content solely for the purpose of providing the Services to you.</dd>
+                                
+                                <dt>License to Use Services</dt>
+                                <dd>Subject to these Terms, we grant you a limited, non-exclusive, non-transferable, revocable license to use the Services for your personal or internal business purposes.</dd>
+                            </dl>
+                        </div>
+                        
+                        <p>You may not:</p>
+                        <ul>
+                            <li>Copy, modify, or create derivative works of the Services</li>
+                            <li>Reverse engineer, decompile, or attempt to extract the source code</li>
+                            <li>Remove any copyright or proprietary notices</li>
+                            <li>Use the Services to develop a competing service</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Section 7 -->
+                <div class="legal-section" id="user-content">
+                    <h2>7. User Content</h2>
+                    <div class="legal-text">
+                        <p>"User Content" means any data, images, annotations, models, or other materials you upload, submit, or process through our Services.</p>
+                        
+                        <h3>7.1 Ownership</h3>
+                        <p>You retain all rights to your User Content. By submitting User Content, you represent and warrant that:</p>
+                        <ul>
+                            <li>You own or have the necessary rights to use and authorize us to use the User Content</li>
+                            <li>The User Content does not violate any third-party rights</li>
+                            <li>The User Content complies with all applicable laws and regulations</li>
+                        </ul>
+                        
+                        <h3>7.2 License Grant</h3>
+                        <p>You grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, process, and display your User Content solely for the purpose of providing and improving the Services.</p>
+                        
+                        <h3>7.3 Data Processing</h3>
+                        <p>We may process and store your User Content in accordance with our Privacy Policy. We implement appropriate technical and organizational measures to protect your data.</p>
+                    </div>
+                </div>
+
+                <!-- Section 8 -->
+                <div class="legal-section" id="acceptable-use">
+                    <h2>8. Acceptable Use</h2>
+                    <div class="legal-text">
+                        <p>You agree not to use the Services:</p>
+                        <ul>
+                            <li>For any illegal purpose or in violation of any laws</li>
+                            <li>To violate others' rights, including intellectual property rights</li>
+                            <li>To upload or distribute viruses or malicious code</li>
+                            <li>To interfere with the proper functioning of the Services</li>
+                            <li>To attempt to gain unauthorized access to our systems</li>
+                            <li>For automated data collection without our permission</li>
+                            <li>To create or train models for military applications without explicit authorization</li>
+                            <li>For surveillance purposes that violate human rights</li>
+                        </ul>
+                        
+                        <div class="highlight-box">
+                            <p><strong>Export Controls:</strong> You may not use our Services if you are located in or a national of any country that is subject to U.S. trade sanctions or embargoes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 9 -->
+                <div class="legal-section" id="api-terms">
+                    <h2>9. API Terms</h2>
+                    <div class="legal-text">
+                        <p>If you use our API:</p>
+                        <ul>
+                            <li>You must comply with rate limits and usage quotas</li>
+                            <li>You may not use the API to recreate our core Services</li>
+                            <li>You may not resell API access without our written consent</li>
+                            <li>We may monitor API usage to ensure compliance</li>
+                        </ul>
+                        
+                        <p>API access may be subject to additional terms and conditions.</p>
+                    </div>
+                </div>
+
+                <!-- Section 10 -->
+                <div class="legal-section" id="third-party">
+                    <h2>10. Third-Party Services</h2>
+                    <div class="legal-text">
+                        <p>Our Services may integrate with or provide links to third-party services. We are not responsible for:</p>
+                        <ul>
+                            <li>The content or practices of third-party services</li>
+                            <li>Any loss or damage resulting from your use of third-party services</li>
+                            <li>Your interactions with third parties</li>
+                        </ul>
+                        
+                        <p>Your use of third-party services is governed by their terms and policies.</p>
+                    </div>
+                </div>
+
+                <!-- Section 11 -->
+                <div class="legal-section" id="termination">
+                    <h2>11. Termination</h2>
+                    <div class="legal-text">
+                        <p>We may terminate or suspend your access to the Services:</p>
+                        <ul>
+                            <li>Immediately, if you violate these Terms</li>
+                            <li>Upon 30 days notice for any reason</li>
+                            <li>Immediately, if required by law</li>
+                        </ul>
+                        
+                        <p>Upon termination:</p>
+                        <ul>
+                            <li>Your right to use the Services will immediately cease</li>
+                            <li>You must stop all use of the Services</li>
+                            <li>We may delete your data in accordance with our data retention policies</li>
+                        </ul>
+                        
+                        <p>Sections that should survive termination will do so.</p>
+                    </div>
+                </div>
+
+                <!-- Section 12 -->
+                <div class="legal-section" id="disclaimers">
+                    <h2>12. Disclaimers</h2>
+                    <div class="legal-text">
+                        <p><strong>THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMISSIBLE PURSUANT TO APPLICABLE LAW, GREENSPACE AI DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</strong></p>
+                        
+                        <p>We do not warrant that:</p>
+                        <ul>
+                            <li>The Services will meet your requirements</li>
+                            <li>The Services will be uninterrupted, timely, secure, or error-free</li>
+                            <li>The results obtained from the Services will be accurate or reliable</li>
+                            <li>Any errors in the Services will be corrected</li>
+                        </ul>
+                        
+                        <p>You assume all risk for your use of the Services and any results obtained.</p>
+                    </div>
+                </div>
+
+                <!-- Section 13 -->
+                <div class="legal-section" id="limitation">
+                    <h2>13. Limitation of Liability</h2>
+                    <div class="legal-text">
+                        <p><strong>TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL GREENSPACE AI, ITS AFFILIATES, DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE FOR ANY INDIRECT, PUNITIVE, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES, INCLUDING WITHOUT LIMITATION DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR RELATING TO THE USE OF, OR INABILITY TO USE, THE SERVICES.</strong></p>
+                        
+                        <p>Our total liability for any claims under these Terms shall not exceed the greater of:</p>
+                        <ul>
+                            <li>$100, or</li>
+                            <li>The amount you paid us in the 12 months preceding the claim</li>
+                        </ul>
+                        
+                        <p>Some jurisdictions do not allow the exclusion or limitation of liability for consequential or incidental damages, so the above limitation may not apply to you.</p>
+                    </div>
+                </div>
+
+                <!-- Section 14 -->
+                <div class="legal-section" id="indemnification">
+                    <h2>14. Indemnification</h2>
+                    <div class="legal-text">
+                        <p>You agree to indemnify, defend, and hold harmless GreenSpace AI and its affiliates, officers, directors, employees, and agents from and against any and all claims, damages, obligations, losses, liabilities, costs, or debt, and expenses (including but not limited to attorney's fees) arising from:</p>
+                        <ul>
+                            <li>Your use of and access to the Services</li>
+                            <li>Your violation of these Terms</li>
+                            <li>Your violation of any third-party right</li>
+                            <li>Any claim that your User Content caused damage to a third party</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Section 15 -->
+                <div class="legal-section" id="governing-law">
+                    <h2>15. Governing Law</h2>
+                    <div class="legal-text">
+                        <p>These Terms shall be governed by and construed in accordance with the laws of the State of Delaware, without regard to its conflict of law provisions.</p>
+                        
+                        <p>The United Nations Convention on Contracts for the International Sale of Goods does not apply to these Terms.</p>
+                    </div>
+                </div>
+
+                <!-- Section 16 -->
+                <div class="legal-section" id="disputes">
+                    <h2>16. Dispute Resolution</h2>
+                    <div class="legal-text">
+                        <h3>16.1 Informal Resolution</h3>
+                        <p>Before filing a claim, you agree to try to resolve the dispute informally by contacting us at legal@greenspaceai.com.</p>
+                        
+                        <h3>16.2 Arbitration Agreement</h3>
+                        <p>Any dispute arising from these Terms that cannot be resolved informally shall be resolved by binding arbitration in Wilmington, Delaware, in accordance with the rules of the American Arbitration Association.</p>
+                        
+                        <h3>16.3 Class Action Waiver</h3>
+                        <p>You agree to resolve disputes on an individual basis and waive any right to pursue any dispute on a class or consolidated basis or in a representative capacity.</p>
+                    </div>
+                </div>
+
+                <!-- Section 17 -->
+                <div class="legal-section" id="changes">
+                    <h2>17. Changes to Terms</h2>
+                    <div class="legal-text">
+                        <p>We may modify these Terms at any time. If we make material changes, we will notify you by:</p>
+                        <ul>
+                            <li>Posting the revised Terms on our website</li>
+                            <li>Sending an email to the address associated with your account</li>
+                            <li>Providing notice through the Services</li>
+                        </ul>
+                        
+                        <p>Your continued use of the Services after the effective date of the revised Terms constitutes your acceptance of the changes.</p>
+                    </div>
+                </div>
+
+                <!-- Section 18 -->
+                <div class="legal-section" id="contact">
+                    <h2>18. Contact Information</h2>
+                    <div class="legal-text">
+                        <p>If you have any questions about these Terms, please contact us:</p>
+                        
+                        <div class="contact-legal">
+                            <p><strong>GreenSpace AI Legal Department</strong></p>
+                            <p>Email: <a href="mailto:legal@greenspaceai.com">legal@greenspaceai.com</a></p>
+                            <p>Address: 123 Innovation Drive, Suite 500, San Francisco, CA 94107</p>
+                            <p>Phone: +1 (415) 555-0123</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Notice -->
+                <div class="notice-box" style="background: #e8f4fc; border-color: #3498db; color: #2c3e50;">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Summary:</strong> By using GreenSpace AI's Services, you agree to these Terms of Service. If you do not agree, please discontinue use of our Services immediately.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="margin-top: 60px; padding: 40px 0; border-top: 1px solid #eee; background: #f8f9fa;">
+        <div class="legal-container" style="margin: 0 auto; max-width: 1200px;">
+            <div style="text-align: center; color: #666; font-size: 0.9rem;">
+                <p>&copy; 2024 GreenSpace AI. All rights reserved.</p>
+                <p style="margin-top: 10px;">
+                    <a href="{% url 'privacy_policy' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                    <a href="{% url 'terms' %}" style="color: #666; text-decoration: none; margin: 0 10px; font-weight: 600;">Terms of Service</a> | 
+                    <a href="{% url 'cookies_policy' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Cookie Policy</a> | 
+                    <a href="{% url 'contact_sales' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Contact Us</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Smooth scroll for table of contents links
+        document.querySelectorAll('.toc-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.toc-links a').forEach(a => {
+                    a.classList.remove('active');
+                });
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Scroll to section
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update URL without page reload
+                    history.pushState(null, null, targetId);
+                }
+            });
+        });
+
+        // Highlight current section in TOC
+        function highlightCurrentSection() {
+            const sections = document.querySelectorAll('.legal-section');
+            const tocLinks = document.querySelectorAll('.toc-links a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                const scrollPosition = window.scrollY + 150;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    currentSection = '#' + section.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', highlightCurrentSection);
+        window.addEventListener('load', highlightCurrentSection); // Initial call
+
+        // Print button functionality
+        function setupPrintButton() {
+            const printBtn = document.createElement('button');
+            printBtn.innerHTML = '<i class="fas fa-print"></i> Print Terms';
+            printBtn.style.position = 'fixed';
+            printBtn.style.bottom = '20px';
+            printBtn.style.right = '20px';
+            printBtn.style.background = '#3498db';
+            printBtn.style.color = 'white';
+            printBtn.style.border = 'none';
+            printBtn.style.padding = '12px 20px';
+            printBtn.style.borderRadius = '25px';
+            printBtn.style.cursor = 'pointer';
+            printBtn.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+            printBtn.style.zIndex = '1000';
+            printBtn.style.fontFamily = 'inherit';
+            printBtn.style.fontSize = '0.9rem';
+            printBtn.style.display = 'flex';
+            printBtn.style.alignItems = 'center';
+            printBtn.style.gap = '8px';
+            printBtn.style.transition = 'all 0.3s ease';
+            
+            printBtn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 6px 20px rgba(52, 152, 219, 0.3)';
+            });
+            
+            printBtn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+            });
+            
+            printBtn.addEventListener('click', function() {
+                window.print();
+            });
+            
+            document.body.appendChild(printBtn);
+            
+            // Hide print button when printing
+            const style = document.createElement('style');
+            style.textContent = '@media print { button { display: none !important; } }';
+            document.head.appendChild(style);
+        }
+        
+        // Initialize print button
+        if (typeof window.print === 'function') {
+            setupPrintButton();
+        }
+
+        // Responsive adjustments
+        function handleResize() {
+            const container = document.querySelector('.legal-container');
+            if (window.innerWidth < 768) {
+                container.style.padding = '0 15px';
+            } else {
+                container.style.padding = '0 20px';
+            }
+        }
+        
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('load', handleResize);
+    </script>
+</body>
+</html>

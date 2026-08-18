@@ -1,0 +1,1553 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Integration Tutorial - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .tutorial-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .tutorial-header {
+            background: linear-gradient(135deg, #5d4037, #795548);
+            color: white;
+            padding: 80px 50px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .tutorial-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .api-overview {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .endpoints-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .endpoint-card {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid #795548;
+        }
+
+        .endpoint-method {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .method-get { background: #4caf50; color: white; }
+        .method-post { background: #2196f3; color: white; }
+        .method-put { background: #ff9800; color: white; }
+        .method-delete { background: #f44336; color: white; }
+
+        .endpoint-path {
+            font-family: monospace;
+            background: #263238;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .auth-section {
+            background: linear-gradient(135deg, #fff3e0, #ffecb3);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .api-key-demo {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .key-display {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            word-break: break-all;
+            margin: 20px 0;
+        }
+
+        .code-playground {
+            background: #263238;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .language-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .language-tab {
+            background: #37474f;
+            color: #cfd8dc;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .language-tab.active {
+            background: #795548;
+            color: white;
+        }
+
+        .code-editor {
+            background: #1c2833;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .editor-header {
+            background: #2c3e50;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-content {
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .run-button {
+            background: #795548;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .rate-limits {
+            background: #e8f5e9;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .limit-tiers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .limit-tier {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #4caf50;
+        }
+
+        .tier-free { border-color: #bdbdbd; }
+        .tier-developer { border-color: #2196f3; }
+        .tier-professional { border-color: #ff9800; }
+        .tier-enterprise { border-color: #795548; }
+
+        .tier-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .webhooks-section {
+            background: #e3f2fd;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .webhook-setup {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .sdk-section {
+            background: #f3e5f5;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .sdk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .sdk-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .sdk-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .icon-python { background: linear-gradient(135deg, #3776ab, #4b8bbe); }
+        .icon-javascript { background: linear-gradient(135deg, #f7df1e, #f0db4f); color: #333 !important; }
+        .icon-r { background: linear-gradient(135deg, #276dc3, #5e9cec); }
+        .icon-java { background: linear-gradient(135deg, #007396, #138d75); }
+
+        .best-practices {
+            background: #fff3e0;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+            border-left: 5px solid #ff9800;
+        }
+
+        .practice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .practice-item {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .practice-icon {
+            width: 50px;
+            height: 50px;
+            background: #ffecb3;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff9800;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .monitoring {
+            background: #e0f2f1;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .metrics-dashboard {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: #f5f5f5;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .tutorial-header {
+                padding: 60px 30px;
+            }
+            
+            .tutorial-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .api-overview,
+            .auth-section,
+            .code-playground,
+            .rate-limits,
+            .webhooks-section,
+            .sdk-section,
+            .best-practices,
+            .monitoring {
+                padding: 30px 20px;
+            }
+            
+            .endpoints-grid,
+            .limit-tiers,
+            .sdk-grid,
+            .practice-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .editor-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li><a href="getting-started.html">Tutorials</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tutorial Content -->
+    <div class="tutorial-container">
+        <!-- Header -->
+        <div class="tutorial-header">
+            <h1>API Integration Tutorial</h1>
+            <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto 30px; opacity: 0.9;">
+                Complete guide to integrating GreenSpace AI into your applications and workflows
+            </p>
+            <div style="background: rgba(255,255,255,0.2); padding: 15px 30px; border-radius: 25px; display: inline-block;">
+                <i class="fas fa-clock"></i>
+                <span style="margin-left: 10px;">Advanced Level | 45-60 minutes</span>
+            </div>
+        </div>
+
+        <!-- Overview -->
+        <div class="api-overview">
+            <h2 class="section-title">API Overview</h2>
+            <p style="color: #666; line-height: 1.8; margin-bottom: 30px;">
+                The GreenSpace AI REST API provides programmatic access to all platform capabilities, 
+                enabling you to integrate satellite imagery analysis directly into your applications, 
+                automate workflows, and build custom solutions.
+            </p>
+            
+            <div class="endpoints-grid">
+                <div class="endpoint-card">
+                    <div class="endpoint-method method-post">POST</div>
+                    <h3 style="margin-top: 0;">Upload & Analyze</h3>
+                    <div class="endpoint-path">/v1/analysis</div>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Upload satellite imagery and start AI analysis. Supports multiple image formats 
+                        and analysis types.
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; color: #795548; margin-bottom: 5px;">Parameters:</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            • image (file)<br>
+                            • analysis_type (string)<br>
+                            • parameters (object)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="endpoint-card">
+                    <div class="endpoint-method method-get">GET</div>
+                    <h3 style="margin-top: 0;">Get Results</h3>
+                    <div class="endpoint-path">/v1/analysis/{id}/results</div>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Retrieve analysis results including classification maps, statistics, 
+                        and confidence layers.
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; color: #795548; margin-bottom: 5px;">Response Includes:</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            • Download URLs<br>
+                            • Statistics JSON<br>
+                            • Metadata
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="endpoint-card">
+                    <div class="endpoint-method method-post">POST</div>
+                    <h3 style="margin-top: 0;">Export Results</h3>
+                    <div class="endpoint-path">/v1/export</div>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Export analysis results in various GIS formats (Shapefile, GeoJSON, KML, GeoTIFF).
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; color: #795548; margin-bottom: 5px;">Export Formats:</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            • Shapefile<br>
+                            • GeoJSON<br>
+                            • GeoTIFF<br>
+                            • KML/KMZ
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="endpoints-grid">
+                <div class="endpoint-card">
+                    <div class="endpoint-method method-get">GET</div>
+                    <h3 style="margin-top: 0;">Status Check</h3>
+                    <div class="endpoint-path">/v1/analysis/{id}/status</div>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Check analysis processing status and progress percentage.
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; color: #795548; margin-bottom: 5px;">Status Values:</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            • pending<br>
+                            • processing<br>
+                            • completed<br>
+                            • failed
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="endpoint-card">
+                    <div class="endpoint-method method-get">GET</div>
+                    <h3 style="margin-top: 0;">List Analyses</h3>
+                    <div class="endpoint-path">/v1/analyses</div>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        List all analyses for the authenticated user with pagination and filtering.
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; color: #795548; margin-bottom: 5px;">Query Parameters:</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            • limit (integer)<br>
+                            • offset (integer)<br>
+                            • status (string)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="endpoint-card">
+                    <div class="endpoint-method method-post">POST</div>
+                    <h3 style="margin-top: 0;">Batch Processing</h3>
+                    <div class="endpoint-path">/v1/batch</div>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Process multiple images in a single request with parallel processing.
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; color: #795548; margin-bottom: 5px;">Features:</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            • Parallel processing<br>
+                            • Progress tracking<br>
+                            • Error handling
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Authentication -->
+        <div class="auth-section">
+            <h2 class="section-title" style="color: #ff9800;">Authentication & API Keys</h2>
+            
+            <div class="api-key-demo">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">API Key Authentication</h3>
+                <p style="color: #666; margin-bottom: 20px;">
+                    All API requests require authentication using your API key. Include it in the 
+                    Authorization header of every request.
+                </p>
+                
+                <div class="key-display" id="apiKeyDisplay">
+                    gsai_sk_live_abc123xyz789def456ghi012jkl345mno678
+                </div>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn-primary" style="background: #795548;" onclick="copyApiKey()">
+                        <i class="fas fa-copy"></i> Copy API Key
+                    </button>
+                    <button class="btn-outline" style="border-color: #795548; color: #795548;" onclick="generateNewKey()">
+                        <i class="fas fa-sync-alt"></i> Generate New Key
+                    </button>
+                    <button class="btn-outline" style="border-color: #f44336; color: #f44336;" onclick="revokeApiKey()">
+                        <i class="fas fa-trash"></i> Revoke Key
+                    </button>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;">
+                <div style="background: white; padding: 25px; border-radius: 10px;">
+                    <h4 style="margin-top: 0; color: #ff9800;">Header Authentication</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Include your API key in the Authorization header:
+                    </p>
+                    <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 0.9rem;">
+                        Authorization: Bearer <span style="color: #795548;">your_api_key_here</span>
+                    </div>
+                </div>
+                
+                <div style="background: white; padding: 25px; border-radius: 10px;">
+                    <h4 style="margin-top: 0; color: #ff9800;">Key Security</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Best practices for API key security:
+                    </p>
+                    <ul style="color: #666; font-size: 0.9rem; padding-left: 20px; margin-top: 15px;">
+                        <li>Store keys in environment variables</li>
+                        <li>Never commit keys to version control</li>
+                        <li>Use different keys for different environments</li>
+                        <li>Rotate keys regularly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Playground -->
+        <div class="code-playground">
+            <h2 class="section-title" style="color: white;">Interactive Code Playground</h2>
+            
+            <div class="language-tabs">
+                <button class="language-tab active" data-language="python">Python</button>
+                <button class="language-tab" data-language="javascript">JavaScript</button>
+                <button class="language-tab" data-language="curl">cURL</button>
+                <button class="language-tab" data-language="node">Node.js</button>
+                <button class="language-tab" data-language="java">Java</button>
+            </div>
+            
+            <div class="code-editor">
+                <div class="editor-header">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-code" style="color: #795548;"></i>
+                        <span style="font-weight: 600; color: white;">Upload and Analyze Example</span>
+                    </div>
+                    <button class="run-button" onclick="runCode()">
+                        <i class="fas fa-play"></i> Run Code
+                    </button>
+                </div>
+                
+                <div class="editor-content">
+                    <pre id="pythonCode" style="color: white; margin: 0;"><code><span style="color: #81c784;"># Python: Upload satellite image and run analysis</span>
+<span style="color: #64b5f6;">import</span> requests
+<span style="color: #64b5f6;">import</span> time
+
+API_KEY = <span style="color: #ffcc80;">"your_api_key_here"</span>
+BASE_URL = <span style="color: #ffcc80;">"https://api.greenspaceai.com/v1"</span>
+
+<span style="color: #64b5f6;">def</span> <span style="color: #4fc3f7;">upload_and_analyze</span>(image_path, analysis_type=<span style="color: #ffcc80;">"landcover"</span>):
+    <span style="color: #81c784;"># Step 1: Upload image</span>
+    headers = {<span style="color: #ffcc80;">"Authorization"</span>: <span style="color: #ffcc80;">f"Bearer {API_KEY}"</span>}
+    
+    <span style="color: #64b5f6;">with</span> <span style="color: #4fc3f7;">open</span>(image_path, <span style="color: #ffcc80;">'rb'</span>) <span style="color: #64b5f6;">as</span> f:
+        files = {<span style="color: #ffcc80;">'file'</span>: f}
+        upload_response = requests.post(
+            <span style="color: #ffcc80;">f"{BASE_URL}/upload"</span>,
+            headers=headers,
+            files=files
+        )
+    
+    <span style="color: #64b5f6;">if</span> upload_response.status_code != <span style="color: #ff8a65;">200</span>:
+        <span style="color: #64b5f6;">raise</span> Exception(<span style="color: #ffcc80;">f"Upload failed: {upload_response.json()}"</span>)
+    
+    file_id = upload_response.json()[<span style="color: #ffcc80;">'file_id'</span>]
+    <span style="color: #4fc3f7;">print</span>(<span style="color: #ffcc80;">f"✓ Upload successful. File ID: {file_id}"</span>)
+    
+    <span style="color: #81c784;"># Step 2: Start analysis</span>
+    analysis_payload = {
+        <span style="color: #ffcc80;">"file_id"</span>: file_id,
+        <span style="color: #ffcc80;">"analysis_type"</span>: analysis_type,
+        <span style="color: #ffcc80;">"parameters"</span>: {
+            <span style="color: #ffcc80;">"model"</span>: <span style="color: #ffcc80;">"unet_plus"</span>,
+            <span style="color: #ffcc80;">"detail_level"</span>: <span style="color: #ffcc80;">"balanced"</span>
+        }
+    }
+    
+    analysis_response = requests.post(
+        <span style="color: #ffcc80;">f"{BASE_URL}/analysis"</span>,
+        headers=headers,
+        json=analysis_payload
+    )
+    
+    analysis_id = analysis_response.json()[<span style="color: #ffcc80;">'analysis_id'</span>]
+    <span style="color: #4fc3f7;">print</span>(<span style="color: #ffcc80;">f"✓ Analysis started. Analysis ID: {analysis_id}"</span>)
+    
+    <span style="color: #81c784;"># Step 3: Poll for results</span>
+    <span style="color: #64b5f6;">while</span> <span style="color: #64b5f6;">True</span>:
+        status_response = requests.get(
+            <span style="color: #ffcc80;">f"{BASE_URL}/analysis/{analysis_id}/status"</span>,
+            headers=headers
+        )
+        
+        status = status_response.json()[<span style="color: #ffcc80;">'status'</span>]
+        progress = status_response.json().get(<span style="color: #ffcc80;">'progress'</span>, <span style="color: #ff8a65;">0</span>)
+        
+        <span style="color: #4fc3f7;">print</span>(<span style="color: #ffcc80;">f"Progress: {progress}% - Status: {status}"</span>)
+        
+        <span style="color: #64b5f6;">if</span> status == <span style="color: #ffcc80;">"completed"</span>:
+            <span style="color: #64b5f6;">break</span>
+        <span style="color: #64b5f6;">elif</span> status == <span style="color: #ffcc80;">"failed"</span>:
+            <span style="color: #64b5f6;">raise</span> Exception(<span style="color: #ffcc80;">"Analysis failed"</span>)
+        
+        time.sleep(<span style="color: #ff8a65;">10</span>)  <span style="color: #81c784;"># Wait 10 seconds before polling again</span>
+    
+    <span style="color: #81c784;"># Step 4: Get results</span>
+    results_response = requests.get(
+        <span style="color: #ffcc80;">f"{BASE_URL}/analysis/{analysis_id}/results"</span>,
+        headers=headers
+    )
+    
+    <span style="color: #64b5f6;">return</span> results_response.json()
+
+<span style="color: #81c784;"># Run analysis</span>
+results = <span style="color: #4fc3f7;">upload_and_analyze</span>(<span style="color: #ffcc80;">"satellite_image.tif"</span>)
+<span style="color: #4fc3f7;">print</span>(<span style="color: #ffcc80;">"✓ Analysis complete!"</span>)
+<span style="color: #4fc3f7;">print</span>(<span style="color: #ffcc80;">f"Results URL: {results['download_url']}"</span>)</code></pre>
+                    
+                    <pre id="javascriptCode" style="color: white; margin: 0; display: none;"><code><span style="color: #81c784;">// JavaScript: Upload satellite image and run analysis</span>
+<span style="color: #64b5f6;">const</span> API_KEY = <span style="color: #ffcc80;">"your_api_key_here"</span>;
+<span style="color: #64b5f6;">const</span> BASE_URL = <span style="color: #ffcc80;">"https://api.greenspaceai.com/v1"</span>;
+
+<span style="color: #64b5f6;">async</span> <span style="color: #4fc3f7;">function</span> <span style="color: #ffffff;">uploadAndAnalyze</span>(imageFile, analysisType = <span style="color: #ffcc80;">"landcover"</span>) {
+    <span style="color: #81c784;">// Step 1: Upload image</span>
+    <span style="color: #64b5f6;">const</span> headers = {
+        <span style="color: #ffcc80;">'Authorization'</span>: <span style="color: #ffcc80;">`Bearer ${API_KEY}`</span>
+    };
+    
+    <span style="color: #64b5f6;">const</span> formData = <span style="color: #64b5f6;">new</span> FormData();
+    formData.append(<span style="color: #ffcc80;">'file'</span>, imageFile);
+    
+    <span style="color: #64b5f6;">const</span> uploadResponse = <span style="color: #64b5f6;">await</span> fetch(<span style="color: #ffcc80;">`${BASE_URL}/upload`</span>, {
+        method: <span style="color: #ffcc80;">'POST'</span>,
+        headers: headers,
+        body: formData
+    });
+    
+    <span style="color: #64b5f6;">if</span> (!uploadResponse.ok) {
+        <span style="color: #64b5f6;">throw</span> <span style="color: #64b5f6;">new</span> Error(<span style="color: #ffcc80;">`Upload failed: ${await uploadResponse.text()}`</span>);
+    }
+    
+    <span style="color: #64b5f6;">const</span> uploadData = <span style="color: #64b5f6;">await</span> uploadResponse.json();
+    <span style="color: #64b5f6;">const</span> fileId = uploadData.file_id;
+    console.log(<span style="color: #ffcc80;">`✓ Upload successful. File ID: ${fileId}`</span>);
+    
+    <span style="color: #81c784;">// Step 2: Start analysis</span>
+    <span style="color: #64b5f6;">const</span> analysisPayload = {
+        file_id: fileId,
+        analysis_type: analysisType,
+        parameters: {
+            model: <span style="color: #ffcc80;">"unet_plus"</span>,
+            detail_level: <span style="color: #ffcc80;">"balanced"</span>
+        }
+    };
+    
+    <span style="color: #64b5f6;">const</span> analysisResponse = <span style="color: #64b5f6;">await</span> fetch(<span style="color: #ffcc80;">`${BASE_URL}/analysis`</span>, {
+        method: <span style="color: #ffcc80;">'POST'</span>,
+        headers: {
+            ...headers,
+            <span style="color: #ffcc80;">'Content-Type'</span>: <span style="color: #ffcc80;">'application/json'</span>
+        },
+        body: JSON.stringify(analysisPayload)
+    });
+    
+    <span style="color: #64b5f6;">const</span> analysisData = <span style="color: #64b5f6;">await</span> analysisResponse.json();
+    <span style="color: #64b5f6;">const</span> analysisId = analysisData.analysis_id;
+    console.log(<span style="color: #ffcc80;">`✓ Analysis started. Analysis ID: ${analysisId}`</span>);
+    
+    <span style="color: #81c784;">// Step 3: Poll for results</span>
+    <span style="color: #64b5f6;">while</span> (<span style="color: #64b5f6;">true</span>) {
+        <span style="color: #64b5f6;">const</span> statusResponse = <span style="color: #64b5f6;">await</span> fetch(
+            <span style="color: #ffcc80;">`${BASE_URL}/analysis/${analysisId}/status`</span>,
+            { headers }
+        );
+        
+        <span style="color: #64b5f6;">const</span> statusData = <span style="color: #64b5f6;">await</span> statusResponse.json();
+        <span style="color: #64b5f6;">const</span> status = statusData.status;
+        <span style="color: #64b5f6;">const</span> progress = statusData.progress || <span style="color: #ff8a65;">0</span>;
+        
+        console.log(<span style="color: #ffcc80;">`Progress: ${progress}% - Status: ${status}`</span>);
+        
+        <span style="color: #64b5f6;">if</span> (status === <span style="color: #ffcc80;">"completed"</span>) {
+            <span style="color: #64b5f6;">break</span>;
+        } <span style="color: #64b5f6;">else</span> <span style="color: #64b5f6;">if</span> (status === <span style="color: #ffcc80;">"failed"</span>) {
+            <span style="color: #64b5f6;">throw</span> <span style="color: #64b5f6;">new</span> Error(<span style="color: #ffcc80;">"Analysis failed"</span>);
+        }
+        
+        <span style="color: #64b5f6;">await</span> <span style="color: #4fc3f7;">new</span> Promise(resolve => setTimeout(resolve, <span style="color: #ff8a65;">10000</span>)); <span style="color: #81c784;">// Wait 10 seconds</span>
+    }
+    
+    <span style="color: #81c784;">// Step 4: Get results</span>
+    <span style="color: #64b5f6;">const</span> resultsResponse = <span style="color: #64b5f6;">await</span> fetch(
+        <span style="color: #ffcc80;">`${BASE_URL}/analysis/${analysisId}/results`</span>,
+        { headers }
+    );
+    
+    <span style="color: #64b5f6;">return</span> <span style="color: #64b5f6;">await</span> resultsResponse.json();
+}
+
+<span style="color: #81c784;">// Usage example</span>
+<span style="color: #64b5f6;">const</span> imageInput = document.getElementById(<span style="color: #ffcc80;">'imageInput'</span>);
+<span style="color: #64b5f6;">const</span> file = imageInput.files[<span style="color: #ff8a65;">0</span>];
+
+<span style="color: #4fc3f7;">uploadAndAnalyze</span>(file)
+    .then(results => {
+        console.log(<span style="color: #ffcc80;">"✓ Analysis complete!"</span>);
+        console.log(<span style="color: #ffcc80;">`Results URL: ${results.download_url}`</span>);
+    })
+    .catch(error => {
+        console.error(<span style="color: #ffcc80;">"✗ Error:"</span>, error);
+    });</code></pre>
+                    
+                    <pre id="curlCode" style="color: white; margin: 0; display: none;"><code><span style="color: #81c784;"># cURL: Upload satellite image and run analysis</span>
+
+<span style="color: #81c784;"># Step 1: Upload image</span>
+curl -X POST <span style="color: #ffcc80;">\</span>
+  -H <span style="color: #ffcc80;">"Authorization: Bearer your_api_key_here"</span> <span style="color: #ffcc80;">\</span>
+  -F <span style="color: #ffcc80;">"file=@satellite_image.tif"</span> <span style="color: #ffcc80;">\</span>
+  https://api.greenspaceai.com/v1/upload
+
+<span style="color: #81c784;"># Response: {"file_id": "file_abc123", "status": "uploaded"}</span>
+
+<span style="color: #81c784;"># Step 2: Start analysis</span>
+curl -X POST <span style="color: #ffcc80;">\</span>
+  -H <span style="color: #ffcc80;">"Authorization: Bearer your_api_key_here"</span> <span style="color: #ffcc80;">\</span>
+  -H <span style="color: #ffcc80;">"Content-Type: application/json"</span> <span style="color: #ffcc80;">\</span>
+  -d <span style="color: #ffcc80;">'{</span>
+<span style="color: #ffcc80;">    "file_id": "file_abc123",</span>
+<span style="color: #ffcc80;">    "analysis_type": "landcover",</span>
+<span style="color: #ffcc80;">    "parameters": {</span>
+<span style="color: #ffcc80;">        "model": "unet_plus",</span>
+<span style="color: #ffcc80;">        "detail_level": "balanced"</span>
+<span style="color: #ffcc80;">    }</span>
+<span style="color: #ffcc80;">  }'</span> <span style="color: #ffcc80;">\</span>
+  https://api.greenspaceai.com/v1/analysis
+
+<span style="color: #81c784;"># Response: {"analysis_id": "analysis_xyz789", "status": "queued"}</span>
+
+<span style="color: #81c784;"># Step 3: Check status (poll every 10 seconds)</span>
+curl -X GET <span style="color: #ffcc80;">\</span>
+  -H <span style="color: #ffcc80;">"Authorization: Bearer your_api_key_here"</span> <span style="color: #ffcc80;">\</span>
+  https://api.greenspaceai.com/v1/analysis/analysis_xyz789/status
+
+<span style="color: #81c784;"># Response: {"status": "processing", "progress": 65}</span>
+
+<span style="color: #81c784;"># Step 4: Get results</span>
+curl -X GET <span style="color: #ffcc80;">\</span>
+  -H <span style="color: #ffcc80;">"Authorization: Bearer your_api_key_here"</span> <span style="color: #ffcc80;">\</span>
+  https://api.greenspaceai.com/v1/analysis/analysis_xyz789/results
+
+<span style="color: #81c784;"># Response includes download URLs and statistics</span></code></pre>
+                    
+                    <pre id="nodeCode" style="color: white; margin: 0; display: none;"><code><span style="color: #81c784;">// Node.js: Upload satellite image and run analysis</span>
+<span style="color: #64b5f6;">const</span> axios = require(<span style="color: #ffcc80;">'axios'</span>);
+<span style="color: #64b5f6;">const</span> fs = require(<span style="color: #ffcc80;">'fs'</span>);
+<span style="color: #64b5f6;">const</span> FormData = require(<span style="color: #ffcc80;">'form-data'</span>);
+
+<span style="color: #64b5f6;">const</span> API_KEY = <span style="color: #ffcc80;">'your_api_key_here'</span>;
+<span style="color: #64b5f6;">const</span> BASE_URL = <span style="color: #ffcc80;">'https://api.greenspaceai.com/v1'</span>;
+
+<span style="color: #64b5f6;">async</span> <span style="color: #4fc3f7;">function</span> <span style="color: #ffffff;">uploadAndAnalyze</span>(imagePath, analysisType = <span style="color: #ffcc80;">'landcover'</span>) {
+    <span style="color: #81c784;">// Step 1: Upload image</span>
+    <span style="color: #64b5f6;">const</span> formData = <span style="color: #64b5f6;">new</span> FormData();
+    formData.append(<span style="color: #ffcc80;">'file'</span>, fs.createReadStream(imagePath));
+    
+    <span style="color: #64b5f6;">const</span> uploadResponse = <span style="color: #64b5f6;">await</span> axios.post(<span style="color: #ffcc80;">`${BASE_URL}/upload`</span>, formData, {
+        headers: {
+            ...formData.getHeaders(),
+            <span style="color: #ffcc80;">'Authorization'</span>: <span style="color: #ffcc80;">`Bearer ${API_KEY}`</span>
+        }
+    });
+    
+    <span style="color: #64b5f6;">const</span> fileId = uploadResponse.data.file_id;
+    console.log(<span style="color: #ffcc80;">`✓ Upload successful. File ID: ${fileId}`</span>);
+    
+    <span style="color: #81c784;">// Step 2: Start analysis</span>
+    <span style="color: #64b5f6;">const</span> analysisPayload = {
+        file_id: fileId,
+        analysis_type: analysisType,
+        parameters: {
+            model: <span style="color: #ffcc80;">'unet_plus'</span>,
+            detail_level: <span style="color: #ffcc80;">'balanced'</span>
+        }
+    };
+    
+    <span style="color: #64b5f6;">const</span> analysisResponse = <span style="color: #64b5f6;">await</span> axios.post(<span style="color: #ffcc80;">`${BASE_URL}/analysis`</span>, analysisPayload, {
+        headers: {
+            <span style="color: #ffcc80;">'Authorization'</span>: <span style="color: #ffcc80;">`Bearer ${API_KEY}`</span>,
+            <span style="color: #ffcc80;">'Content-Type'</span>: <span style="color: #ffcc80;">'application/json'</span>
+        }
+    });
+    
+    <span style="color: #64b5f6;">const</span> analysisId = analysisResponse.data.analysis_id;
+    console.log(<span style="color: #ffcc80;">`✓ Analysis started. Analysis ID: ${analysisId}`</span>);
+    
+    <span style="color: #81c784;">// Step 3: Poll for results</span>
+    <span style="color: #64b5f6;">while</span> (<span style="color: #64b5f6;">true</span>) {
+        <span style="color: #64b5f6;">const</span> statusResponse = <span style="color: #64b5f6;">await</span> axios.get(
+            <span style="color: #ffcc80;">`${BASE_URL}/analysis/${analysisId}/status`</span>,
+            {
+                headers: {
+                    <span style="color: #ffcc80;">'Authorization'</span>: <span style="color: #ffcc80;">`Bearer ${API_KEY}`</span>
+                }
+            }
+        );
+        
+        <span style="color: #64b5f6;">const</span> status = statusResponse.data.status;
+        <span style="color: #64b5f6;">const</span> progress = statusResponse.data.progress || <span style="color: #ff8a65;">0</span>;
+        
+        console.log(<span style="color: #ffcc80;">`Progress: ${progress}% - Status: ${status}`</span>);
+        
+        <span style="color: #64b5f6;">if</span> (status === <span style="color: #ffcc80;">'completed'</span>) {
+            <span style="color: #64b5f6;">break</span>;
+        } <span style="color: #64b5f6;">else</span> <span style="color: #64b5f6;">if</span> (status === <span style="color: #ffcc80;">'failed'</span>) {
+            <span style="color: #64b5f6;">throw</span> <span style="color: #64b5f6;">new</span> Error(<span style="color: #ffcc80;">'Analysis failed'</span>);
+        }
+        
+        <span style="color: #64b5f6;">await</span> <span style="color: #4fc3f7;">new</span> Promise(resolve => setTimeout(resolve, <span style="color: #ff8a65;">10000</span>));
+    }
+    
+    <span style="color: #81c784;">// Step 4: Get results</span>
+    <span style="color: #64b5f6;">const</span> resultsResponse = <span style="color: #64b5f6;">await</span> axios.get(
+        <span style="color: #ffcc80;">`${BASE_URL}/analysis/${analysisId}/results`</span>,
+        {
+            headers: {
+                <span style="color: #ffcc80;">'Authorization'</span>: <span style="color: #ffcc80;">`Bearer ${API_KEY}`</span>
+            }
+        }
+    );
+    
+    <span style="color: #64b5f6;">return</span> resultsResponse.data;
+}
+
+<span style="color: #81c784;">// Usage example</span>
+<span style="color: #4fc3f7;">uploadAndAnalyze</span>(<span style="color: #ffcc80;">'satellite_image.tif'</span>)
+    .then(results => {
+        console.log(<span style="color: #ffcc80;">'✓ Analysis complete!'</span>);
+        console.log(<span style="color: #ffcc80;">`Results URL: ${results.download_url}`</span>);
+    })
+    .catch(error => {
+        console.error(<span style="color: #ffcc80;">'✗ Error:'</span>, error);
+    });</code></pre>
+                    
+                    <pre id="javaCode" style="color: white; margin: 0; display: none;"><code><span style="color: #81c784;">// Java: Upload satellite image and run analysis</span>
+<span style="color: #64b5f6;">import</span> java.net.http.*;
+<span style="color: #64b5f6;">import</span> java.net.URI;
+<span style="color: #64b5f6;">import</span> java.nio.file.Path;
+<span style="color: #64b5f6;">import</span> java.util.concurrent.TimeUnit;
+<span style="color: #64b5f6;">import</span> com.fasterxml.jackson.databind.ObjectMapper;
+
+<span style="color: #64b5f6;">public</span> <span style="color: #64b5f6;">class</span> <span style="color: #ffffff;">GreenSpaceAI</span> {
+    <span style="color: #64b5f6;">private static final</span> String API_KEY = <span style="color: #ffcc80;">"your_api_key_here"</span>;
+    <span style="color: #64b5f6;">private static final</span> String BASE_URL = <span style="color: #ffcc80;">"https://api.greenspaceai.com/v1"</span>;
+    <span style="color: #64b5f6;">private static final</span> ObjectMapper mapper = <span style="color: #64b5f6;">new</span> ObjectMapper();
+    
+    <span style="color: #64b5f6;">public static</span> Map&lt;String, Object&gt; <span style="color: #ffffff;">uploadAndAnalyze</span>(Path imagePath, String analysisType) 
+            <span style="color: #64b5f6;">throws</span> Exception {
+        
+        HttpClient client = HttpClient.newHttpClient();
+        
+        <span style="color: #81c784;">// Step 1: Upload image</span>
+        HttpRequest uploadRequest = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + <span style="color: #ffcc80;">"/upload"</span>))
+                .header(<span style="color: #ffcc80;">"Authorization"</span>, <span style="color: #ffcc80;">"Bearer "</span> + API_KEY)
+                .POST(HttpRequest.BodyPublishers.ofFile(imagePath))
+                .build();
+        
+        HttpResponse&lt;String&gt; uploadResponse = client.send(uploadRequest, 
+                HttpResponse.BodyHandlers.ofString());
+        
+        <span style="color: #64b5f6;">if</span> (uploadResponse.statusCode() != <span style="color: #ff8a65;">200</span>) {
+            <span style="color: #64b5f6;">throw new</span> RuntimeException(<span style="color: #ffcc80;">"Upload failed: "</span> + uploadResponse.body());
+        }
+        
+        Map&lt;String, Object&gt; uploadData = mapper.readValue(uploadResponse.body(), Map.class);
+        String fileId = (String) uploadData.get(<span style="color: #ffcc80;">"file_id"</span>);
+        System.out.println(<span style="color: #ffcc80;">"✓ Upload successful. File ID: "</span> + fileId);
+        
+        <span style="color: #81c784;">// Step 2: Start analysis</span>
+        Map&lt;String, Object&gt; analysisPayload = <span style="color: #64b5f6;">new</span> HashMap&lt;&gt;();
+        analysisPayload.put(<span style="color: #ffcc80;">"file_id"</span>, fileId);
+        analysisPayload.put(<span style="color: #ffcc80;">"analysis_type"</span>, analysisType);
+        
+        Map&lt;String, Object&gt; parameters = <span style="color: #64b5f6;">new</span> HashMap&lt;&gt;();
+        parameters.put(<span style="color: #ffcc80;">"model"</span>, <span style="color: #ffcc80;">"unet_plus"</span>);
+        parameters.put(<span style="color: #ffcc80;">"detail_level"</span>, <span style="color: #ffcc80;">"balanced"</span>);
+        analysisPayload.put(<span style="color: #ffcc80;">"parameters"</span>, parameters);
+        
+        String analysisPayloadJson = mapper.writeValueAsString(analysisPayload);
+        
+        HttpRequest analysisRequest = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + <span style="color: #ffcc80;">"/analysis"</span>))
+                .header(<span style="color: #ffcc80;">"Authorization"</span>, <span style="color: #ffcc80;">"Bearer "</span> + API_KEY)
+                .header(<span style="color: #ffcc80;">"Content-Type"</span>, <span style="color: #ffcc80;">"application/json"</span>)
+                .POST(HttpRequest.BodyPublishers.ofString(analysisPayloadJson))
+                .build();
+        
+        HttpResponse&lt;String&gt; analysisResponse = client.send(analysisRequest,
+                HttpResponse.BodyHandlers.ofString());
+        
+        Map&lt;String, Object&gt; analysisData = mapper.readValue(analysisResponse.body(), Map.class);
+        String analysisId = (String) analysisData.get(<span style="color: #ffcc80;">"analysis_id"</span>);
+        System.out.println(<span style="color: #ffcc80;">"✓ Analysis started. Analysis ID: "</span> + analysisId);
+        
+        <span style="color: #81c784;">// Step 3: Poll for results</span>
+        <span style="color: #64b5f6;">while</span> (<span style="color: #64b5f6;">true</span>) {
+            HttpRequest statusRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + <span style="color: #ffcc80;">"/analysis/"</span> + analysisId + <span style="color: #ffcc80;">"/status"</span>))
+                    .header(<span style="color: #ffcc80;">"Authorization"</span>, <span style="color: #ffcc80;">"Bearer "</span> + API_KEY)
+                    .GET()
+                    .build();
+            
+            HttpResponse&lt;String&gt; statusResponse = client.send(statusRequest,
+                    HttpResponse.BodyHandlers.ofString());
+            
+            Map&lt;String, Object&gt; statusData = mapper.readValue(statusResponse.body(), Map.class);
+            String status = (String) statusData.get(<span style="color: #ffcc80;">"status"</span>);
+            Integer progress = (Integer) statusData.getOrDefault(<span style="color: #ffcc80;">"progress"</span>, <span style="color: #ff8a65;">0</span>);
+            
+            System.out.println(<span style="color: #ffcc80;">"Progress: "</span> + progress + <span style="color: #ffcc80;">"% - Status: "</span> + status);
+            
+            <span style="color: #64b5f6;">if</span> (<span style="color: #ffcc80;">"completed"</span>.equals(status)) {
+                <span style="color: #64b5f6;">break</span>;
+            } <span style="color: #64b5f6;">else if</span> (<span style="color: #ffcc80;">"failed"</span>.equals(status)) {
+                <span style="color: #64b5f6;">throw new</span> RuntimeException(<span style="color: #ffcc80;">"Analysis failed"</span>);
+            }
+            
+            TimeUnit.SECONDS.sleep(<span style="color: #ff8a65;">10</span>);
+        }
+        
+        <span style="color: #81c784;">// Step 4: Get results</span>
+        HttpRequest resultsRequest = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + <span style="color: #ffcc80;">"/analysis/"</span> + analysisId + <span style="color: #ffcc80;">"/results"</span>))
+                .header(<span style="color: #ffcc80;">"Authorization"</span>, <span style="color: #ffcc80;">"Bearer "</span> + API_KEY)
+                .GET()
+                .build();
+        
+        HttpResponse&lt;String&gt; resultsResponse = client.send(resultsRequest,
+                HttpResponse.BodyHandlers.ofString());
+        
+        <span style="color: #64b5f6;">return</span> mapper.readValue(resultsResponse.body(), Map.class);
+    }
+}</code></pre>
+                </div>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 10px; margin-top: 30px;">
+                <h4 style="margin-top: 0; color: white;">Code Output</h4>
+                <div id="codeOutput" style="background: #1c2833; padding: 20px; border-radius: 8px; min-height: 100px; color: white; font-family: monospace;">
+                    Click "Run Code" to see the output here...
+                </div>
+            </div>
+        </div>
+
+        <!-- Rate Limits -->
+        <div class="rate-limits">
+            <h2 class="section-title" style="color: #388e3c;">Rate Limits & Quotas</h2>
+            
+            <div class="limit-tiers">
+                <div class="limit-tier tier-free">
+                    <div class="tier-header">Free Tier</div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #bdbdbd; margin: 15px 0;">$0</div>
+                    <div style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Perfect for testing and evaluation</div>
+                    <ul style="text-align: left; padding-left: 20px; font-size: 0.9rem; color: #666;">
+                        <li>100 requests/day</li>
+                        <li>5 requests/minute</li>
+                        <li>10MB upload limit</li>
+                        <li>Basic support</li>
+                    </ul>
+                </div>
+                
+                <div class="limit-tier tier-developer">
+                    <div class="tier-header">Developer</div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #2196f3; margin: 15px 0;">$99/mo</div>
+                    <div style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">For small projects and startups</div>
+                    <ul style="text-align: left; padding-left: 20px; font-size: 0.9rem; color: #666;">
+                        <li>1,000 requests/day</li>
+                        <li>30 requests/minute</li>
+                        <li>100MB upload limit</li>
+                        <li>Email support</li>
+                    </ul>
+                </div>
+                
+                <div class="limit-tier tier-professional">
+                    <div class="tier-header">Professional</div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #ff9800; margin: 15px 0;">$499/mo</div>
+                    <div style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">For production applications</div>
+                    <ul style="text-align: left; padding-left: 20px; font-size: 0.9rem; color: #666;">
+                        <li>10,000 requests/day</li>
+                        <li>100 requests/minute</li>
+                        <li>500MB upload limit</li>
+                        <li>Priority support</li>
+                    </ul>
+                </div>
+                
+                <div class="limit-tier tier-enterprise">
+                    <div class="tier-header">Enterprise</div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #795548; margin: 15px 0;">Custom</div>
+                    <div style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">For large organizations</div>
+                    <ul style="text-align: left; padding-left: 20px; font-size: 0.9rem; color: #666;">
+                        <li>Unlimited requests</li>
+                        <li>Custom rate limits</li>
+                        <li>2GB upload limit</li>
+                        <li>24/7 dedicated support</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 30px; border-radius: 10px; margin-top: 40px;">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Rate Limit Headers</h3>
+                <p style="color: #666; margin-bottom: 20px;">
+                    Every API response includes rate limit headers to help you manage your usage:
+                </p>
+                
+                <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 0.9rem;">
+                    <div style="margin-bottom: 10px;">
+                        <span style="color: #795548; font-weight: 600;">X-RateLimit-Limit:</span> 100
+                        <span style="color: #666; margin-left: 20px;">Maximum requests per day</span>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <span style="color: #795548; font-weight: 600;">X-RateLimit-Remaining:</span> 87
+                        <span style="color: #666; margin-left: 20px;">Requests remaining today</span>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <span style="color: #795548; font-weight: 600;">X-RateLimit-Reset:</span> 1705276800
+                        <span style="color: #666; margin-left: 20px;">Unix timestamp when limits reset</span>
+                    </div>
+                    <div>
+                        <span style="color: #795548; font-weight: 600;">Retry-After:</span> 60
+                        <span style="color: #666; margin-left: 20px;">Seconds to wait after hitting limits</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Webhooks -->
+        <div class="webhooks-section">
+            <h2 class="section-title" style="color: #1976d2;">Webhooks & Event Notifications</h2>
+            
+            <div class="webhook-setup">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Setting Up Webhooks</h3>
+                <p style="color: #666; margin-bottom: 20px;">
+                    Webhooks allow you to receive real-time notifications when events occur in the GreenSpace AI platform.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;">
+                    <div>
+                        <h4 style="color: #1976d2; margin-bottom: 15px;">Available Events</h4>
+                        <ul style="color: #666; padding-left: 20px;">
+                            <li><strong>analysis.completed</strong> - Analysis finished processing</li>
+                            <li><strong>analysis.failed</strong> - Analysis failed</li>
+                            <li><strong>export.ready</strong> - Export file ready for download</li>
+                            <li><strong>model.trained</strong> - Custom model training completed</li>
+                            <li><strong>quota.warning</strong> - Approaching rate limit</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #1976d2; margin-bottom: 15px;">Webhook Configuration</h4>
+                        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 0.9rem;">
+                            curl -X POST \<br>
+                            -H "Authorization: Bearer API_KEY" \<br>
+                            -d '{<br>
+                            &nbsp;&nbsp;"url": "https://your-app.com/webhooks",<br>
+                            &nbsp;&nbsp;"events": ["analysis.completed"],<br>
+                            &nbsp;&nbsp;"secret": "your_webhook_secret"<br>
+                            }' \<br>
+                            https://api.greenspaceai.com/v1/webhooks
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 30px;">
+                    <h4 style="margin-top: 0; color: #1976d2; margin-bottom: 10px;">Webhook Security</h4>
+                    <p style="color: #666; margin: 0; font-size: 0.95rem;">
+                        All webhook payloads are signed with HMAC-SHA256. Verify signatures using your webhook secret 
+                        to ensure the request originated from GreenSpace AI.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SDKs -->
+        <div class="sdk-section">
+            <h2 class="section-title" style="color: #7b1fa2;">Client SDKs & Libraries</h2>
+            
+            <div class="sdk-grid">
+                <div class="sdk-card">
+                    <div class="sdk-icon icon-python">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h3>Python SDK</h3>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">
+                        Official Python client with async support and type hints.
+                    </p>
+                    <div style="font-family: monospace; background: #f5f5f5; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                        pip install greenspace-ai
+                    </div>
+                    <a href="{% url 'documentation' %}" class="btn-outline" style="border-color: #7b1fa2; color: #7b1fa2;">
+                        <i class="fas fa-book"></i> Documentation
+                    </a>
+                </div>
+                
+                <div class="sdk-card">
+                    <div class="sdk-icon icon-javascript">
+                        <i class="fab fa-js"></i>
+                    </div>
+                    <h3>JavaScript SDK</h3>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">
+                        Browser and Node.js client with Promise-based API.
+                    </p>
+                    <div style="font-family: monospace; background: #f5f5f5; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                        npm install greenspace-ai
+                    </div>
+                    <a href="{% url 'documentation' %}" class="btn-outline" style="border-color: #7b1fa2; color: #7b1fa2;">
+                        <i class="fas fa-book"></i> Documentation
+                    </a>
+                </div>
+                
+                <div class="sdk-card">
+                    <div class="sdk-icon icon-r">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>R Package</h3>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">
+                        R client for data science and statistical analysis workflows.
+                    </p>
+                    <div style="font-family: monospace; background: #f5f5f5; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                        install.packages("greenspaceai")
+                    </div>
+                    <a href="{% url 'documentation' %}" class="btn-outline" style="border-color: #7b1fa2; color: #7b1fa2;">
+                        <i class="fas fa-book"></i> Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="best-practices">
+            <h2 class="section-title" style="color: #ff9800;">API Best Practices</h2>
+            
+            <div class="practice-grid">
+                <div class="practice-item">
+                    <div class="practice-icon">
+                        <i class="fas fa-redo-alt"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-top: 0; margin-bottom: 10px;">Implement Retry Logic</h4>
+                        <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                            Use exponential backoff with jitter for retrying failed requests. Handle 
+                            rate limit errors (429) and server errors (5xx) gracefully.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="practice-item">
+                    <div class="practice-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-top: 0; margin-bottom: 10px;">Cache Results</h4>
+                        <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                            Cache analysis results locally to avoid repeated API calls for the same data. 
+                            Implement proper cache invalidation strategies.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="practice-item">
+                    <div class="practice-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-top: 0; margin-bottom: 10px;">Monitor Usage</h4>
+                        <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                            Track API usage and implement alerts for approaching rate limits. Use the 
+                            rate limit headers to optimize request timing.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="practice-item">
+                    <div class="practice-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-top: 0; margin-bottom: 10px;">Secure API Keys</h4>
+                        <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                            Never expose API keys in client-side code. Use environment variables or 
+                            secure key management services in production.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring -->
+        <div class="monitoring">
+            <h2 class="section-title" style="color: #00695c;">Monitoring & Analytics</h2>
+            
+            <div class="metrics-dashboard">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">API Usage Dashboard</h3>
+                
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #00695c;">1,247</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Total Requests</div>
+                        <div style="font-size: 0.9rem; color: #666;">Last 30 days</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #00695c;">98.7%</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Success Rate</div>
+                        <div style="font-size: 0.9rem; color: #666;">API uptime</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #00695c;">42ms</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Avg Response Time</div>
+                        <div style="font-size: 0.9rem; color: #666;">P95 latency</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #00695c;">87/100</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Daily Limit</div>
+                        <div style="font-size: 0.9rem; color: #666;">Requests remaining</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 30px; border-radius: 10px; margin-top: 40px;">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Error Tracking & Alerting</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                    <div>
+                        <h4 style="color: #00695c; margin-bottom: 15px;">Common Error Codes</h4>
+                        <ul style="color: #666; padding-left: 20px;">
+                            <li><strong>400</strong> - Bad Request (invalid parameters)</li>
+                            <li><strong>401</strong> - Unauthorized (invalid API key)</li>
+                            <li><strong>429</strong> - Rate Limit Exceeded</li>
+                            <li><strong>500</strong> - Internal Server Error</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #00695c; margin-bottom: 15px;">Alert Configuration</h4>
+                        <ul style="color: #666; padding-left: 20px;">
+                            <li>Set up alerts for error rate spikes</li>
+                            <li>Monitor response time increases</li>
+                            <li>Track quota usage trends</li>
+                            <li>Configure webhook failures</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Steps -->
+        <div style="background: linear-gradient(135deg, #5d4037, #795548); color: white; padding: 50px; border-radius: 15px; margin-top: 50px; text-align: center;">
+            <h2 style="margin: 0 0 20px;">Ready to Integrate?</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto 30px;">
+                Start integrating GreenSpace AI into your applications and automate your satellite imagery analysis workflows.
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'documentation' %}" class="btn-primary" style="background: white; color: #5d4037; padding: 15px 40px;">
+                    <i class="fas fa-book"></i> View Full Documentation
+                </a>
+                <a href="{% url 'custom_models' %}" class="btn-outline" style="border-color: white; color: white; padding: 15px 40px;">
+                    <i class="fas fa-brain"></i> Learn Custom Models
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced GIS and remote sensing platform powered by deep learning for environmental analysis.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>API Integration</h4>
+                <ul>
+                    <li><a href="#authentication">Authentication</a></li>
+                    <li><a href="#endpoints">API Endpoints</a></li>
+                    <li><a href="#webhooks">Webhooks</a></li>
+                    <li><a href="#monitoring">Monitoring</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Related Tutorials</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-play-circle"></i> <a href="{% url 'getting_started' %}">Getting Started</a></li>
+                    <li><i class="fas fa-file-export"></i> <a href="{% url 'gis_export' %}">GIS Export</a></li>
+                    <li><i class="fas fa-chart-line"></i> <a href="{% url 'temporal_analysis' %}">Temporal Analysis</a></li>
+                    <li><i class="fas fa-brain"></i> <a href="{% url 'custom_models' %}">Custom Models</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>API Resources</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-code"></i> SDK Libraries</li>
+                    <li><i class="fas fa-terminal"></i> API Playground</li>
+                    <li><i class="fas fa-chart-bar"></i> Usage Analytics</li>
+                    <li><i class="fas fa-life-ring"></i> API Support</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 GreenSpace AI. API Integration Tutorial v2.1</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // API key management
+        const apiKeyDisplay = document.getElementById('apiKeyDisplay');
+        
+        function copyApiKey() {
+            navigator.clipboard.writeText(apiKeyDisplay.textContent)
+                .then(() => {
+                    const originalText = 'Copy API Key';
+                    const button = event.target.closest('button') || event.target;
+                    const originalHTML = button.innerHTML;
+                    
+                    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    button.style.background = '#4caf50';
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalHTML;
+                        button.style.background = '#795548';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+        }
+
+        function generateNewKey() {
+            if (confirm('Generate a new API key? The old key will be revoked immediately.')) {
+                // Generate a mock new key
+                const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+                let newKey = 'gsai_sk_live_';
+                for (let i = 0; i < 32; i++) {
+                    newKey += chars[Math.floor(Math.random() * chars.length)];
+                }
+                
+                apiKeyDisplay.textContent = newKey;
+                alert('New API key generated! Make sure to update your applications.');
+            }
+        }
+
+        function revokeApiKey() {
+            if (confirm('Revoke this API key? This action cannot be undone.')) {
+                apiKeyDisplay.textContent = '[REVOKED] gsai_sk_revoked_' + Math.random().toString(36).substr(2, 10);
+                alert('API key revoked. All requests using this key will be rejected.');
+            }
+        }
+
+        // Code playground tabs
+        const languageTabs = document.querySelectorAll('.language-tab');
+        const codeSections = {
+            'python': document.getElementById('pythonCode'),
+            'javascript': document.getElementById('javascriptCode'),
+            'curl': document.getElementById('curlCode'),
+            'node': document.getElementById('nodeCode'),
+            'java': document.getElementById('javaCode')
+        };
+
+        languageTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const language = this.dataset.language;
+                
+                // Update active tab
+                languageTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show selected code section
+                Object.values(codeSections).forEach(section => section.style.display = 'none');
+                if (codeSections[language]) {
+                    codeSections[language].style.display = 'block';
+                }
+            });
+        });
+
+        // Run code simulation
+        function runCode() {
+            const output = document.getElementById('codeOutput');
+            const runButton = document.querySelector('.run-button');
+            const originalText = runButton.innerHTML;
+            
+            // Show loading state
+            runButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running...';
+            runButton.disabled = true;
+            
+            // Clear previous output
+            output.innerHTML = '<span style="color: #81c784;">Starting API call simulation...</span>';
+            
+            // Simulate API call sequence
+            let step = 0;
+            const messages = [
+                '✓ Connected to GreenSpace AI API',
+                '✓ Uploading satellite image...',
+                '✓ Image uploaded successfully (file_id: img_abc123xyz)',
+                '✓ Starting land cover analysis...',
+                '✓ Analysis queued (analysis_id: ana_789def456)',
+                '⏳ Processing: 25% complete',
+                '⏳ Processing: 50% complete',
+                '⏳ Processing: 75% complete',
+                '✓ Analysis completed successfully!',
+                '✓ Results ready for download',
+                '📊 Statistics generated:',
+                '  - Urban area: 42.3 km² (38.2%)',
+                '  - Vegetation: 50.1 km² (45.1%)',
+                '  - Water bodies: 8.9 km² (8.0%)',
+                '  - Other: 9.7 km² (8.7%)',
+                '📁 Download URL: https://api.greenspaceai.com/download/ana_789def456',
+                '🎉 API call completed successfully!'
+            ];
+            
+            function nextStep() {
+                if (step < messages.length) {
+                    output.innerHTML += '<br>' + messages[step];
+                    output.scrollTop = output.scrollHeight;
+                    step++;
+                    setTimeout(nextStep, 500);
+                } else {
+                    // Show completion
+                    runButton.innerHTML = originalText;
+                    runButton.disabled = false;
+                    
+                    // Add success styling
+                    output.innerHTML += '<br><br><span style="color: #4caf50;"><i class="fas fa-check-circle"></i> Simulation complete! Ready to run with real API key.</span>';
+                }
+            }
+            
+            setTimeout(nextStep, 1000);
+        }
+
+        // Add syntax highlighting helper
+        function highlightSyntax(codeElement) {
+            const code = codeElement.textContent;
+            // Simple syntax highlighting (in a real implementation, use a proper highlighter)
+            const highlighted = code
+                .replace(/#.*$/gm, '<span class="code-comment">$&</span>')
+                .replace(/(import|def|class|if|else|while|for|return|async|await)/g, '<span class="code-keyword">$1</span>')
+                .replace(/(".*?"|'.*?')/g, '<span class="code-string">$1</span>')
+                .replace(/\b(\d+)\b/g, '<span class="code-number">$1</span>')
+                .replace(/(\w+)\(/g, '<span class="code-function">$1</span>(');
+            
+            codeElement.innerHTML = highlighted;
+        }
+
+        // Apply syntax highlighting to all code blocks
+        document.querySelectorAll('pre code').forEach(highlightSyntax);
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + Enter to run code
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                runCode();
+            }
+            
+            // Ctrl/Cmd + 1-5 to switch language tabs
+            if ((e.ctrlKey || e.metaKey) && e.key >= '1' && e.key <= '5') {
+                e.preventDefault();
+                const index = parseInt(e.key) - 1;
+                if (languageTabs[index]) {
+                    languageTabs[index].click();
+                }
+            }
+        });
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Initialize with Python code visible
+        highlightSyntax(document.getElementById('pythonCode'));
+    </script>
+</body>
+</html>

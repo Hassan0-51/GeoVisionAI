@@ -1,0 +1,702 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Cover Analysis Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="{% static 'analysis/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>Initializing System</h3>
+            <p>Please wait while we load the analysis tools...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-globe-americas"></i>
+                <h1>LandCover<span>AI</span></h1>
+            </div>
+            <nav class="nav">
+                <a href="#dashboard" class="nav-link active"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#analysis" class="nav-link"><i class="fas fa-chart-bar"></i> Analysis</a>
+                <a href="#history" class="nav-link"><i class="fas fa-history"></i> History</a>
+                <a href="#settings" class="nav-link"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+            <div class="user-menu">
+                <button class="btn-notification">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="user-avatar">
+                    <img src="https://ui-avatars.com/api/?name=User&background=4f46e5&color=fff" alt="User">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3><i class="fas fa-map-marker-alt"></i> AOI Selection</h3>
+                <div class="selection-methods">
+                    <div class="method-card active" id="methodDraw">
+                        <i class="fas fa-draw-polygon"></i>
+                        <span>Draw Polygon</span>
+                    </div>
+                    <div class="method-card" id="methodUpload">
+                        <i class="fas fa-upload"></i>
+                        <span>Upload Shapefile</span>
+                    </div>
+                    <div class="method-card" id="methodCoordinates">
+                        <i class="fas fa-crosshairs"></i>
+                        <span>Enter Coordinates</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section" id="coordinatesSection" style="display: none;">
+                <h3><i class="fas fa-map-pin"></i> Coordinates</h3>
+                <div class="coordinates-input">
+                    <div class="coord-group">
+                        <label>Latitude</label>
+                        <input type="number" id="latInput" step="0.000001" placeholder="31.5204">
+                    </div>
+                    <div class="coord-group">
+                        <label>Longitude</label>
+                        <input type="number" id="lonInput" step="0.000001" placeholder="74.3587">
+                    </div>
+                    <button class="btn-secondary" id="addCoordBtn">
+                        <i class="fas fa-plus"></i> Add Point
+                    </button>
+                </div>
+                <div class="coordinates-list">
+                    <!-- Coordinates will be added here -->
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3><i class="fas fa-calendar-alt"></i> Time Period</h3>
+                <div class="time-selection">
+                    <div class="time-option active" id="singleYear">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>Single Year</span>
+                    </div>
+                    <div class="time-option" id="multiYear">
+                        <i class="fas fa-calendar-week"></i>
+                        <span>Multi-Year</span>
+                    </div>
+                </div>
+                <div class="year-selection" id="singleYearSelection">
+                    <label>Select Year</label>
+                    <select id="yearSelect">
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                    </select>
+                </div>
+                <div class="year-selection" id="multiYearSelection" style="display: none;">
+                    <label>Select Years</label>
+                    <div class="year-checkboxes">
+                        <label><input type="checkbox" value="2024" checked> 2024</label>
+                        <label><input type="checkbox" value="2023" checked> 2023</label>
+                        <label><input type="checkbox" value="2022" checked> 2022</label>
+                        <label><input type="checkbox" value="2021"> 2021</label>
+                        <label><input type="checkbox" value="2020"> 2020</label>
+                        <label><input type="checkbox" value="2019"> 2019</label>
+                        <label><input type="checkbox" value="2018"> 2018</label>
+                        <label><input type="checkbox" value="2017"> 2017</label>
+                        <label><input type="checkbox" value="2016"> 2016</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3><i class="fas fa-sliders-h"></i> Analysis Options</h3>
+                <div class="options-grid">
+                    <div class="option-item">
+                        <input type="checkbox" id="optionTemperature" checked>
+                        <label for="optionTemperature">Temperature Analysis</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="optionLandCover" checked>
+                        <label for="optionLandCover">Land Cover Classification</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="optionTrends">
+                        <label for="optionTrends">Trend Analysis</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="optionAI">
+                        <label for="optionAI">AI Insights</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-actions">
+                <button class="btn-primary" id="analyzeBtn">
+                    <i class="fas fa-play"></i> Start Analysis
+                </button>
+                <button class="btn-secondary" id="clearBtn">
+                    <i class="fas fa-redo"></i> Clear All
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Map Section -->
+            <div class="map-section">
+                <div class="map-header">
+                    <h2><i class="fas fa-map"></i> Area of Interest</h2>
+                    <div class="map-controls">
+                        <button class="btn-map-control" id="drawPolygon">
+                            <i class="fas fa-draw-polygon"></i> Draw
+                        </button>
+                        <button class="btn-map-control" id="clearPolygon">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                        <button class="btn-map-control" id="zoomToArea">
+                            <i class="fas fa-search-location"></i> Zoom
+                        </button>
+                    </div>
+                </div>
+                <div id="map"></div>
+                <div class="map-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-ruler-combined"></i>
+                        <div>
+                            <span class="stat-label">Area Size</span>
+                            <span class="stat-value" id="areaSize">0 km²</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-map-pin"></i>
+                        <div>
+                            <span class="stat-label">Points</span>
+                            <span class="stat-value" id="pointCount">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-layer-group"></i>
+                        <div>
+                            <span class="stat-label">Layers</span>
+                            <span class="stat-value">3 Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section (Initially Hidden) -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2><i class="fas fa-chart-line"></i> Analysis Results</h2>
+                    <div class="result-actions">
+                        <button class="btn-secondary" id="exportResults">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="btn-secondary" id="shareResults">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-header">
+                        <span>Processing Analysis</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="step active">Data Fetching</div>
+                        <div class="step">Land Cover Analysis</div>
+                        <div class="step">Temperature Processing</div>
+                        <div class="step">Generating Reports</div>
+                    </div>
+                </div>
+
+                <!-- Results Tabs -->
+                <div class="results-tabs">
+                    <div class="tab-nav">
+                        <button class="tab-btn active" data-tab="summary">Summary</button>
+                        <button class="tab-btn" data-tab="landcover">Land Cover</button>
+                        <button class="tab-btn" data-tab="temperature">Temperature</button>
+                        <button class="tab-btn" data-tab="trends">Trends</button>
+                        <button class="tab-btn" data-tab="insights">AI Insights</button>
+                        <button class="tab-btn" data-tab="export">Export</button>
+                    </div>
+
+                    <div class="tab-content">
+                        <!-- Summary Tab -->
+                        <div class="tab-pane active" id="summaryTab">
+                            <div class="summary-grid">
+                                <div class="summary-card">
+                                    <div class="summary-icon" style="background: #10b981;">
+                                        <i class="fas fa-leaf"></i>
+                                    </div>
+                                    <div class="summary-content">
+                                        <h4>Green Space</h4>
+                                        <div class="summary-value" id="greenSpaceValue">--%</div>
+                                        <div class="summary-trend up">
+                                            <i class="fas fa-arrow-up"></i> 2.3% from last year
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-icon" style="background: #ef4444;">
+                                        <i class="fas fa-city"></i>
+                                    </div>
+                                    <div class="summary-content">
+                                        <h4>Urban Area</h4>
+                                        <div class="summary-value" id="urbanAreaValue">--%</div>
+                                        <div class="summary-trend up">
+                                            <i class="fas fa-arrow-up"></i> 1.8% from last year
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-icon" style="background: #3b82f6;">
+                                        <i class="fas fa-thermometer-half"></i>
+                                    </div>
+                                    <div class="summary-content">
+                                        <h4>Avg Temperature</h4>
+                                        <div class="summary-value" id="avgTempValue">--°C</div>
+                                        <div class="summary-trend down">
+                                            <i class="fas fa-arrow-down"></i> 0.5°C from last year
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-icon" style="background: #8b5cf6;">
+                                        <i class="fas fa-water"></i>
+                                    </div>
+                                    <div class="summary-content">
+                                        <h4>Water Bodies</h4>
+                                        <div class="summary-value" id="waterValue">--%</div>
+                                        <div class="summary-trend stable">
+                                            <i class="fas fa-minus"></i> No significant change
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="summary-chart">
+                                <h4>Land Cover Distribution</h4>
+                                <canvas id="landCoverChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Land Cover Tab -->
+                        <div class="tab-pane" id="landcoverTab">
+                            <div class="chart-container">
+                                <div class="chart-controls">
+                                    <h4>Land Cover Classification</h4>
+                                    <div class="chart-options">
+                                        <select id="landCoverYearSelect">
+                                            <option value="all">All Years</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2022">2022</option>
+                                        </select>
+                                        <select id="landCoverSeasonSelect">
+                                            <option value="all">All Seasons</option>
+                                            <option value="spring">Spring</option>
+                                            <option value="summer">Summer</option>
+                                            <option value="autumn">Autumn</option>
+                                            <option value="winter">Winter</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="detailedLandCoverChart"></canvas>
+                                </div>
+                                <div class="legend-container">
+                                    <h5>Class Legend</h5>
+                                    <div class="legend-items" id="landCoverLegend">
+                                        <!-- Legend items will be generated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Temperature Tab -->
+                        <div class="tab-pane" id="temperatureTab">
+                            <div class="sensor-selector">
+                                <h4>Temperature Analysis</h4>
+                                <div class="sensor-buttons">
+                                    <button class="sensor-btn active" data-sensor="aqua_day">Aqua Day</button>
+                                    <button class="sensor-btn" data-sensor="aqua_night">Aqua Night</button>
+                                    <button class="sensor-btn" data-sensor="terra_day">Terra Day</button>
+                                    <button class="sensor-btn" data-sensor="terra_night">Terra Night</button>
+                                </div>
+                            </div>
+                            <div class="temperature-charts">
+                                <div class="chart-container">
+                                    <h5>Seasonal Trends</h5>
+                                    <canvas id="temperatureChart"></canvas>
+                                </div>
+                                <div class="chart-container">
+                                    <h5>Temperature Statistics</h5>
+                                    <div class="stats-grid" id="temperatureStats">
+                                        <!-- Stats will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Trends Tab -->
+                        <div class="tab-pane" id="trendsTab">
+                            <div class="trends-container">
+                                <div class="trend-chart">
+                                    <h4>Green vs Non-Green Space Trend</h4>
+                                    <canvas id="greenTrendChart"></canvas>
+                                </div>
+                                <div class="trend-chart">
+                                    <h4>Temperature Trend Analysis</h4>
+                                    <canvas id="tempTrendChart"></canvas>
+                                </div>
+                                <div class="trend-metrics">
+                                    <h4>Key Metrics</h4>
+                                    <div class="metrics-grid">
+                                        <div class="metric-card">
+                                            <div class="metric-value" id="greenChange">--%</div>
+                                            <div class="metric-label">Green Space Change</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value" id="urbanChange">--%</div>
+                                            <div class="metric-label">Urban Expansion</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value" id="tempChange">--°C</div>
+                                            <div class="metric-label">Temperature Change</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value" id="correlation">--</div>
+                                            <div class="metric-label">Green-Temp Correlation</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Insights Tab -->
+                        <div class="tab-pane" id="insightsTab">
+                            <div class="insights-container">
+                                <div class="insights-header">
+                                    <h4><i class="fas fa-robot"></i> AI-Generated Insights</h4>
+                                    <button class="btn-secondary" id="refreshInsights">
+                                        <i class="fas fa-sync"></i> Regenerate
+                                    </button>
+                                </div>
+                                
+                                <div class="season-insights">
+                                    <div class="season-tabs">
+                                        <button class="season-tab active" data-season="spring">Spring</button>
+                                        <button class="season-tab" data-season="summer">Summer</button>
+                                        <button class="season-tab" data-season="autumn">Autumn</button>
+                                        <button class="season-tab" data-season="winter">Winter</button>
+                                        <button class="season-tab" data-season="average">Annual Average</button>
+                                    </div>
+                                    
+                                    <div class="insight-content">
+                                        <div class="insight-section" data-season="spring">
+                                            <h5>Seasonal Analysis</h5>
+                                            <p id="springSummary">Loading insights...</p>
+                                            
+                                            <div class="insight-grid">
+                                                <div class="insight-card">
+                                                    <div class="insight-icon">
+                                                        <i class="fas fa-seedling"></i>
+                                                    </div>
+                                                    <div class="insight-text">
+                                                        <strong>Green Space Trend:</strong>
+                                                        <span id="springGreenTrend">--</span>
+                                                    </div>
+                                                </div>
+                                                <div class="insight-card">
+                                                    <div class="insight-icon">
+                                                        <i class="fas fa-building"></i>
+                                                    </div>
+                                                    <div class="insight-text">
+                                                        <strong>Urban Trend:</strong>
+                                                        <span id="springUrbanTrend">--</span>
+                                                    </div>
+                                                </div>
+                                                <div class="insight-card">
+                                                    <div class="insight-icon">
+                                                        <i class="fas fa-thermometer-three-quarters"></i>
+                                                    </div>
+                                                    <div class="insight-text">
+                                                        <strong>Temperature Trend:</strong>
+                                                        <span id="springTempTrend">--</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="recommendation">
+                                                <h6><i class="fas fa-lightbulb"></i> Recommendations</h6>
+                                                <p id="springRecommendation">Generating recommendations...</p>
+                                            </div>
+                                        </div>
+                                        <!-- Other seasons will be similar -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Export Tab -->
+                        <div class="tab-pane" id="exportTab">
+                            <div class="export-container">
+                                <h4>Export Analysis Results</h4>
+                                <div class="export-options">
+                                    <div class="export-card">
+                                        <div class="export-icon">
+                                            <i class="fas fa-file-excel"></i>
+                                        </div>
+                                        <h5>Spreadsheet</h5>
+                                        <p>Download data as Excel/CSV files</p>
+                                        <div class="export-checkboxes">
+                                            <label><input type="checkbox" checked> Area Statistics</label>
+                                            <label><input type="checkbox" checked> Temperature Data</label>
+                                            <label><input type="checkbox"> Trend Analysis</label>
+                                        </div>
+                                        <button class="btn-primary">
+                                            <i class="fas fa-download"></i> Download CSV
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="export-card">
+                                        <div class="export-icon">
+                                            <i class="fas fa-chart-bar"></i>
+                                        </div>
+                                        <h5>Charts & Graphs</h5>
+                                        <p>Export visualizations as images</p>
+                                        <div class="export-checkboxes">
+                                            <label><input type="checkbox" checked> Land Cover Charts</label>
+                                            <label><input type="checkbox" checked> Temperature Charts</label>
+                                            <label><input type="checkbox"> Trend Charts</label>
+                                        </div>
+                                        <button class="btn-primary">
+                                            <i class="fas fa-download"></i> Download PNG
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="export-card">
+                                        <div class="export-icon">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </div>
+                                        <h5>Report PDF</h5>
+                                        <p>Comprehensive analysis report</p>
+                                        <div class="export-checkboxes">
+                                            <label><input type="checkbox" checked> Executive Summary</label>
+                                            <label><input type="checkbox" checked> Detailed Analysis</label>
+                                            <label><input type="checkbox"> AI Insights</label>
+                                        </div>
+                                        <button class="btn-primary">
+                                            <i class="fas fa-download"></i> Generate PDF
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="export-advanced">
+                                    <h5>Advanced Export Options</h5>
+                                    <div class="advanced-options">
+                                        <div class="option-row">
+                                            <label>Format:</label>
+                                            <select>
+                                                <option>CSV</option>
+                                                <option>JSON</option>
+                                                <option>GeoJSON</option>
+                                                <option>Shapefile</option>
+                                            </select>
+                                        </div>
+                                        <div class="option-row">
+                                            <label>Coordinate System:</label>
+                                            <select>
+                                                <option>WGS84</option>
+                                                <option>UTM</option>
+                                                <option>Mercator</option>
+                                            </select>
+                                        </div>
+                                        <div class="option-row">
+                                            <label>Include Metadata:</label>
+                                            <input type="checkbox" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Panel -->
+        <aside class="right-panel">
+            <div class="panel-section">
+                <h3><i class="fas fa-info-circle"></i> Analysis Status</h3>
+                <div class="status-cards">
+                    <div class="status-card ready">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <span class="status-label">AOI Defined</span>
+                            <span class="status-value">Ready</span>
+                        </div>
+                    </div>
+                    <div class="status-card pending">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <span class="status-label">Data Sources</span>
+                            <span class="status-value">Available</span>
+                        </div>
+                    </div>
+                    <div class="status-card processing">
+                        <i class="fas fa-sync"></i>
+                        <div>
+                            <span class="status-label">Model Status</span>
+                            <span class="status-value">Idle</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3><i class="fas fa-layer-group"></i> Map Layers</h3>
+                <div class="layer-controls">
+                    <div class="layer-item">
+                        <input type="checkbox" id="layerSatellite" checked>
+                        <label for="layerSatellite">
+                            <i class="fas fa-satellite"></i> Satellite Imagery
+                        </label>
+                    </div>
+                    <div class="layer-item">
+                        <input type="checkbox" id="layerLandCover">
+                        <label for="layerLandCover">
+                            <i class="fas fa-map"></i> Land Cover
+                        </label>
+                    </div>
+                    <div class="layer-item">
+                        <input type="checkbox" id="layerTemperature">
+                        <label for="layerTemperature">
+                            <i class="fas fa-thermometer-half"></i> Temperature
+                        </label>
+                    </div>
+                    <div class="layer-item">
+                        <input type="checkbox" id="layerBoundaries" checked>
+                        <label for="layerBoundaries">
+                            <i class="fas fa-draw-polygon"></i> AOI Boundary
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3><i class="fas fa-history"></i> Recent Analyses</h3>
+                <div class="history-list">
+                    <div class="history-item">
+                        <div class="history-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="history-details">
+                            <strong>Lahore Urban Area</strong>
+                            <small>Yesterday • 2023 Analysis</small>
+                        </div>
+                        <button class="history-action">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="history-details">
+                            <strong>River Basin Study</strong>
+                            <small>2 days ago • 2022-2023</small>
+                        </div>
+                        <button class="history-action">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-icon">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <div class="history-details">
+                            <strong>Forest Cover Analysis</strong>
+                            <small>1 week ago • 2021-2024</small>
+                        </div>
+                        <button class="history-action">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3><i class="fas fa-tools"></i> Quick Actions</h3>
+                <div class="quick-actions">
+                    <button class="quick-action">
+                        <i class="fas fa-ruler"></i>
+                        <span>Measure Area</span>
+                    </button>
+                    <button class="quick-action">
+                        <i class="fas fa-compare"></i>
+                        <span>Compare Years</span>
+                    </button>
+                    <button class="quick-action">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>Adjust Parameters</span>
+                    </button>
+                    <button class="quick-action">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help & Support</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer"></div>
+
+    <!-- Modals -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-upload"></i> Upload Shapefile</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag & drop your shapefile here</p>
+                    <small>Supports .shp, .zip (with .shp, .shx, .dbf)</small>
+                    <input type="file" id="shapefileUpload" accept=".shp,.zip" multiple>
+                    <button class="btn-secondary">Browse Files</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'analysis/app.js' %}"></script>
+</body>
+</html>

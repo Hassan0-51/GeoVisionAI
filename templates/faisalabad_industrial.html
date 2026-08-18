@@ -1,0 +1,1025 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faisalabad Industrial Zone Assessment - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .case-study-container {
+            max-width: 1000px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .case-study-header {
+            background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+            color: white;
+            padding: 60px 50px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-study-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .case-study-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .case-study-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        .case-study-meta {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .meta-item i {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .case-study-content {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .content-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #8e24aa;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: #8e24aa;
+        }
+
+        .section-text {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .impact-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .impact-card {
+            text-align: center;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-top: 4px solid #8e24aa;
+        }
+
+        .impact-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #8e24aa;
+            margin-bottom: 10px;
+        }
+
+        .impact-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .industrial-zones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .zone-card {
+            background: #f3e5f5;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #8e24aa;
+        }
+
+        .zone-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .zone-icon {
+            width: 50px;
+            height: 50px;
+            background: #8e24aa;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zone-icon i {
+            font-size: 1.5rem;
+        }
+
+        .zone-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .zone-stat {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #8e24aa;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .pollution-analysis {
+            background: #e8eaf6;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+            border-left: 4px solid #3f51b5;
+        }
+
+        .pollution-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .pollution-item {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .pollution-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #3f51b5;
+            margin-bottom: 10px;
+        }
+
+        .pollution-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .timeline-analysis {
+            position: relative;
+            margin: 40px 0;
+            padding-left: 30px;
+        }
+
+        .timeline-year {
+            position: relative;
+            padding: 25px;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #8e24aa;
+        }
+
+        .timeline-year::before {
+            content: '';
+            position: absolute;
+            left: -40px;
+            top: 30px;
+            width: 20px;
+            height: 20px;
+            background: #8e24aa;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px #8e24aa;
+        }
+
+        .year-label {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #8e24aa;
+            color: white;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .year-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .year-metric {
+            text-align: center;
+            padding: 10px;
+            background: #f3e5f5;
+            border-radius: 5px;
+        }
+
+        .mitigation-strategies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .strategy-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .strategy-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .strategy-icon {
+            width: 50px;
+            height: 50px;
+            background: #4caf50;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .strategy-icon i {
+            font-size: 1.5rem;
+        }
+
+        .strategy-impact {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .impact-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .compliance-framework {
+            background: #e8f5e9;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .framework-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .framework-icon {
+            width: 60px;
+            height: 60px;
+            background: #4caf50;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .framework-icon i {
+            font-size: 1.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .case-study-header {
+                padding: 40px 25px;
+            }
+            
+            .case-study-header h1 {
+                font-size: 2rem;
+            }
+            
+            .case-study-content {
+                padding: 30px 20px;
+            }
+            
+            .case-study-meta {
+                gap: 20px;
+            }
+            
+            .impact-metrics,
+            .industrial-zones,
+            .pollution-metrics,
+            .mitigation-strategies,
+            .framework-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline-analysis {
+                padding-left: 20px;
+            }
+            
+            .timeline-year::before {
+                left: -30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Case Study Content -->
+    <div class="case-study-container">
+        <!-- Header -->
+        <div class="case-study-header">
+            <h1>Faisalabad Industrial Zone Assessment</h1>
+            <p class="case-study-subtitle">Evaluating the impact of industrial development on green spaces and urban temperatures in Pakistan's textile hub</p>
+            
+            <div class="case-study-meta">
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                        <div class="meta-label">Study Period</div>
+                        <div class="meta-value">2010-2023</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <div class="meta-label">Location</div>
+                        <div class="meta-value">Faisalabad, Punjab, Pakistan</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-industry"></i>
+                    <div>
+                        <div class="meta-label">Industrial Zones</div>
+                        <div class="meta-value">12 Major Zones</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <div class="meta-label">Time Series</div>
+                        <div class="meta-value">13 Years Analyzed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="case-study-content">
+            <!-- Executive Summary -->
+            <section class="content-section">
+                <h2 class="section-title">Executive Summary</h2>
+                <p class="section-text">
+                    Faisalabad, known as the "Manchester of Pakistan," has experienced rapid industrial growth over the past decade. 
+                    This study assesses the environmental impact of this development, focusing on green space loss, urban heat island 
+                    intensification, and air quality degradation. The analysis provides evidence-based recommendations for sustainable 
+                    industrial development.
+                </p>
+                
+                <div style="background: #f3e5f5; padding: 25px; border-radius: 10px; margin: 25px 0;">
+                    <h3 style="margin-top: 0; color: #8e24aa;">Critical Finding</h3>
+                    <p style="margin: 0;">
+                        Industrial expansion has led to an 8.3% reduction in green spaces (2010-2023), contributing to a 1.8°C 
+                        temperature increase in affected areas and significant air quality deterioration.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Impact Assessment -->
+            <section class="content-section">
+                <h2 class="section-title">Impact Assessment</h2>
+                
+                <div class="impact-metrics">
+                    <div class="impact-card">
+                        <div class="impact-value">-8.3%</div>
+                        <div class="impact-label">Green Space Loss</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">2010-2023 period</p>
+                    </div>
+                    
+                    <div class="impact-card">
+                        <div class="impact-value">+1.8°C</div>
+                        <div class="impact-label">Temperature Increase</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">Average in industrial zones</p>
+                    </div>
+                    
+                    <div class="impact-card">
+                        <div class="impact-value">45%</div>
+                        <div class="impact-label">Air Quality Decline</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">PM2.5 levels increase</p>
+                    </div>
+                    
+                    <div class="impact-card">
+                        <div class="impact-value">12</div>
+                        <div class="impact-label">Industrial Zones</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">Assessed in study</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Industrial Zone Analysis -->
+            <section class="content-section">
+                <h2 class="section-title">Industrial Zone Analysis</h2>
+                
+                <div class="industrial-zones">
+                    <div class="zone-card">
+                        <div class="zone-header">
+                            <div class="zone-icon">
+                                <i class="fas fa-tshirt"></i>
+                            </div>
+                            <h3 style="margin: 0;">Textile Zone</h3>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Largest industrial area with 500+ textile mills covering 2,500 acres.
+                        </p>
+                        <div class="zone-stats">
+                            <div class="zone-stat">
+                                <div class="stat-value">-12.5%</div>
+                                <div class="stat-label">Green Loss</div>
+                            </div>
+                            <div class="zone-stat">
+                                <div class="stat-value">+2.1°C</div>
+                                <div class="stat-label">Temp Increase</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="zone-card">
+                        <div class="zone-header">
+                            <div class="zone-icon">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <h3 style="margin: 0;">Chemical Zone</h3>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Chemical and dye manufacturing plants covering 800 acres.
+                        </p>
+                        <div class="zone-stats">
+                            <div class="zone-stat">
+                                <div class="stat-value">-15.2%</div>
+                                <div class="stat-label">Green Loss</div>
+                            </div>
+                            <div class="zone-stat">
+                                <div class="stat-value">+1.9°C</div>
+                                <div class="stat-label">Temp Increase</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="zone-card">
+                        <div class="zone-header">
+                            <div class="zone-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <h3 style="margin: 0;">Engineering Zone</h3>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Machinery and engineering workshops covering 1,200 acres.
+                        </p>
+                        <div class="zone-stats">
+                            <div class="zone-stat">
+                                <div class="stat-value">-9.8%</div>
+                                <div class="stat-label">Green Loss</div>
+                            </div>
+                            <div class="zone-stat">
+                                <div class="stat-value">+1.6°C</div>
+                                <div class="stat-label">Temp Increase</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="zone-card">
+                        <div class="zone-header">
+                            <div class="zone-icon">
+                                <i class="fas fa-warehouse"></i>
+                            </div>
+                            <h3 style="margin: 0;">Logistics Zone</h3>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Warehousing and distribution centers covering 1,500 acres.
+                        </p>
+                        <div class="zone-stats">
+                            <div class="zone-stat">
+                                <div class="stat-value">-6.4%</div>
+                                <div class="stat-label">Green Loss</div>
+                            </div>
+                            <div class="zone-stat">
+                                <div class="stat-value">+1.4°C</div>
+                                <div class="stat-label">Temp Increase</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pollution Analysis -->
+            <section class="content-section">
+                <h2 class="section-title">Pollution & Environmental Impact</h2>
+                
+                <div class="pollution-analysis">
+                    <h3 style="margin-top: 0; color: #3f51b5;">Air Quality Degradation</h3>
+                    <p>
+                        Industrial activities have significantly impacted air quality, with particulate matter levels exceeding 
+                        WHO guidelines by 300% in some areas.
+                    </p>
+                    
+                    <div class="pollution-metrics">
+                        <div class="pollution-item">
+                            <div class="pollution-value">45%</div>
+                            <div class="pollution-label">PM2.5 Increase</div>
+                            <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">2010-2023</p>
+                        </div>
+                        
+                        <div class="pollution-item">
+                            <div class="pollution-value">38%</div>
+                            <div class="pollution-label">NO₂ Increase</div>
+                            <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">From vehicle emissions</p>
+                        </div>
+                        
+                        <div class="pollution-item">
+                            <div class="pollution-value">52%</div>
+                            <div class="pollution-label">SO₂ Levels</div>
+                            <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">Above safe limits</p>
+                        </div>
+                        
+                        <div class="pollution-item">
+                            <div class="pollution-value">25K</div>
+                            <div class="pollution-label">Annual Cases</div>
+                            <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">Respiratory illnesses</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Temporal Analysis -->
+            <section class="content-section">
+                <h2 class="section-title">Temporal Analysis (2010-2023)</h2>
+                
+                <div class="timeline-analysis">
+                    <div class="timeline-year">
+                        <div class="year-label">2010</div>
+                        <h3 style="margin: 0 0 10px 0;">Baseline Conditions</h3>
+                        <p style="color: #666; font-size: 0.95rem;">
+                            Industrial expansion begins with establishment of new textile zones.
+                        </p>
+                        <div class="year-metrics">
+                            <div class="year-metric">
+                                <div style="font-weight: 700; color: #8e24aa;">22.4%</div>
+                                <div style="font-size: 0.8rem; color: #666;">Green Coverage</div>
+                            </div>
+                            <div class="year-metric">
+                                <div style="font-weight: 700; color: #8e24aa;">31.2°C</div>
+                                <div style="font-size: 0.8rem; color: #666;">Avg Temp</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-year">
+                        <div class="year-label">2015</div>
+                        <h3 style="margin: 0 0 10px 0;">Mid-Decade Assessment</h3>
+                        <p style="color: #666; font-size: 0.95rem;">
+                            Rapid industrial growth with significant environmental impact.
+                        </p>
+                        <div class="year-metrics">
+                            <div class="year-metric">
+                                <div style="font-weight: 700; color: #8e24aa;">18.7%</div>
+                                <div style="font-size: 0.8rem; color: #666;">Green Coverage</div>
+                            </div>
+                            <div class="year-metric">
+                                <div style="font-weight: 700; color: #8e24aa;">32.4°C</div>
+                                <div style="font-size: 0.8rem; color: #666;">Avg Temp</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-year">
+                        <div class="year-label">2020</div>
+                        <h3 style="margin: 0 0 10px 0;">COVID-19 Impact</h3>
+                        <p style="color: #666; font-size: 0.95rem;">
+                            Temporary reduction in industrial activity, partial environmental recovery.
+                        </p>
+                        <div class="year-metrics">
+                            <div class="year-metric">
+                                <div style="font-weight: 700; color: #8e24aa;">17.2%</div>
+                                <div style="font-size: 0.8rem; color: #666;">Green Coverage</div>
+                            </div>
+                            <div class="year-metric">
+                                <div style="font-weight: 700; color: #8e24aa;">32.1°C</div>
+                                <div style="font-size: 0.8rem; color: #666;">Avg Temp</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-year">
+                        <div class="year-label">2023</div>
+                        <h3 style="margin: 0 0 10px 0;">Current Status</h3>
+                        <p style="color: #666; font-size: 0.95rem;">
+                            Post-pandemic industrial boom with severe environmental consequences.
+                        </p>
+                        <div class="year-metrics">
+                            <div class="year-metric">
+                                <div style="font-weight: 700; color: #8e24aa;">14.1%</div>
+                                <div style="font-size: 0.8rem; color: #666;">Green Coverage</div>
+                            </div>
+                            <div class="year-metric">
+                                <div style="font-weight: 700; color: #8e24aa;">33.0°C</div>
+                                <div style="font-size: 0.8rem; color: #666;">Avg Temp</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mitigation Strategies -->
+            <section class="content-section">
+                <h2 class="section-title">Mitigation Strategies</h2>
+                
+                <div class="mitigation-strategies">
+                    <div class="strategy-card">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <h3 style="margin: 0;">Green Industrial Parks</h3>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Redesign industrial zones with mandatory green spaces, pollution control, and sustainable infrastructure.
+                        </p>
+                        <div class="strategy-impact">
+                            <div class="impact-item">
+                                <span>Green Coverage</span>
+                                <span style="color: #4caf50; font-weight: 600;">+15%</span>
+                            </div>
+                            <div class="impact-item">
+                                <span>Temperature</span>
+                                <span style="color: #4caf50; font-weight: 600;">-1.2°C</span>
+                            </div>
+                            <div class="impact-item">
+                                <span>Implementation</span>
+                                <span style="color: #666;">3-5 years</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-card">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">
+                                <i class="fas fa-tree"></i>
+                            </div>
+                            <h3 style="margin: 0;">Industrial Green Belts</h3>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Create buffer zones of vegetation around industrial areas to contain pollution and reduce heat.
+                        </p>
+                        <div class="strategy-impact">
+                            <div class="impact-item">
+                                <span>Pollution Reduction</span>
+                                <span style="color: #4caf50; font-weight: 600;">-25%</span>
+                            </div>
+                            <div class="impact-item">
+                                <span>Cooling Effect</span>
+                                <span style="color: #4caf50; font-weight: 600;">-0.8°C</span>
+                            </div>
+                            <div class="impact-item">
+                                <span>Implementation</span>
+                                <span style="color: #666;">2-3 years</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-card">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">
+                                <i class="fas fa-recycle"></i>
+                            </div>
+                            <h3 style="margin: 0;">Circular Economy</h3>
+                        </div>
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Implement waste heat recovery, water recycling, and material reuse systems in industries.
+                        </p>
+                        <div class="strategy-impact">
+                            <div class="impact-item">
+                                <span>Energy Savings</span>
+                                <span style="color: #4caf50; font-weight: 600;">30%</span>
+                            </div>
+                            <div class="impact-item">
+                                <span>Waste Reduction</span>
+                                <span style="color: #4caf50; font-weight: 600;">40%</span>
+                            </div>
+                            <div class="impact-item">
+                                <span>Implementation</span>
+                                <span style="color: #666;">5-7 years</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Regulatory Framework -->
+            <section class="content-section">
+                <h2 class="section-title">Regulatory Framework</h2>
+                
+                <div class="compliance-framework">
+                    <h3 style="margin-top: 0; color: #2e7d32;">Proposed Environmental Standards</h3>
+                    
+                    <div class="framework-grid">
+                        <div class="framework-item">
+                            <div class="framework-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <h4>Mandatory Green Ratio</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                20% minimum green space in all industrial developments
+                            </p>
+                        </div>
+                        
+                        <div class="framework-item">
+                            <div class="framework-icon">
+                                <i class="fas fa-temperature-low"></i>
+                            </div>
+                            <h4>Heat Standards</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Maximum temperature increase limits for industrial zones
+                            </p>
+                        </div>
+                        
+                        <div class="framework-item">
+                            <div class="framework-icon">
+                                <i class="fas fa-wind"></i>
+                            </div>
+                            <h4>Emission Caps</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Strict pollution limits with real-time monitoring
+                            </p>
+                        </div>
+                        
+                        <div class="framework-item">
+                            <div class="framework-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <h4>Compliance Audits</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Annual environmental performance assessments
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Economic Analysis -->
+            <section class="content-section">
+                <h2 class="section-title">Economic Analysis</h2>
+                
+                <div style="background: #fff3e0; padding: 25px; border-radius: 10px; margin: 25px 0;">
+                    <h3 style="margin-top: 0; color: #ef6c00;">Cost-Benefit Assessment</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 600; color: #ef6c00;">Implementation Costs</div>
+                            <ul style="margin-top: 10px; padding-left: 20px; color: #555; font-size: 0.9rem;">
+                                <li>Green infrastructure: $25M</li>
+                                <li>Pollution control: $18M</li>
+                                <li>Monitoring systems: $7M</li>
+                                <li><strong>Total: $50M</strong></li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 600; color: #ef6c00;">Annual Benefits</div>
+                            <ul style="margin-top: 10px; padding-left: 20px; color: #555; font-size: 0.9rem;">
+                                <li>Health savings: $12M</li>
+                                <li>Energy savings: $8M</li>
+                                <li>Productivity: $15M</li>
+                                <li><strong>Total: $35M/year</strong></li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 600; color: #ef6c00;">ROI Analysis</div>
+                            <ul style="margin-top: 10px; padding-left: 20px; color: #555; font-size: 0.9rem;">
+                                <li>Payback period: 1.4 years</li>
+                                <li>Annual ROI: 70%</li>
+                                <li>10-year benefit: $350M</li>
+                                <li><strong>Net benefit: $300M</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Related Studies -->
+        <div style="background: #f8f9fa; padding: 40px; border-radius: 10px; margin-top: 40px;">
+            <h3 style="text-align: center; margin-bottom: 30px;">Related Environmental Studies</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                    <h4 style="margin-bottom: 10px;">Karachi Coastal Impact</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Industrial pollution in coastal areas</p>
+                    <a href="{% url 'karachi_research' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Read Study →</a>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                    <h4 style="margin-bottom: 10px;">Lahore Urban Planning</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Balancing development and environment</p>
+                    <a href="{% url 'lahore_2023' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Read Study →</a>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                    <h4 style="margin-bottom: 10px;">Sustainable Industry Guide</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Best practices for industrial greening</p>
+                    <a href="#" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Read Guide →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced platform for urban green space analysis using remote sensing and deep learning.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Study Components</h4>
+                <ul>
+                    <li><a href="#impact">Impact Assessment</a></li>
+                    <li><a href="#zones">Zone Analysis</a></li>
+                    <li><a href="#pollution">Pollution Study</a></li>
+                    <li><a href="#mitigation">Mitigation Strategies</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Collaborating Agencies</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-industry"></i> Faisalabad Chamber of Commerce</li>
+                    <li><i class="fas fa-building"></i> Punjab EPA</li>
+                    <li><i class="fas fa-university"></i> University of Agriculture</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact Study Team</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> industrial.study@greenspaceai.com</li>
+                    <li><i class="fas fa-phone"></i> +92 41 123 4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Faisalabad, Pakistan</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 GreenSpace AI - Faisalabad Industrial Zone Assessment. Environmental impact study.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,989 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparative Study: Delhi vs Lahore - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .case-study-container {
+            max-width: 1000px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .case-study-header {
+            background: linear-gradient(135deg, #d32f2f, #f44336);
+            color: white;
+            padding: 60px 50px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-study-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .case-study-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .case-study-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        .case-study-meta {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .meta-item i {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .case-study-content {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .content-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f44336;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: #f44336;
+        }
+
+        .section-text {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .comparison-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .highlight-card {
+            background: #ffebee;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .highlight-icon {
+            width: 60px;
+            height: 60px;
+            background: #f44336;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .highlight-icon i {
+            font-size: 1.8rem;
+        }
+
+        .highlight-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f44336;
+            margin-bottom: 10px;
+        }
+
+        .highlight-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: #f44336;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:hover {
+            background: #ffebee;
+        }
+
+        .city-detail {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .city-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .city-flag {
+            width: 60px;
+            height: 40px;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .city-flag img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .city-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .city-stat {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f44336;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .climate-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .climate-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .climate-icon {
+            width: 70px;
+            height: 70px;
+            background: #ffebee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .climate-icon i {
+            color: #f44336;
+            font-size: 2rem;
+        }
+
+        .policy-comparison {
+            background: #e3f2fd;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+
+        .policy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .policy-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .policy-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .policy-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .implemented { background: #c8e6c9; color: #2e7d32; }
+        .partial { background: #fff9c4; color: #f57f17; }
+        .planned { background: #ffccbc; color: #d84315; }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .recommendation-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-top: 4px solid #4caf50;
+        }
+
+        .recommendation-priority {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .priority-high { background: #ffebee; color: #c62828; }
+        .priority-medium { background: #fff3e0; color: #ef6c00; }
+
+        .research-methodology {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+
+        .methodology-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .methodology-step {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #f44336;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 15px;
+        }
+
+        @media (max-width: 768px) {
+            .case-study-header {
+                padding: 40px 25px;
+            }
+            
+            .case-study-header h1 {
+                font-size: 2rem;
+            }
+            
+            .case-study-content {
+                padding: 30px 20px;
+            }
+            
+            .case-study-meta {
+                gap: 20px;
+            }
+            
+            .comparison-highlights,
+            .climate-analysis,
+            .policy-grid,
+            .recommendations-grid,
+            .methodology-steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .city-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Case Study Content -->
+    <div class="case-study-container">
+        <!-- Header -->
+        <div class="case-study-header">
+            <h1>Comparative Study: Delhi vs Lahore</h1>
+            <p class="case-study-subtitle">Cross-border research comparing green space distribution and cooling effects in two major South Asian cities</p>
+            
+            <div class="case-study-meta">
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                        <div class="meta-label">Study Period</div>
+                        <div class="meta-value">2022-2023</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <div class="meta-label">Locations</div>
+                        <div class="meta-value">Delhi, India & Lahore, Pakistan</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-university"></i>
+                    <div>
+                        <div class="meta-label">Collaborators</div>
+                        <div class="meta-value">JNU, University of Punjab</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-globe-asia"></i>
+                    <div>
+                        <div class="meta-label">Region</div>
+                        <div class="meta-value">South Asia</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="case-study-content">
+            <!-- Executive Summary -->
+            <section class="content-section">
+                <h2 class="section-title">Executive Summary</h2>
+                <p class="section-text">
+                    This pioneering cross-border study compares urban green spaces and their cooling effects in Delhi, India, 
+                    and Lahore, Pakistan - two of South Asia's largest and most rapidly urbanizing cities. Despite different 
+                    geographical contexts and urban planning approaches, both cities face similar challenges of urban heat 
+                    islands and green space reduction.
+                </p>
+                
+                <div class="comparison-highlights">
+                    <div class="highlight-card">
+                        <div class="highlight-icon">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <div class="highlight-value">20.3%</div>
+                        <div class="highlight-label">Delhi Green Coverage</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">National Capital Territory</p>
+                    </div>
+                    
+                    <div class="highlight-card">
+                        <div class="highlight-icon">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <div class="highlight-value">18.7%</div>
+                        <div class="highlight-label">Lahore Green Coverage</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">Metropolitan Area</p>
+                    </div>
+                    
+                    <div class="highlight-card">
+                        <div class="highlight-icon">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="highlight-value">3.5°C</div>
+                        <div class="highlight-label">Avg Temp Difference</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">Green vs Built-up Areas</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- City Profiles -->
+            <section class="content-section">
+                <h2 class="section-title">City Profiles</h2>
+                
+                <!-- Delhi Profile -->
+                <div class="city-detail">
+                    <div class="city-header">
+                        <div class="city-flag">
+                            <!-- Indian flag placeholder -->
+                            <div style="width: 100%; height: 33.3%; background: #ff9933;"></div>
+                            <div style="width: 100%; height: 33.3%; background: white; display: flex; justify-content: center; align-items: center;">
+                                <div style="width: 20px; height: 20px; background: #000080; border-radius: 50%;"></div>
+                            </div>
+                            <div style="width: 100%; height: 33.3%; background: #138808;"></div>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0;">Delhi, India</h3>
+                            <p style="margin: 5px 0 0; color: #666; font-size: 0.9rem;">National Capital Territory</p>
+                        </div>
+                    </div>
+                    
+                    <div class="city-stats">
+                        <div class="city-stat">
+                            <div class="stat-value">20.3%</div>
+                            <div class="stat-label">Green Coverage</div>
+                        </div>
+                        <div class="city-stat">
+                            <div class="stat-value">32.8°C</div>
+                            <div class="stat-label">Average Temp</div>
+                        </div>
+                        <div class="city-stat">
+                            <div class="stat-value">1,484 km²</div>
+                            <div class="stat-label">Area</div>
+                        </div>
+                        <div class="city-stat">
+                            <div class="stat-value">32M</div>
+                            <div class="stat-label">Metro Population</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lahore Profile -->
+                <div class="city-detail">
+                    <div class="city-header">
+                        <div class="city-flag">
+                            <!-- Pakistani flag placeholder -->
+                            <div style="width: 30%; height: 100%; background: white;"></div>
+                            <div style="width: 70%; height: 100%; background: #01411c; position: relative;">
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60%; height: 60%; background: white; border-radius: 50%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0;">Lahore, Pakistan</h3>
+                            <p style="margin: 5px 0 0; color: #666; font-size: 0.9rem;">Provincial Capital</p>
+                        </div>
+                    </div>
+                    
+                    <div class="city-stats">
+                        <div class="city-stat">
+                            <div class="stat-value">18.7%</div>
+                            <div class="stat-label">Green Coverage</div>
+                        </div>
+                        <div class="city-stat">
+                            <div class="stat-value">33.2°C</div>
+                            <div class="stat-label">Average Temp</div>
+                        </div>
+                        <div class="city-stat">
+                            <div class="stat-value">1,772 km²</div>
+                            <div class="stat-label">Metro Area</div>
+                        </div>
+                        <div class="city-stat">
+                            <div class="stat-value">13.5M</div>
+                            <div class="stat-label">Metro Population</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detailed Comparison -->
+            <section class="content-section">
+                <h2 class="section-title">Detailed Comparison</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Delhi</th>
+                            <th>Lahore</th>
+                            <th>Difference</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total Green Coverage</td>
+                            <td>20.3%</td>
+                            <td>18.7%</td>
+                            <td>+1.6% (Delhi)</td>
+                        </tr>
+                        <tr>
+                            <td>Urban Forest Area</td>
+                            <td>299 km²</td>
+                            <td>231 km²</td>
+                            <td>+68 km² (Delhi)</td>
+                        </tr>
+                        <tr>
+                            <td>Parks per 100,000 people</td>
+                            <td>8.2</td>
+                            <td>6.8</td>
+                            <td>+1.4 (Delhi)</td>
+                        </tr>
+                        <tr>
+                            <td>Average Temperature</td>
+                            <td>32.8°C</td>
+                            <td>33.2°C</td>
+                            <td>-0.4°C (Delhi)</td>
+                        </tr>
+                        <tr>
+                            <td>Max UHI Intensity</td>
+                            <td>4.2°C</td>
+                            <td>3.8°C</td>
+                            <td>+0.4°C (Delhi)</td>
+                        </tr>
+                        <tr>
+                            <td>Green Space Cooling</td>
+                            <td>3.7°C</td>
+                            <td>3.2°C</td>
+                            <td>+0.5°C (Delhi)</td>
+                        </tr>
+                        <tr>
+                            <td>Annual Green Loss (2010-2023)</td>
+                            <td>-9.2%</td>
+                            <td>-12.5%</td>
+                            <td>+3.3% (Delhi)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Climate Analysis -->
+            <section class="content-section">
+                <h2 class="section-title">Climate & Environmental Analysis</h2>
+                
+                <div class="climate-analysis">
+                    <div class="climate-card">
+                        <div class="climate-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <h3>Temperature Patterns</h3>
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Delhi experiences more extreme temperatures but benefits from larger green spaces in central areas, 
+                            while Lahore shows more uniform temperature distribution with localized heat islands.
+                        </p>
+                    </div>
+                    
+                    <div class="climate-card">
+                        <div class="climate-icon">
+                            <i class="fas fa-cloud-rain"></i>
+                        </div>
+                        <h3>Rainfall Impact</h3>
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Delhi receives 797mm annual rainfall supporting denser vegetation, compared to Lahore's 629mm, 
+                            affecting green space maintenance and cooling efficiency.
+                        </p>
+                    </div>
+                    
+                    <div class="climate-card">
+                        <div class="climate-icon">
+                            <i class="fas fa-wind"></i>
+                        </div>
+                        <h3>Air Quality</h3>
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Both cities face severe air pollution, but Delhi's larger green spaces provide 15% better 
+                            air filtration capacity despite higher pollution levels.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Policy Comparison -->
+            <section class="content-section">
+                <h2 class="section-title">Policy & Governance Comparison</h2>
+                
+                <div class="policy-comparison">
+                    <h3 style="margin-top: 0; color: #2196f3;">Urban Greening Policies</h3>
+                    
+                    <div class="policy-grid">
+                        <div class="policy-item">
+                            <div class="policy-title">Green Building Standards</div>
+                            <div class="policy-status implemented">Implemented</div>
+                            <p style="color: #666; font-size: 0.9rem;">
+                                Delhi: ECBC compliance mandatory for new buildings<br>
+                                Lahore: Green building code under development
+                            </p>
+                        </div>
+                        
+                        <div class="policy-item">
+                            <div class="policy-title">Urban Forestry Programs</div>
+                            <div class="policy-status implemented">Implemented</div>
+                            <p style="color: #666; font-size: 0.9rem;">
+                                Delhi: 2 million trees planted annually<br>
+                                Lahore: 500,000 trees targeted for 2023-24
+                            </p>
+                        </div>
+                        
+                        <div class="policy-item">
+                            <div class="policy-title">Heat Action Plans</div>
+                            <div class="policy-status partial">Partial</div>
+                            <p style="color: #666; font-size: 0.9rem;">
+                                Delhi: Comprehensive heat wave management<br>
+                                Lahore: Basic heat alert system in place
+                            </p>
+                        </div>
+                        
+                        <div class="policy-item">
+                            <div class="policy-title">Citizen Engagement</div>
+                            <div class="policy-status implemented">Implemented</div>
+                            <p style="color: #666; font-size: 0.9rem;">
+                                Delhi: Active citizen participation programs<br>
+                                Lahore: Growing community involvement
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Research Methodology -->
+            <section class="content-section">
+                <h2 class="section-title">Research Methodology</h2>
+                
+                <div class="research-methodology">
+                    <h3 style="margin-top: 0;">Standardized Analysis Approach</h3>
+                    
+                    <div class="methodology-steps">
+                        <div class="methodology-step">
+                            <div class="step-number">1</div>
+                            <h4>Data Harmonization</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Standardized satellite imagery processing using identical parameters for both cities.
+                            </p>
+                        </div>
+                        
+                        <div class="methodology-step">
+                            <div class="step-number">2</div>
+                            <h4>Model Consistency</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Same U-Net architecture trained on combined dataset from both cities.
+                            </p>
+                        </div>
+                        
+                        <div class="methodology-step">
+                            <div class="step-number">3</div>
+                            <h4>Validation Protocol</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                200 ground truth points in each city using identical sampling methodology.
+                            </p>
+                        </div>
+                        
+                        <div class="methodology-step">
+                            <div class="step-number">4</div>
+                            <h4>Statistical Analysis</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Comparative statistical tests to identify significant differences and similarities.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Findings -->
+            <section class="content-section">
+                <h2 class="section-title">Key Findings</h2>
+                
+                <div style="background: #f1f8e9; padding: 25px; border-radius: 10px; margin: 25px 0;">
+                    <h3 style="margin-top: 0; color: #689f38;">Similarities</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div>
+                            <h4 style="color: #689f38; margin-bottom: 10px;">Urban Expansion Patterns</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Both cities show similar patterns of green space loss at urban peripheries due to expansion.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: #689f38; margin-bottom: 10px;">Cooling Benefits</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Similar magnitude of temperature reduction (3-4°C) in well-maintained green spaces.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: #689f38; margin-bottom: 10px;">Policy Challenges</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Common challenges in enforcement and maintenance of green infrastructure.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #fff3e0; padding: 25px; border-radius: 10px; margin: 25px 0;">
+                    <h3 style="margin-top: 0; color: #ef6c00;">Differences</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div>
+                            <h4 style="color: #ef6c00; margin-bottom: 10px;">Spatial Distribution</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Delhi has more centralized large parks, Lahore has more distributed smaller green spaces.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: #ef6c00; margin-bottom: 10px;">Administrative Approach</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Delhi has more integrated planning, Lahore has fragmented departmental responsibilities.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: #ef6c00; margin-bottom: 10px;">Climate Context</h4>
+                            <p style="font-size: 0.9rem; color: #666;">
+                                Different rainfall patterns affect vegetation types and maintenance requirements.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recommendations -->
+            <section class="content-section">
+                <h2 class="section-title">Cross-Learning Recommendations</h2>
+                
+                <div class="recommendations-grid">
+                    <div class="recommendation-card">
+                        <span class="recommendation-priority priority-high">High Priority</span>
+                        <h3>Knowledge Exchange Program</h3>
+                        <p>Establish regular exchange between Delhi and Lahore urban planners to share best practices in green space management and heat mitigation.</p>
+                        <div style="margin-top: 15px;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                <span style="font-size: 0.9rem;">Delhi to share: Large park management</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                <span style="font-size: 0.9rem;">Lahore to share: Community engagement</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation-card">
+                        <span class="recommendation-priority priority-high">High Priority</span>
+                        <h3>Standardized Monitoring Framework</h3>
+                        <p>Develop common metrics and monitoring protocols for green space assessment across South Asian cities to enable better comparison and learning.</p>
+                        <ul style="margin-top: 15px; padding-left: 20px; color: #666; font-size: 0.9rem;">
+                            <li>Common vegetation indices</li>
+                            <li>Standard temperature measurement protocols</li>
+                            <li>Unified reporting formats</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-card">
+                        <span class="recommendation-priority priority-medium">Medium Priority</span>
+                        <h3>Regional Climate Resilience Network</h3>
+                        <p>Create a South Asian network of cities to collaborate on urban heat mitigation and share adaptation strategies.</p>
+                        <div style="margin-top: 15px;">
+                            <div style="background: #e3f2fd; padding: 10px; border-radius: 5px;">
+                                <div style="font-size: 0.8rem; color: #2196f3; margin-bottom: 5px;">Initial Cities</div>
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <span style="background: white; padding: 3px 8px; border-radius: 3px; font-size: 0.8rem;">Delhi</span>
+                                    <span style="background: white; padding: 3px 8px; border-radius: 3px; font-size: 0.8rem;">Lahore</span>
+                                    <span style="background: white; padding: 3px 8px; border-radius: 3px; font-size: 0.8rem;">Dhaka</span>
+                                    <span style="background: white; padding: 3px 8px; border-radius: 3px; font-size: 0.8rem;">Kathmandu</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Related Studies -->
+        <div style="background: #f8f9fa; padding: 40px; border-radius: 10px; margin-top: 40px;">
+            <h3 style="text-align: center; margin-bottom: 30px;">Related Comparative Studies</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                    <h4 style="margin-bottom: 10px;">South Asian Urban Heat</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Comparative analysis of 10 South Asian cities</p>
+                    <a href="#" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Read Study →</a>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                    <h4 style="margin-bottom: 10px;">Lahore Urban Assessment</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Detailed analysis of Lahore's green spaces</p>
+                    <a href="{% url 'lahore_2023' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Read Study →</a>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                    <h4 style="margin-bottom: 10px;">Delhi Master Plan</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Delhi's urban greening initiatives</p>
+                    <a href="#" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Read Study →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced platform for urban green space analysis using remote sensing and deep learning.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Study Components</h4>
+                <ul>
+                    <li><a href="#comparison">City Comparison</a></li>
+                    <li><a href="#methodology">Methodology</a></li>
+                    <li><a href="#findings">Key Findings</a></li>
+                    <li><a href="#recommendations">Recommendations</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Research Partners</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-university"></i> Jawaharlal Nehru University</li>
+                    <li><i class="fas fa-university"></i> University of the Punjab</li>
+                    <li><i class="fas fa-handshake"></i> Cross-Border Research Initiative</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact Researchers</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> comparative.study@greenspaceai.com</li>
+                    <li><i class="fas fa-globe"></i> South Asia Research Network</li>
+                    <li><i class="fas fa-users"></i> International Collaboration</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 GreenSpace AI - Delhi vs Lahore Comparative Study. Cross-border research collaboration.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

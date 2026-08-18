@@ -1,0 +1,1019 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Support - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .support-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .support-hero {
+            background: linear-gradient(135deg, #1a237e, #3949ab);
+            color: white;
+            padding: 80px 50px;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .support-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .support-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .support-channels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .channel-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+            border-top: 5px solid #3949ab;
+        }
+
+        .channel-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .channel-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3949ab, #5c6bc0);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 2rem;
+        }
+
+        .response-time {
+            background: #e8eaf6;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #3949ab;
+        }
+
+        .faq-section {
+            background: white;
+            border-radius: 15px;
+            padding: 60px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin: 60px 0;
+        }
+
+        .faq-categories {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .faq-category {
+            padding: 12px 25px;
+            background: #e8eaf6;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .faq-category.active {
+            background: #3949ab;
+            color: white;
+            border-color: #3949ab;
+        }
+
+        .faq-items {
+            display: grid;
+            gap: 30px;
+        }
+
+        .faq-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active {
+            border-color: #3949ab;
+            box-shadow: 0 5px 15px rgba(57, 73, 171, 0.1);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .faq-question h3 {
+            margin: 0;
+            flex: 1;
+        }
+
+        .faq-toggle {
+            width: 30px;
+            height: 30px;
+            background: #e8eaf6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            margin-top: 0;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            margin-top: 20px;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+            background: #3949ab;
+            color: white;
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #f5f7ff, #e8eaf6);
+            border-radius: 15px;
+            padding: 60px;
+            margin: 60px 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .contact-info {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .contact-method:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: #e8eaf6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3949ab;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3949ab;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .priority-critical { background: #ffebee; color: #c62828; }
+        .priority-high { background: #fff3e0; color: #ef6c00; }
+        .priority-normal { background: #e8f5e9; color: #2e7d32; }
+
+        .resources-section {
+            background: white;
+            border-radius: 15px;
+            padding: 60px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-top: 60px;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .resource-card {
+            background: #f8f9ff;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid #3949ab;
+            transition: transform 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateX(10px);
+        }
+
+        .resource-icon {
+            width: 60px;
+            height: 60px;
+            background: #e8eaf6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3949ab;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .status-online {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-offline {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-online .status-dot {
+            background: #4caf50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 992px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .support-hero {
+                padding: 60px 30px;
+            }
+            
+            .support-hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .support-container {
+                margin: 80px auto 30px;
+            }
+            
+            .faq-section,
+            .contact-section,
+            .resources-section {
+                padding: 30px 20px;
+            }
+            
+            .channel-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Support Content -->
+    <div class="support-container">
+        <!-- Hero Section -->
+        <div class="support-hero">
+            <h1>Expert Support for GIS & Remote Sensing</h1>
+            <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto 30px; opacity: 0.9;">
+                Get assistance with satellite imagery analysis, deep learning models, GIS exports, and API integration
+            </p>
+            <div class="status-indicator status-online">
+                <div class="status-dot"></div>
+                <span>Support System: Online</span>
+            </div>
+        </div>
+
+        <!-- Support Channels -->
+        <div class="support-channels">
+            <div class="channel-card">
+                <div class="channel-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Email Support</h3>
+                <p>Detailed technical assistance for complex GIS and remote sensing issues</p>
+                <div style="margin: 25px 0;">
+                    <h4 style="color: #3949ab;">support@greenspaceai.com</h4>
+                    <p style="font-size: 0.9rem; color: #666;">For platform issues and technical support</p>
+                </div>
+                <div style="margin: 25px 0;">
+                    <h4 style="color: #3949ab;">sales@greenspaceai.com</h4>
+                    <p style="font-size: 0.9rem; color: #666;">For pricing and enterprise solutions</p>
+                </div>
+                <div class="response-time">Response time: 4-6 hours</div>
+            </div>
+
+            <div class="channel-card">
+                <div class="channel-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Live Chat</h3>
+                <p>Instant assistance for urgent technical issues during business hours</p>
+                <div style="margin: 25px 0; padding: 20px; background: #f8f9ff; border-radius: 10px;">
+                    <p style="margin: 0 0 10px; font-weight: 500;">Available:</p>
+                    <p style="margin: 0; color: #666; font-size: 0.9rem;">Mon-Fri: 9AM-6PM UTC</p>
+                    <p style="margin: 5px 0 0; color: #666; font-size: 0.9rem;">Sat: 10AM-2PM UTC</p>
+                </div>
+                <button id="startChat" class="btn-primary" style="width: 100%; padding: 12px; margin-top: 20px;">
+                    <i class="fas fa-comment"></i> Start Live Chat
+                </button>
+            </div>
+
+            <div class="channel-card">
+                <div class="channel-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <h3>Phone Support</h3>
+                <p>Direct consultation for enterprise clients and emergency issues</p>
+                <div style="margin: 25px 0;">
+                    <h4 style="color: #3949ab;">+1 (555) 123-4567</h4>
+                    <p style="font-size: 0.9rem; color: #666;">North America & Global</p>
+                </div>
+                <div style="margin: 25px 0;">
+                    <h4 style="color: #3949ab;">+44 20 7123 4567</h4>
+                    <p style="font-size: 0.9rem; color: #666;">Europe & Middle East</p>
+                </div>
+                <div class="response-time">Available 24/7 for enterprise</div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p style="color: #666; margin-bottom: 30px;">Browse common questions about GIS analysis and remote sensing</p>
+            
+            <div class="faq-categories">
+                <div class="faq-category active" data-category="all">All Questions</div>
+                <div class="faq-category" data-category="analysis">Analysis & Models</div>
+                <div class="faq-category" data-category="gis">GIS & Data</div>
+                <div class="faq-category" data-category="api">API & Integration</div>
+                <div class="faq-category" data-category="billing">Billing & Accounts</div>
+            </div>
+
+            <div class="faq-items">
+                <!-- Analysis Questions -->
+                <div class="faq-item active" data-category="analysis">
+                    <div class="faq-question">
+                        <h3>What deep learning models does GreenSpace AI use for satellite imagery analysis?</h3>
+                        <div class="faq-toggle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our platform employs multiple state-of-the-art deep learning architectures:</p>
+                        <ul style="color: #666; margin-top: 10px; padding-left: 20px;">
+                            <li><strong>U-Net++</strong>: For high-precision semantic segmentation of land cover types</li>
+                            <li><strong>DeepLabv3+</strong>: For urban feature extraction with atrous convolution</li>
+                            <li><strong>HRNet</strong>: For maintaining high-resolution representations throughout network</li>
+                            <li><strong>Vision Transformers (ViT)</strong>: For classification of complex land use patterns</li>
+                            <li><strong>Custom CNN Ensembles</strong>: Trained on our proprietary dataset of 500,000+ annotated satellite images</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item active" data-category="analysis">
+                    <div class="faq-question">
+                        <h3>What satellite imagery sources are supported?</h3>
+                        <div class="faq-toggle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We support all major satellite imagery sources:</p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                            <div style="background: #f5f7ff; padding: 15px; border-radius: 8px;">
+                                <strong>Sentinel-2</strong>
+                                <p style="font-size: 0.9rem; margin: 5px 0 0; color: #666;">10m resolution, 13 spectral bands</p>
+                            </div>
+                            <div style="background: #f5f7ff; padding: 15px; border-radius: 8px;">
+                                <strong>Landsat 8/9</strong>
+                                <p style="font-size: 0.9rem; margin: 5px 0 0; color: #666;">30m resolution, 11 spectral bands</p>
+                            </div>
+                            <div style="background: #f5f7ff; padding: 15px; border-radius: 8px;">
+                                <strong>PlanetScope</strong>
+                                <p style="font-size: 0.9rem; margin: 5px 0 0; color: #666;">3m resolution, daily revisit</p>
+                            </div>
+                            <div style="background: #f5f7ff; padding: 15px; border-radius: 8px;">
+                                <strong>Maxar</strong>
+                                <p style="font-size: 0.9rem; margin: 5px 0 0; color: #666;">0.3m resolution, commercial</p>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666;">We also support GeoTIFF, JPEG2000, and raw image uploads with proper georeferencing.</p>
+                    </div>
+                </div>
+
+                <!-- GIS Questions -->
+                <div class="faq-item active" data-category="gis">
+                    <div class="faq-question">
+                        <h3>What GIS export formats are available?</h3>
+                        <span class="priority-badge priority-high">Popular</span>
+                        <div class="faq-toggle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Export your analysis results in industry-standard GIS formats:</p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px;">
+                            <div style="text-align: center; padding: 15px; background: #e8f5e9; border-radius: 8px;">
+                                <i class="fas fa-layer-group" style="color: #2e7d32; font-size: 1.5rem; margin-bottom: 10px;"></i>
+                                <div><strong>GeoJSON</strong></div>
+                                <div style="font-size: 0.8rem; color: #666;">Web mapping</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+                                <i class="fas fa-shapes" style="color: #1976d2; font-size: 1.5rem; margin-bottom: 10px;"></i>
+                                <div><strong>Shapefile</strong></div>
+                                <div style="font-size: 0.8rem; color: #666;">ArcGIS/QGIS</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: #f3e5f5; border-radius: 8px;">
+                                <i class="fas fa-map-marked-alt" style="color: #7b1fa2; font-size: 1.5rem; margin-bottom: 10px;"></i>
+                                <div><strong>KML/KMZ</strong></div>
+                                <div style="font-size: 0.8rem; color: #666;">Google Earth</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: #fff3e0; border-radius: 8px;">
+                                <i class="fas fa-file-csv" style="color: #ef6c00; font-size: 1.5rem; margin-bottom: 10px;"></i>
+                                <div><strong>CSV with WKT</strong></div>
+                                <div style="font-size: 0.8rem; color: #666;">Data analysis</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item active" data-category="gis">
+                    <div class="faq-question">
+                        <h3>How accurate are the land cover classification results?</h3>
+                        <div class="faq-toggle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our models achieve state-of-the-art accuracy metrics:</p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0;">
+                            <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 20px; border-radius: 10px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #2e7d32;">94.2%</div>
+                                <div style="font-size: 0.9rem; color: #666;">Overall Accuracy</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); padding: 20px; border-radius: 10px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #1976d2;">0.91</div>
+                                <div style="font-size: 0.9rem; color: #666;">F1-Score</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #fff3e0, #ffecb3); padding: 20px; border-radius: 10px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #ef6c00;">0.93</div>
+                                <div style="font-size: 0.9rem; color: #666;">IoU Score</div>
+                            </div>
+                        </div>
+                        <p style="color: #666;">Accuracy varies by land cover class: Urban (96%), Vegetation (95%), Water (98%), Bare soil (89%). Validation based on 50,000 ground truth points across 25 countries.</p>
+                    </div>
+                </div>
+
+                <!-- API Questions -->
+                <div class="faq-item active" data-category="api">
+                    <div class="faq-question">
+                        <h3>What are the API rate limits and pricing?</h3>
+                        <div class="faq-toggle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our API tiers are designed for different use cases:</p>
+                        <div style="overflow-x: auto; margin-top: 15px;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #3949ab; color: white;">
+                                        <th style="padding: 12px; text-align: left;">Plan</th>
+                                        <th style="padding: 12px; text-align: left;">Rate Limit</th>
+                                        <th style="padding: 12px; text-align: left;">Requests/Day</th>
+                                        <th style="padding: 12px; text-align: left;">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td style="padding: 12px;"><strong>Free Tier</strong></td>
+                                        <td style="padding: 12px;">5 requests/min</td>
+                                        <td style="padding: 12px;">100</td>
+                                        <td style="padding: 12px;">Free</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td style="padding: 12px;"><strong>Developer</strong></td>
+                                        <td style="padding: 12px;">30 requests/min</td>
+                                        <td style="padding: 12px;">1,000</td>
+                                        <td style="padding: 12px;">$99/month</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td style="padding: 12px;"><strong>Professional</strong></td>
+                                        <td style="padding: 12px;">100 requests/min</td>
+                                        <td style="padding: 12px;">10,000</td>
+                                        <td style="padding: 12px;">$499/month</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px;"><strong>Enterprise</strong></td>
+                                        <td style="padding: 12px;">Custom</td>
+                                        <td style="padding: 12px;">Unlimited</td>
+                                        <td style="padding: 12px;">Contact Sales</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form Section -->
+        <div class="contact-section">
+            <h2 class="section-title">Submit Support Ticket</h2>
+            <p style="color: #666; margin-bottom: 30px;">For complex issues requiring detailed investigation</p>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3 style="margin-bottom: 30px; color: #3949ab;">Contact Information</h3>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0 0 5px;">Headquarters</h4>
+                            <p style="margin: 0; color: #666; font-size: 0.95rem;">123 Geospatial Avenue<br>San Francisco, CA 94107<br>United States</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0 0 5px;">Support Hours</h4>
+                            <p style="margin: 0; color: #666; font-size: 0.95rem;">
+                                <strong>Mon-Fri:</strong> 9:00 AM - 6:00 PM UTC<br>
+                                <strong>Emergency:</strong> 24/7 for enterprise clients<br>
+                                <strong>Response Time:</strong> 4-6 hours average
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0 0 5px;">Account Manager</h4>
+                            <p style="margin: 0; color: #666; font-size: 0.95rem;">
+                                Enterprise clients are assigned dedicated account managers with GIS and remote sensing expertise
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <form id="supportForm" class="support-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required class="form-control">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="organization">Organization</label>
+                            <input type="text" id="organization" name="organization" class="form-control" placeholder="University, Company, or Agency">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="issueType">Issue Type *</label>
+                            <select id="issueType" name="issueType" required class="form-control">
+                                <option value="">Select issue type</option>
+                                <option value="technical">Technical Problem</option>
+                                <option value="analysis">Analysis Results</option>
+                                <option value="gis">GIS Export Issues</option>
+                                <option value="api">API Integration</option>
+                                <option value="model">Custom Model Training</option>
+                                <option value="data">Data Upload/Download</option>
+                                <option value="billing">Billing & Subscription</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="priority">Priority Level *</label>
+                            <select id="priority" name="priority" required class="form-control">
+                                <option value="low">Low - General inquiry</option>
+                                <option value="medium" selected>Medium - Feature request or non-urgent issue</option>
+                                <option value="high">High - Functionality impacted</option>
+                                <option value="critical">Critical - System down or data loss</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Issue Description *</label>
+                            <textarea id="description" name="description" rows="6" required class="form-control" placeholder="Please include:
+1. Steps to reproduce the issue
+2. Expected behavior
+3. Actual behavior
+4. Screenshots or error messages if available
+5. Date and time of occurrence"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="attachments">Attachments</label>
+                            <input type="file" id="attachments" name="attachments" class="form-control" multiple accept=".jpg,.jpeg,.png,.pdf,.tif,.tiff,.geojson">
+                            <small style="color: #666; display: block; margin-top: 5px;">Max file size: 50MB each. Supported: images, PDFs, GIS files</small>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary" style="width: 100%; padding: 15px; font-size: 1.1rem; font-weight: 600;">
+                            <i class="fas fa-paper-plane"></i> Submit Support Ticket
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="resources-section">
+            <h2 class="section-title">Additional Resources</h2>
+            <p style="color: #666; margin-bottom: 30px;">Explore our comprehensive documentation and community resources</p>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Documentation</h3>
+                    <p>Complete API references, model specifications, and user guides</p>
+                    <a href="{% url 'documentation' %}" class="btn-outline" style="display: inline-block; margin-top: 15px;">Browse Docs</a>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Tutorials</h3>
+                    <p>Step-by-step tutorials for GIS analysis and model training</p>
+                    <a href="{% url 'getting_started' %}" class="btn-outline" style="display: inline-block; margin-top: 15px;">View Tutorials</a>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <h3>GitHub Repository</h3>
+                    <p>Open-source models, sample code, and community contributions</p>
+                    <a href="https://github.com/greenspaceai" target="_blank" class="btn-outline" style="display: inline-block; margin-top: 15px;">Visit GitHub</a>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Forum</h3>
+                    <p>Discuss with other GIS professionals and researchers</p>
+                    <a href="https://community.greenspaceai.com" target="_blank" class="btn-outline" style="display: inline-block; margin-top: 15px;">Join Community</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced GIS and remote sensing platform powered by deep learning for environmental analysis.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support Resources</h4>
+                <ul>
+                    <li><a href="{% url 'faqs' %}">FAQs</a></li>
+                    <li><a href="{% url 'getting_started' %}">Getting Started</a></li>
+                    <li><a href="{% url 'api_documentation' %}">API Documentation</a></li>
+                    <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Technical Support</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> support@greenspaceai.com</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    <li><i class="fas fa-clock"></i> Mon-Fri: 9AM-6PM UTC</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Emergency Contact</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-exclamation-triangle"></i> Enterprise: 24/7 Support</li>
+                    <li><i class="fas fa-user-tie"></i> Account Manager Portal</li>
+                    <li><i class="fas fa-shield-alt"></i> Security Incidents</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 GreenSpace AI. All rights reserved. | <a href="{% url 'privacy_policy' %}" style="color: white; text-decoration: underline;">Privacy Policy</a> | <a href="{% url 'terms' %}" style="color: white; text-decoration: underline;">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.closest('.faq-item');
+                faqItem.classList.toggle('active');
+                
+                const toggleIcon = question.querySelector('.faq-toggle i');
+                if (faqItem.classList.contains('active')) {
+                    toggleIcon.className = 'fas fa-times';
+                } else {
+                    toggleIcon.className = 'fas fa-plus';
+                }
+            });
+        });
+
+        // FAQ Category Filter
+        document.querySelectorAll('.faq-category').forEach(category => {
+            category.addEventListener('click', () => {
+                // Remove active class from all categories
+                document.querySelectorAll('.faq-category').forEach(cat => {
+                    cat.classList.remove('active');
+                });
+                
+                // Add active class to clicked category
+                category.classList.add('active');
+                
+                const selectedCategory = category.dataset.category;
+                
+                // Show/hide FAQ items based on category
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (selectedCategory === 'all' || item.dataset.category === selectedCategory) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Support Form Submission
+        document.getElementById('supportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Form validation
+            const requiredFields = ['firstName', 'lastName', 'email', 'issueType', 'priority', 'description'];
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field);
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.style.borderColor = '#c62828';
+                } else {
+                    input.style.borderColor = '#ddd';
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill in all required fields marked with *');
+                return;
+            }
+            
+            // Simulate form submission
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                alert('Support ticket submitted successfully! Our team will contact you within 4-6 hours.');
+                this.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        });
+
+        // Live Chat Simulation
+        document.getElementById('startChat').addEventListener('click', function() {
+            const now = new Date();
+            const hours = now.getUTCHours();
+            const day = now.getUTCDay(); // 0 = Sunday, 1 = Monday, etc.
+            
+            // Check if within business hours (Mon-Fri 9-18 UTC)
+            if (day >= 1 && day <= 5 && hours >= 9 && hours < 18) {
+                const chatWindow = window.open('', 'LiveChat', 'width=400,height=600');
+                chatWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>GreenSpace AI Live Chat</title>
+                            <style>
+                                body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+                                .chat-header { background: #3949ab; color: white; padding: 20px; margin: -20px -20px 20px; }
+                                .message { margin: 10px 0; padding: 10px; border-radius: 10px; max-width: 80%; }
+                                .received { background: #f0f0f0; margin-right: auto; }
+                                .sent { background: #3949ab; color: white; margin-left: auto; }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="chat-header">
+                                <h3>Live Chat Support</h3>
+                                <p>Connected to GIS Support Team</p>
+                            </div>
+                            <div id="chatMessages"></div>
+                            <input type="text" id="chatInput" placeholder="Type your message..." style="width: 100%; padding: 10px; margin-top: 20px;">
+                        </body>
+                    </html>
+                `);
+                
+                // Simulate initial greeting
+                setTimeout(() => {
+                    const messagesDiv = chatWindow.document.getElementById('chatMessages');
+                    const greeting = chatWindow.document.createElement('div');
+                    greeting.className = 'message received';
+                    greeting.innerHTML = 'Hello! This is Alex from GreenSpace AI support. How can I help you with your GIS analysis today?';
+                    messagesDiv.appendChild(greeting);
+                }, 500);
+            } else {
+                alert('Live chat is currently offline. Available Mon-Fri 9AM-6PM UTC. Please email support@greenspaceai.com for assistance.');
+            }
+        });
+
+        // Priority level visual feedback
+        document.getElementById('priority').addEventListener('change', function() {
+            const colors = {
+                'low': '#4caf50',
+                'medium': '#ff9800',
+                'high': '#f44336',
+                'critical': '#c62828'
+            };
+            this.style.borderColor = colors[this.value];
+            this.style.color = colors[this.value];
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1533 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Model Training - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .tutorial-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .tutorial-header {
+            background: linear-gradient(135deg, #6a1b9a, #9c27b0);
+            color: white;
+            padding: 80px 50px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .tutorial-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .model-overview {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .architecture-card {
+            background: #f8f9ff;
+            padding: 35px;
+            border-radius: 12px;
+            border-left: 5px solid #9c27b0;
+        }
+
+        .arch-icon {
+            width: 70px;
+            height: 70px;
+            background: #e1bee7;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6a1b9a;
+            font-size: 2rem;
+            margin-bottom: 25px;
+        }
+
+        .data-preparation {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .dataset-builder {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .annotation-tool {
+            position: relative;
+            height: 400px;
+            background: #263238;
+            border-radius: 8px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .annotation-canvas {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .annotation-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .annotation-label {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .label-urban { background: #ffcdd2; color: #c62828; }
+        .label-vegetation { background: #c8e6c9; color: #2e7d32; }
+        .label-water { background: #bbdefb; color: #1565c0; }
+        .label-soil { background: #d7ccc8; color: #5d4037; }
+
+        .training-interface {
+            background: #e8f5e9;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .training-config {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .config-slider {
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .model-comparison {
+            background: #e3f2fd;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: #1976d2;
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .deployment-section {
+            background: #fff3e0;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .deployment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .deployment-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #ff9800;
+        }
+
+        .monitoring-tools {
+            background: #f5f5f5;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .metrics-dashboard {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 25px;
+            background: #f8f9ff;
+            border-radius: 10px;
+        }
+
+        .best-practices {
+            background: #e0f2f1;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .practice-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .practice-item {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .practice-icon {
+            width: 50px;
+            height: 50px;
+            background: #b2dfdb;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00695c;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .use-cases {
+            background: #f8f9ff;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .case-studies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .case-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 768px) {
+            .tutorial-header {
+                padding: 60px 30px;
+            }
+            
+            .tutorial-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .model-overview,
+            .data-preparation,
+            .training-interface,
+            .model-comparison,
+            .deployment-section,
+            .monitoring-tools,
+            .best-practices,
+            .use-cases {
+                padding: 30px 20px;
+            }
+            
+            .architecture-grid,
+            .deployment-options,
+            .practice-list,
+            .case-studies {
+                grid-template-columns: 1fr;
+            }
+            
+            .annotation-tool {
+                height: 300px;
+            }
+            
+            .training-config {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tutorial Content -->
+    <div class="tutorial-container">
+        <!-- Header -->
+        <div class="tutorial-header">
+            <h1>Custom Model Training</h1>
+            <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto 30px; opacity: 0.9;">
+                Train custom deep learning models for specialized satellite imagery analysis
+            </p>
+            <div style="background: rgba(255,255,255,0.2); padding: 15px 30px; border-radius: 25px; display: inline-block;">
+                <i class="fas fa-clock"></i>
+                <span style="margin-left: 10px;">Expert Level | 60-90 minutes</span>
+            </div>
+        </div>
+
+        <!-- Overview -->
+        <div class="model-overview">
+            <h2 class="section-title">Custom Model Training Overview</h2>
+            <p style="color: #666; line-height: 1.8; margin-bottom: 30px;">
+                GreenSpace AI's custom model training platform enables you to create specialized deep learning 
+                models tailored to your specific satellite imagery analysis needs. Whether you're detecting 
+                specific land cover types, monitoring environmental changes, or identifying unique features, 
+                custom models provide superior accuracy for specialized tasks.
+            </p>
+            
+            <div class="architecture-grid">
+                <div class="architecture-card">
+                    <div class="arch-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3>Model Architectures</h3>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Choose from state-of-the-art architectures or customize your own:
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <div style="width: 10px; height: 10px; background: #9c27b0; border-radius: 50%;"></div>
+                            <span>U-Net++ (Semantic Segmentation)</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <div style="width: 10px; height: 10px; background: #2196f3; border-radius: 50%;"></div>
+                            <span>DeepLabv3+ (Boundary Precision)</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <div style="width: 10px; height: 10px; background: #4caf50; border-radius: 50%;"></div>
+                            <span>Vision Transformers (ViT)</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 10px; height: 10px; background: #ff9800; border-radius: 50%;"></div>
+                            <span>HRNet (High Resolution)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="architecture-card">
+                    <div class="arch-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Training Methods</h3>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Advanced training techniques for optimal performance:
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-random" style="color: #9c27b0;"></i>
+                            <span>Transfer Learning</span>
+                            <span style="margin-left: auto; font-size: 0.8rem; color: #666;">Faster training</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-balance-scale" style="color: #2196f3;"></i>
+                            <span>Class Balancing</span>
+                            <span style="margin-left: auto; font-size: 0.8rem; color: #666;">Better accuracy</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-expand-arrows-alt" style="color: #4caf50;"></i>
+                            <span>Data Augmentation</span>
+                            <span style="margin-left: auto; font-size: 0.8rem; color: #666;">More robust</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-sync-alt" style="color: #ff9800;"></i>
+                            <span>Cross-Validation</span>
+                            <span style="margin-left: auto; font-size: 0.8rem; color: #666;">Reliable results</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="architecture-card">
+                    <div class="arch-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Deployment Options</h3>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Deploy your trained models for production use:
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-cloud" style="color: #9c27b0;"></i>
+                            <span>Cloud API Endpoint</span>
+                            <span style="margin-left: auto; font-size: 0.8rem; color: #666;">Scalable</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-server" style="color: #2196f3;"></i>
+                            <span>On-Premise Deployment</span>
+                            <span style="margin-left: auto; font-size: 0.8rem; color: #666;">Private</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-mobile-alt" style="color: #4caf50;"></i>
+                            <span>Edge Deployment</span>
+                            <span style="margin-left: auto; font-size: 0.8rem; color: #666;">Offline</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-code" style="color: #ff9800;"></i>
+                            <span>Model Export</span>
+                            <span style="margin-left: auto; font-size: 0.8rem; color: #666;">Flexible</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Preparation -->
+        <div class="data-preparation">
+            <h2 class="section-title" style="color: #6a1b9a;">Data Preparation & Annotation</h2>
+            
+            <div class="dataset-builder">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Dataset Requirements</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 30px;">
+                    <div>
+                        <h4 style="color: #6a1b9a; margin-bottom: 15px;">Minimum Dataset Size</h4>
+                        <div style="background: #f8f9ff; padding: 20px; border-radius: 10px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                                <div>
+                                    <div style="font-weight: 600;">Training Images</div>
+                                    <div style="font-size: 0.9rem; color: #666;">Minimum recommended</div>
+                                </div>
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #6a1b9a;">500</div>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-weight: 600;">Validation Images</div>
+                                    <div style="font-size: 0.9rem; color: #666;">20% of training set</div>
+                                </div>
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #6a1b9a;">100</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #6a1b9a; margin-bottom: 15px;">Annotation Guidelines</h4>
+                        <div style="background: #f8f9ff; padding: 20px; border-radius: 10px;">
+                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                                <div style="width: 40px; height: 40px; background: #e1bee7; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6a1b9a;">
+                                    <i class="fas fa-draw-polygon"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Precise Boundaries</div>
+                                    <div style="font-size: 0.9rem; color: #666;">Follow exact edges</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                                <div style="width: 40px; height: 40px; background: #e1bee7; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6a1b9a;">
+                                    <i class="fas fa-balance-scale"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Class Balance</div>
+                                    <div style="font-size: 0.9rem; color: #666;">Even representation</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 40px; height: 40px; background: #e1bee7; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6a1b9a;">
+                                    <i class="fas fa-check-double"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Quality Control</div>
+                                    <div style="font-size: 0.9rem; color: #666;">Multiple reviewers</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4 style="margin-bottom: 15px;">Interactive Annotation Tool</h4>
+                <div class="annotation-tool">
+                    <div class="annotation-canvas" id="annotationCanvas">
+                        <!-- Annotation interface will be drawn here -->
+                    </div>
+                    <div class="annotation-controls">
+                        <div class="annotation-label label-urban" data-label="urban">Urban</div>
+                        <div class="annotation-label label-vegetation" data-label="vegetation">Vegetation</div>
+                        <div class="annotation-label label-water" data-label="water">Water</div>
+                        <div class="annotation-label label-soil" data-label="soil">Bare Soil</div>
+                        <button style="margin-left: 10px; padding: 8px 15px; background: #6a1b9a; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            <i class="fas fa-undo"></i> Clear
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;">
+                    <div>
+                        <h4 style="color: #6a1b9a; margin-bottom: 15px;">Annotation Formats</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                <span>GeoJSON (Recommended)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                <span>Shapefile with attributes</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                <span>COCO JSON format</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                <span>Pascal VOC XML</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #6a1b9a; margin-bottom: 15px;">Data Augmentation</h4>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class="fas fa-sync-alt" style="color: #2196f3;"></i>
+                                <span>Rotation (±30 degrees)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class="fas fa-expand-alt" style="color: #2196f3;"></i>
+                                <span>Scale variation (0.8-1.2x)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class="fas fa-adjust" style="color: #2196f3;"></i>
+                                <span>Brightness/contrast adjustment</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-crop-alt" style="color: #2196f3;"></i>
+                                <span>Random cropping</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Training Interface -->
+        <div class="training-interface">
+            <h2 class="section-title" style="color: #388e3c;">Model Training Configuration</h2>
+            
+            <div class="training-config">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Training Parameters</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 30px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 10px; font-weight: 600;">Model Architecture</label>
+                        <select class="form-control" id="modelArchitecture">
+                            <option value="unet_plus">U-Net++ (Recommended)</option>
+                            <option value="deeplab">DeepLabv3+</option>
+                            <option value="vit">Vision Transformer</option>
+                            <option value="hrnet">HRNet</option>
+                            <option value="custom">Custom Architecture</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 10px; font-weight: 600;">Backbone Network</label>
+                        <select class="form-control" id="backboneNetwork">
+                            <option value="resnet50">ResNet-50 (Balanced)</option>
+                            <option value="resnet101">ResNet-101 (More accurate)</option>
+                            <option value="efficientnet">EfficientNet-B4 (Efficient)</option>
+                            <option value="mobilenet">MobileNetV3 (Fast)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <div>
+                            <div style="font-weight: 600;">Number of Epochs</div>
+                            <div style="font-size: 0.9rem; color: #666;" id="epochValue">50 epochs</div>
+                        </div>
+                        <div style="font-weight: 700; color: #388e3c;" id="epochTime">~2.5 hours</div>
+                    </div>
+                    <input type="range" min="10" max="200" value="50" class="config-slider" id="epochSlider">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #666; margin-top: 5px;">
+                        <div>10 (Quick test)</div>
+                        <div>100 (Thorough)</div>
+                        <div>200 (Research)</div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <div>
+                            <div style="font-weight: 600;">Batch Size</div>
+                            <div style="font-size: 0.9rem; color: #666;" id="batchValue">16 images/batch</div>
+                        </div>
+                        <div style="font-weight: 700; color: #388e3c;" id="batchMemory">~8GB GPU memory</div>
+                    </div>
+                    <input type="range" min="4" max="32" value="16" class="config-slider" id="batchSlider">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #666; margin-top: 5px;">
+                        <div>4 (Low memory)</div>
+                        <div>16 (Balanced)</div>
+                        <div>32 (High memory)</div>
+                    </div>
+                </div>
+                
+                <div style="background: #f1f8e9; padding: 20px; border-radius: 10px; margin-top: 30px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 5px;">Training Summary</div>
+                            <div style="font-size: 0.9rem; color: #666;" id="trainingSummary">U-Net++ with ResNet-50 | 50 epochs | 16 batch size</div>
+                            <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">Estimated cost: <strong id="trainingCost">~$12.50</strong></div>
+                        </div>
+                        <button class="btn-primary" style="background: #388e3c; padding: 12px 40px;" onclick="startTraining()">
+                            <i class="fas fa-play"></i> Start Training
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;">
+                <div style="background: white; padding: 25px; border-radius: 10px;">
+                    <h4 style="margin-top: 0; color: #388e3c;">Optimizer Settings</h4>
+                    <div style="margin-top: 20px;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <div style="width: 40px; height: 40px; background: #e8f5e9; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #388e3c;">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Adam Optimizer</div>
+                                <div style="font-size: 0.9rem; color: #666;">Learning rate: 0.001</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <div style="width: 40px; height: 40px; background: #e8f5e9; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #388e3c;">
+                                <i class="fas fa-weight-hanging"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Weight Decay</div>
+                                <div style="font-size: 0.9rem; color: #666;">0.0001 (L2 regularization)</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 40px; height: 40px; background: #e8f5e9; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #388e3c;">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Learning Rate Schedule</div>
+                                <div style="font-size: 0.9rem; color: #666;">Reduce on plateau</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: white; padding: 25px; border-radius: 10px;">
+                    <h4 style="margin-top: 0; color: #388e3c;">Loss Functions</h4>
+                    <div style="margin-top: 20px;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <div style="width: 40px; height: 40px; background: #e8f5e9; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #388e3c;">
+                                <i class="fas fa-crosshairs"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Dice Loss</div>
+                                <div style="font-size: 0.9rem; color: #666;">For class imbalance</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <div style="width: 40px; height: 40px; background: #e8f5e9; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #388e3c;">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Cross-Entropy Loss</div>
+                                <div style="font-size: 0.9rem; color: #666;">Standard classification</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 40px; height: 40px; background: #e8f5e9; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #388e3c;">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Combined Loss</div>
+                                <div style="font-size: 0.9rem; color: #666;">Dice + Cross-Entropy</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Comparison -->
+        <div class="model-comparison">
+            <h2 class="section-title" style="color: #1976d2;">Model Comparison & Evaluation</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Model Architecture</th>
+                        <th>Accuracy</th>
+                        <th>Inference Speed</th>
+                        <th>Memory Usage</th>
+                        <th>Best For</th>
+                        <th>Training Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div style="font-weight: 600;">U-Net++</div>
+                            <div style="font-size: 0.9rem; color: #666;">With ResNet-50 backbone</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 700; color: #1976d2;">94.2%</div>
+                            <div style="font-size: 0.8rem; color: #666;">mIoU: 0.91</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">12 FPS</div>
+                            <div style="font-size: 0.8rem; color: #666;">512x512 images</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">2.1 GB</div>
+                            <div style="font-size: 0.8rem; color: #666;">GPU memory</div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.9rem; color: #666;">General land cover</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">4.5 hours</div>
+                            <div style="font-size: 0.8rem; color: #666;">500 images</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="font-weight: 600;">DeepLabv3+</div>
+                            <div style="font-size: 0.9rem; color: #666;">With Xception backbone</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 700; color: #1976d2;">93.8%</div>
+                            <div style="font-size: 0.8rem; color: #666;">mIoU: 0.90</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">8 FPS</div>
+                            <div style="font-size: 0.8rem; color: #666;">512x512 images</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">2.8 GB</div>
+                            <div style="font-size: 0.8rem; color: #666;">GPU memory</div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.9rem; color: #666;">Boundary precision</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">6 hours</div>
+                            <div style="font-size: 0.8rem; color: #666;">500 images</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="font-weight: 600;">Vision Transformer</div>
+                            <div style="font-size: 0.9rem; color: #666;">ViT-Base</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 700; color: #1976d2;">95.1%</div>
+                            <div style="font-size: 0.8rem; color: #666;">mIoU: 0.93</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">5 FPS</div>
+                            <div style="font-size: 0.8rem; color: #666;">512x512 images</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">3.5 GB</div>
+                            <div style="font-size: 0.8rem; color: #666;">GPU memory</div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.9rem; color: #666;">Complex patterns</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">8 hours</div>
+                            <div style="font-size: 0.8rem; color: #666;">500 images</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="font-weight: 600;">HRNet</div>
+                            <div style="font-size: 0.9rem; color: #666;">High-resolution net</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 700; color: #1976d2;">94.5%</div>
+                            <div style="font-size: 0.8rem; color: #666;">mIoU: 0.92</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">6 FPS</div>
+                            <div style="font-size: 0.8rem; color: #666;">512x512 images</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">2.5 GB</div>
+                            <div style="font-size: 0.8rem; color: #666;">GPU memory</div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.9rem; color: #666;">High-res analysis</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">7 hours</div>
+                            <div style="font-size: 0.8rem; color: #666;">500 images</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="background: white; padding: 30px; border-radius: 10px; margin-top: 40px;">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Evaluation Metrics</h3>
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #1976d2;">94.2%</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Overall Accuracy</div>
+                        <div style="font-size: 0.9rem; color: #666;">Pixel classification</div>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #1976d2;">0.91</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Mean IoU</div>
+                        <div style="font-size: 0.9rem; color: #666;">Intersection over Union</div>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #1976d2;">0.93</div>
+                        <div style="font-weight: 600; margin: 10px 0;">F1-Score</div>
+                        <div style="font-size: 0.9rem; color: #666;">Harmonic mean</div>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #1976d2;">12 FPS</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Inference Speed</div>
+                        <div style="font-size: 0.9rem; color: #666;">Frames per second</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deployment -->
+        <div class="deployment-section">
+            <h2 class="section-title" style="color: #ff9800;">Model Deployment & Integration</h2>
+            
+            <div class="deployment-options">
+                <div class="deployment-card">
+                    <div style="width: 80px; height: 80px; background: #fff3e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #ff9800; font-size: 2rem;">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3>Cloud API</h3>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">
+                        Deploy as a managed API endpoint with automatic scaling and monitoring.
+                    </p>
+                    <div style="font-size: 0.9rem; color: #666;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #ff9800;"></i>
+                            <span>Auto-scaling</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #ff9800;"></i>
+                            <span>99.9% uptime SLA</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: #ff9800;"></i>
+                            <span>Global CDN</span>
+                        </div>
+                    </div>
+                    <button class="btn-outline" style="border-color: #ff9800; color: #ff9800; width: 100%; margin-top: 20px;">
+                        Deploy to Cloud
+                    </button>
+                </div>
+                
+                <div class="deployment-card">
+                    <div style="width: 80px; height: 80px; background: #fff3e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #ff9800; font-size: 2rem;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3>On-Premise</h3>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">
+                        Deploy within your private infrastructure for maximum data control.
+                    </p>
+                    <div style="font-size: 0.9rem; color: #666;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #ff9800;"></i>
+                            <span>Data privacy</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #ff9800;"></i>
+                            <span>Custom hardware</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: #ff9800;"></i>
+                            <span>Network isolation</span>
+                        </div>
+                    </div>
+                    <button class="btn-outline" style="border-color: #ff9800; color: #ff9800; width: 100%; margin-top: 20px;">
+                        Deploy On-Premise
+                    </button>
+                </div>
+                
+                <div class="deployment-card">
+                    <div style="width: 80px; height: 80px; background: #fff3e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #ff9800; font-size: 2rem;">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Model Export</h3>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">
+                        Export models in standard formats for use in other frameworks.
+                    </p>
+                    <div style="font-size: 0.9rem; color: #666;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #ff9800;"></i>
+                            <span>ONNX format</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #ff9800;"></i>
+                            <span>TensorFlow SavedModel</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: #ff9800;"></i>
+                            <span>PyTorch checkpoint</span>
+                        </div>
+                    </div>
+                    <button class="btn-outline" style="border-color: #ff9800; color: #ff9800; width: 100%; margin-top: 20px;">
+                        Export Model
+                    </button>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 30px; border-radius: 10px; margin-top: 40px;">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Deployment Configuration</h3>
+                <div class="code-block" style="background: #263238; color: white; padding: 25px; border-radius: 10px; font-family: monospace; overflow-x: auto;">
+                    <pre><code><span style="color: #81c784;"># Deployment configuration for custom model</span>
+<span style="color: #64b5f6;">apiVersion</span>: <span style="color: #ffcc80;">v1</span>
+<span style="color: #64b5f6;">kind</span>: <span style="color: #ffcc80;">Deployment</span>
+<span style="color: #64b5f6;">metadata</span>:
+  <span style="color: #64b5f6;">name</span>: <span style="color: #ffcc80;">greenspace-custom-model</span>
+<span style="color: #64b5f6;">spec</span>:
+  <span style="color: #64b5f6;">replicas</span>: <span style="color: #ff8a65;">3</span>
+  <span style="color: #64b5f6;">selector</span>:
+    <span style="color: #64b5f6;">matchLabels</span>:
+      <span style="color: #64b5f6;">app</span>: <span style="color: #ffcc80;">custom-model</span>
+  <span style="color: #64b5f6;">template</span>:
+    <span style="color: #64b5f6;">metadata</span>:
+      <span style="color: #64b5f6;">labels</span>:
+        <span style="color: #64b5f6;">app</span>: <span style="color: #ffcc80;">custom-model</span>
+    <span style="color: #64b5f6;">spec</span>:
+      <span style="color: #64b5f6;">containers</span>:
+      - <span style="color: #64b5f6;">name</span>: <span style="color: #ffcc80;">model-server</span>
+        <span style="color: #64b5f6;">image</span>: <span style="color: #ffcc80;">greenspaceai/model-server:latest</span>
+        <span style="color: #64b5f6;">ports</span>:
+        - <span style="color: #64b5f6;">containerPort</span>: <span style="color: #ff8a65;">8080</span>
+        <span style="color: #64b5f6;">env</span>:
+        - <span style="color: #64b5f6;">name</span>: <span style="color: #ffcc80;">MODEL_PATH</span>
+          <span style="color: #64b5f6;">value</span>: <span style="color: #ffcc80;">/models/custom_model.onnx</span>
+        - <span style="color: #64b5f6;">name</span>: <span style="color: #ffcc80;">GPU_ENABLED</span>
+          <span style="color: #64b5f6;">value</span>: <span style="color: #ffcc80;">"true"</span>
+        <span style="color: #64b5f6;">resources</span>:
+          <span style="color: #64b5f6;">limits</span>:
+            <span style="color: #64b5f6;">nvidia.com/gpu</span>: <span style="color: #ff8a65;">1</span>
+            <span style="color: #64b5f6;">memory</span>: <span style="color: #ffcc80;">4Gi</span>
+          <span style="color: #64b5f6;">requests</span>:
+            <span style="color: #64b5f6;">memory</span>: <span style="color: #ffcc80;">2Gi</span>
+            <span style="color: #64b5f6;">cpu</span>: <span style="color: #ff8a65;">1</span></code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring -->
+        <div class="monitoring-tools">
+            <h2 class="section-title">Model Monitoring & Management</h2>
+            
+            <div class="metrics-dashboard">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Model Performance Dashboard</h3>
+                
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #6a1b9a;">12,847</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Total Predictions</div>
+                        <div style="font-size: 0.9rem; color: #666;">Last 7 days</div>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #6a1b9a;">42ms</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Avg Inference Time</div>
+                        <div style="font-size: 0.9rem; color: #666;">P95: 68ms</div>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #6a1b9a;">99.2%</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Uptime</div>
+                        <div style="font-size: 0.9rem; color: #666;">Last 30 days</div>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #6a1b9a;">0.3%</div>
+                        <div style="font-weight: 600; margin: 10px 0;">Error Rate</div>
+                        <div style="font-size: 0.9rem; color: #666;">Failed requests</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 30px; border-radius: 10px; margin-top: 40px;">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Model Drift Detection</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                    <div>
+                        <h4 style="color: #6a1b9a; margin-bottom: 15px;">Performance Metrics</h4>
+                        <ul style="color: #666; padding-left: 20px;">
+                            <li><strong>Accuracy drift:</strong> Monitor classification accuracy over time</li>
+                            <li><strong>Confidence scores:</strong> Track model confidence distributions</li>
+                            <li><strong>Prediction latency:</strong> Monitor inference time changes</li>
+                            <li><strong>Error patterns:</strong> Analyze failure modes</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #6a1b9a; margin-bottom: 15px;">Alert Configuration</h4>
+                        <ul style="color: #666; padding-left: 20px;">
+                            <li>Accuracy drop > 2% triggers alert</li>
+                            <li>Latency increase > 50% triggers alert</li>
+                            <li>Error rate > 1% triggers alert</li>
+                            <li>Data drift detected triggers alert</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="best-practices">
+            <h2 class="section-title" style="color: #00695c;">Best Practices for Custom Models</h2>
+            
+            <div class="practice-list">
+                <div class="practice-item">
+                    <div class="practice-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-top: 0; margin-bottom: 10px;">Quality Data Collection</h4>
+                        <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                            Collect diverse, representative data covering all expected scenarios. 
+                            Include edge cases and difficult examples in your training set.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="practice-item">
+                    <div class="practice-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-top: 0; margin-bottom: 10px;">Class Balance</h4>
+                        <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                            Ensure balanced representation of all classes. Use techniques like 
+                            oversampling, undersampling, or weighted loss functions for imbalance.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="practice-item">
+                    <div class="practice-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-top: 0; margin-bottom: 10px;">Rigorous Validation</h4>
+                        <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                            Use multiple validation sets, cross-validation, and hold-out test sets. 
+                            Validate on data from different sources and time periods.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="practice-item">
+                    <div class="practice-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-top: 0; margin-bottom: 10px;">Continuous Monitoring</h4>
+                        <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                            Monitor model performance in production. Set up alerts for performance 
+                            degradation and plan for regular model updates.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Use Cases -->
+        <div class="use-cases">
+            <h2 class="section-title">Custom Model Use Cases</h2>
+            
+            <div class="case-studies">
+                <div class="case-card">
+                    <h4 style="margin-top: 0; color: #6a1b9a; margin-bottom: 15px;">Urban Planning</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        <strong>Challenge:</strong> Detect specific urban features like parking lots, 
+                        playgrounds, and building types.
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; color: #6a1b9a; margin-bottom: 5px;">Results:</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            • 92% accuracy for specific urban features<br>
+                            • 40% faster than manual digitization<br>
+                            • Integrated with city planning workflows
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="case-card">
+                    <h4 style="margin-top: 0; color: #6a1b9a; margin-bottom: 15px;">Agriculture Monitoring</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        <strong>Challenge:</strong> Identify specific crop types and detect disease 
+                        outbreaks early.
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; color: #6a1b9a; margin-bottom: 5px;">Results:</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            • 95% crop type classification accuracy<br>
+                            • Disease detection 2 weeks before visible symptoms<br>
+                            • 30% reduction in crop losses
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="case-card">
+                    <h4 style="margin-top: 0; color: #6a1b9a; margin-bottom: 15px;">Disaster Response</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        <strong>Challenge:</strong> Rapid assessment of flood damage and identification 
+                        of affected areas.
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; color: #6a1b9a; margin-bottom: 5px;">Results:</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            • 89% accuracy for damage assessment<br>
+                            • Analysis within 30 minutes of imagery availability<br>
+                            • Integrated with emergency response systems
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="case-card">
+                    <h4 style="margin-top: 0; color: #6a1b9a; margin-bottom: 15px;">Environmental Monitoring</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        <strong>Challenge:</strong> Track deforestation, wetland changes, and 
+                        illegal mining activities.
+                    </p>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; color: #6a1b9a; margin-bottom: 5px;">Results:</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            • 94% detection accuracy for land cover changes<br>
+                            • Weekly monitoring of 10,000+ sq km areas<br>
+                            • Automated alerts for unauthorized activities
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="text-align: center; padding: 60px 40px; background: linear-gradient(135deg, #6a1b9a, #9c27b0); border-radius: 15px; margin-top: 50px; color: white;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Ready to Train Your Custom Model?</h2>
+            <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px; opacity: 0.9;">
+                Start with our guided workflow or consult with our machine learning experts
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 40px;">
+                <a href="{% url 'analysis' %}" class="btn-primary" style="background: white; color: #6a1b9a; padding: 15px 40px; font-weight: 600;">
+                    <i class="fas fa-play-circle"></i> Start Training Now
+                </a>
+                <a href="{% url 'contact_sales' %}" class="btn-outline" style="border-color: white; color: white; padding: 15px 40px; font-weight: 600;">
+                    <i class="fas fa-calendar-alt"></i> Schedule Expert Consultation
+                </a>
+            </div>
+            <p style="margin-top: 30px; font-size: 0.9rem; opacity: 0.8;">
+                Enterprise users: Contact us for custom SLAs, dedicated infrastructure, and volume discounts
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <footer style="margin-top: 80px; padding-top: 40px; border-top: 1px solid #eee;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
+                <div>
+                    <div class="logo" style="margin-bottom: 20px;">
+                        <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center; font-size: 1.5rem;">
+                            <i class="fas fa-leaf"></i>
+                            <span>GreenSpace<span class="logo-ai">AI</span></span>
+                        </a>
+                    </div>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Advanced satellite imagery analysis powered by deep learning and GIS technologies.
+                    </p>
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <a href="#" style="color: #666; text-decoration: none;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" style="color: #666; text-decoration: none;">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" style="color: #666; text-decoration: none;">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" style="color: #666; text-decoration: none;">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 style="margin-top: 0; margin-bottom: 20px;">Platform</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'home' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Home
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'analysis' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Start Analysis
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'getting_started' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Tutorials
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'documentation' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Documentation
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'case_studies' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Case Studies
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="margin-top: 0; margin-bottom: 20px;">Resources</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'api_documentation' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                API Documentation
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'model_library' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Model Library
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'data_catalog' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Data Catalog
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'home' %}#pricing" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Pricing
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'blogs' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Blog & Updates
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="margin-top: 0; margin-bottom: 20px;">Support</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'help' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Help Center
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'support' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Contact Support
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'enterprise' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Enterprise Solutions
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'privacy_policy' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Privacy Policy
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'terms' %}" style="color: #666; text-decoration: none; font-size: 0.95rem;">
+                                Terms of Service
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="text-align: center; padding: 20px 0; border-top: 1px solid #eee; color: #666; font-size: 0.9rem;">
+                <p>&copy; 2024 GreenSpace AI. All rights reserved. Satellite imagery analysis powered by deep learning.</p>
+                <p style="margin-top: 10px; opacity: 0.7;">
+                    Powered by TensorFlow, PyTorch, and cloud-native geospatial technologies.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile navigation toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Update training summary based on sliders
+        const epochSlider = document.getElementById('epochSlider');
+        const batchSlider = document.getElementById('batchSlider');
+        const modelSelect = document.getElementById('modelArchitecture');
+        const backboneSelect = document.getElementById('backboneNetwork');
+        
+        const epochValue = document.getElementById('epochValue');
+        const epochTime = document.getElementById('epochTime');
+        const batchValue = document.getElementById('batchValue');
+        const batchMemory = document.getElementById('batchMemory');
+        const trainingSummary = document.getElementById('trainingSummary');
+        const trainingCost = document.getElementById('trainingCost');
+        
+        function updateTrainingSummary() {
+            const epochs = parseInt(epochSlider.value);
+            const batchSize = parseInt(batchSlider.value);
+            const model = modelSelect.options[modelSelect.selectedIndex].text;
+            const backbone = backboneSelect.options[backboneSelect.selectedIndex].text;
+            
+            // Update display values
+            epochValue.textContent = `${epochs} epochs`;
+            batchValue.textContent = `${batchSize} images/batch`;
+            
+            // Calculate estimated time (simplified)
+            const baseTime = 0.05; // hours per epoch per 16 batch size
+            const time = (epochs * baseTime * 16 / batchSize).toFixed(1);
+            epochTime.textContent = `~${time} hours`;
+            
+            // Calculate memory (simplified)
+            const baseMemory = 8; // GB for batch size 16
+            const memory = Math.round(baseMemory * batchSize / 16);
+            batchMemory.textContent = `~${memory}GB GPU memory`;
+            
+            // Update summary
+            trainingSummary.textContent = `${model} with ${backbone} | ${epochs} epochs | ${batchSize} batch size`;
+            
+            // Calculate estimated cost (simplified)
+            const baseCost = 0.25; // $ per hour
+            const cost = (time * baseCost).toFixed(2);
+            trainingCost.textContent = `~$${cost}`;
+        }
+        
+        // Add event listeners
+        epochSlider.addEventListener('input', updateTrainingSummary);
+        batchSlider.addEventListener('input', updateTrainingSummary);
+        modelSelect.addEventListener('change', updateTrainingSummary);
+        backboneSelect.addEventListener('change', updateTrainingSummary);
+        
+        // Initialize summary
+        updateTrainingSummary();
+        
+        // Annotation tool simulation
+        const annotationCanvas = document.getElementById('annotationCanvas');
+        const annotationLabels = document.querySelectorAll('.annotation-label');
+        let currentLabel = 'vegetation';
+        
+        // Set up annotation labels
+        annotationLabels.forEach(label => {
+            label.addEventListener('click', function() {
+                // Update active label
+                annotationLabels.forEach(l => l.style.opacity = '0.7');
+                this.style.opacity = '1';
+                currentLabel = this.getAttribute('data-label');
+                
+                // Add visual feedback
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+        
+        // Initialize first label as active
+        document.querySelector('[data-label="vegetation"]').style.opacity = '1';
+        
+        // Training start function
+        function startTraining() {
+            const model = modelSelect.options[modelSelect.selectedIndex].text;
+            const epochs = epochSlider.value;
+            
+            // Show confirmation
+            alert(`Starting custom model training with:\n\n` +
+                  `Model: ${model}\n` +
+                  `Epochs: ${epochs}\n\n` +
+                  `You will be redirected to the training dashboard.`);
+            
+            // In a real implementation, this would redirect to training dashboard
+            // window.location.href = '../training/dashboard.html';
+        }
+        
+        // Add keyboard shortcuts for annotation
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case '1':
+                        document.querySelector('[data-label="urban"]').click();
+                        break;
+                    case '2':
+                        document.querySelector('[data-label="vegetation"]').click();
+                        break;
+                    case '3':
+                        document.querySelector('[data-label="water"]').click();
+                        break;
+                    case '4':
+                        document.querySelector('[data-label="soil"]').click();
+                        break;
+                }
+            }
+        });
+        
+        // Responsive adjustments
+        function handleResize() {
+            const container = document.querySelector('.tutorial-container');
+            if (window.innerWidth < 768) {
+                container.style.padding = '0 15px';
+            } else {
+                container.style.padding = '0 20px';
+            }
+        }
+        
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Initialize tooltips
+        document.querySelectorAll('[title]').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                const title = this.getAttribute('title');
+                if (title) {
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = title;
+                    tooltip.style.position = 'absolute';
+                    tooltip.style.background = 'rgba(0,0,0,0.8)';
+                    tooltip.style.color = 'white';
+                    tooltip.style.padding = '5px 10px';
+                    tooltip.style.borderRadius = '4px';
+                    tooltip.style.fontSize = '0.8rem';
+                    tooltip.style.zIndex = '1000';
+                    tooltip.style.maxWidth = '200px';
+                    
+                    document.body.appendChild(tooltip);
+                    
+                    const rect = this.getBoundingClientRect();
+                    tooltip.style.left = rect.left + 'px';
+                    tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
+                    
+                    this.tooltipElement = tooltip;
+                    this.removeAttribute('title');
+                }
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                if (this.tooltipElement) {
+                    this.tooltipElement.remove();
+                    this.setAttribute('title', this.tooltipElement.textContent);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

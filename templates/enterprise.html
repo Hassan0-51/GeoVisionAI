@@ -1,0 +1,927 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Solutions - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .enterprise-container {
+            max-width: 1400px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .enterprise-hero {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 100px 40px;
+            border-radius: 15px;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enterprise-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .enterprise-hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+
+        .hero-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 12px 30px;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .enterprise-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .enterprise-feature {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .enterprise-feature:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            width: 100px;
+            height: 100px;
+            background: #e8eaf6;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: #283593;
+            font-size: 2.5rem;
+        }
+
+        .enterprise-feature h3 {
+            color: #1a237e;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .enterprise-feature p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .capability-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-top: 5px solid #283593;
+        }
+
+        .capability-icon {
+            width: 70px;
+            height: 70px;
+            background: #e8eaf6;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #283593;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+        }
+
+        .capability-card h4 {
+            color: #1a237e;
+            margin: 0 0 15px 0;
+            font-size: 1.4rem;
+        }
+
+        .capability-features {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0 0 0;
+        }
+
+        .capability-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .capability-features li:last-child {
+            border-bottom: none;
+        }
+
+        .capability-features i {
+            color: #4caf50;
+            width: 20px;
+        }
+
+        .case-studies {
+            background: #f5f7ff;
+            padding: 80px 40px;
+            border-radius: 15px;
+            margin-bottom: 80px;
+        }
+
+        .case-study {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .case-study:last-child {
+            margin-bottom: 0;
+        }
+
+        .case-study-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .case-study-logo {
+            width: 100px;
+            height: 100px;
+            background: #e8eaf6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #283593;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .case-study h3 {
+            color: #1a237e;
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+
+        .case-study .results {
+            background: #e8f5e9;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .results h4 {
+            color: #2e7d32;
+            margin: 0 0 15px 0;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .result-item {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .security-section {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 80px;
+        }
+
+        .compliance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .compliance-item {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9ff;
+            border-radius: 10px;
+        }
+
+        .compliance-icon {
+            width: 70px;
+            height: 70px;
+            background: #e8eaf6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #283593;
+            font-size: 1.8rem;
+        }
+
+        .pricing-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .pricing-option {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        .pricing-option.popular {
+            border: 3px solid #283593;
+            transform: scale(1.05);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #283593;
+            color: white;
+            padding: 8px 25px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .pricing-option h3 {
+            color: #1a237e;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #283593;
+            margin-bottom: 10px;
+        }
+
+        .price-note {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .option-features {
+            text-align: left;
+            margin: 30px 0;
+        }
+
+        .option-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .option-features li:last-child {
+            border-bottom: none;
+        }
+
+        .option-features i {
+            color: #4caf50;
+        }
+
+        .contact-cta {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 80px 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .contact-cta h2 {
+            font-size: 2.5rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .contact-cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-cta-primary {
+            background: white;
+            color: #283593;
+            padding: 18px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta-primary:hover {
+            background: #f5f7ff;
+            transform: translateY(-2px);
+        }
+
+        .btn-cta-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 18px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta-secondary:hover {
+            background: white;
+            color: #283593;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .enterprise-container {
+                margin: 80px auto 30px;
+                padding: 0 15px;
+            }
+            
+            .enterprise-hero {
+                padding: 60px 20px;
+            }
+            
+            .enterprise-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .enterprise-features,
+            .capabilities-grid,
+            .pricing-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-option.popular {
+                transform: scale(1);
+            }
+            
+            .case-study-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-cta-primary,
+            .btn-cta-secondary {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Enterprise Solutions Content -->
+    <div class="enterprise-container">
+        <!-- Hero Section -->
+        <div class="enterprise-hero">
+            <h1>Enterprise-Grade Geospatial Intelligence</h1>
+            <p>Advanced satellite imagery analysis solutions for large organizations, government agencies, and mission-critical operations</p>
+            <div class="hero-badge">
+                <i class="fas fa-shield-alt"></i>
+                <span>SOC 2 Type II Compliant • GDPR Ready • HIPAA Compliant</span>
+            </div>
+        </div>
+
+        <!-- Key Features -->
+        <h2 style="text-align: center; margin-bottom: 40px; color: #1a237e;">Why Enterprises Choose GreenSpace AI</h2>
+        
+        <div class="enterprise-features">
+            <div class="enterprise-feature">
+                <div class="feature-icon">
+                    <i class="fas fa-infinity"></i>
+                </div>
+                <h3>Unlimited Scale</h3>
+                <p>Process millions of satellite images across global operations with our scalable cloud infrastructure and dedicated compute resources.</p>
+            </div>
+            
+            <div class="enterprise-feature">
+                <div class="feature-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Maximum Security</h3>
+                <p>Enterprise-grade security with dedicated VPCs, data encryption at rest and in transit, and comprehensive compliance certifications.</p>
+            </div>
+            
+            <div class="enterprise-feature">
+                <div class="feature-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h3>Custom Solutions</h3>
+                <p>Tailored AI models, custom workflows, and dedicated engineering support for your specific use cases and requirements.</p>
+            </div>
+        </div>
+
+        <!-- Enterprise Capabilities -->
+        <h2 style="text-align: center; margin-bottom: 40px; color: #1a237e;">Enterprise Capabilities</h2>
+        
+        <div class="capabilities-grid">
+            <div class="capability-card">
+                <div class="capability-icon">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <h4>Dedicated Infrastructure</h4>
+                <p>Private cloud deployments, dedicated GPUs, and custom resource allocation for maximum performance.</p>
+                <ul class="capability-features">
+                    <li><i class="fas fa-check"></i> Dedicated Kubernetes clusters</li>
+                    <li><i class="fas fa-check"></i> GPU-accelerated processing</li>
+                    <li><i class="fas fa-check"></i> Custom storage solutions</li>
+                    <li><i class="fas fa-check"></i> Load-balanced API endpoints</li>
+                </ul>
+            </div>
+            
+            <div class="capability-card">
+                <div class="capability-icon">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <h4>Advanced Integration</h4>
+                <p>Seamless integration with your existing systems and workflows through comprehensive APIs and SDKs.</p>
+                <ul class="capability-features">
+                    <li><i class="fas fa-check"></i> REST API with custom rate limits</li>
+                    <li><i class="fas fa-check"></i> Python, Java, and .NET SDKs</li>
+                    <li><i class="fas fa-check"></i> QGIS & ArcGIS plugins</li>
+                    <li><i class="fas fa-check"></i> Webhook notifications</li>
+                </ul>
+            </div>
+            
+            <div class="capability-card">
+                <div class="capability-icon">
+                    <i class="fas fa-users-cog"></i>
+                </div>
+                <h4>Team Collaboration</h4>
+                <p>Advanced team management features for large organizations with complex permission structures.</p>
+                <ul class="capability-features">
+                    <li><i class="fas fa-check"></i> Unlimited team members</li>
+                    <li><i class="fas fa-check"></i> Role-based access control</li>
+                    <li><i class="fas fa-check"></i> Single Sign-On (SSO)</li>
+                    <li><i class="fas fa-check"></i> Audit logging</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Case Studies -->
+        <div class="case-studies">
+            <h2 style="text-align: center; margin-bottom: 50px; color: #1a237e;">Enterprise Case Studies</h2>
+            
+            <div class="case-study">
+                <div class="case-study-header">
+                    <div class="case-study-logo">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div>
+                        <h3>Global Environmental Agency</h3>
+                        <p style="color: #666;">Real-time deforestation monitoring across 50+ countries</p>
+                    </div>
+                </div>
+                
+                <p style="color: #666; line-height: 1.8;">
+                    The agency needed to monitor forest cover changes across millions of square kilometers with near-real-time alerts for illegal logging activities. Our enterprise solution provided automated weekly analysis with custom AI models trained on regional vegetation patterns.
+                </p>
+                
+                <div class="results">
+                    <h4>Results Achieved</h4>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <div class="result-value">95%</div>
+                            <div class="result-label">Detection Accuracy</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">24h</div>
+                            <div class="result-label">Alert Response Time</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">10M+</div>
+                            <div class="result-label">Sq Km Monitored</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">60%</div>
+                            <div class="result-label">Cost Reduction</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="case-study">
+                <div class="case-study-header">
+                    <div class="case-study-logo">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <div>
+                        <h3>Major Urban Planning Department</h3>
+                        <p style="color: #666;">Smart city development and infrastructure planning</p>
+                    </div>
+                </div>
+                
+                <p style="color: #666; line-height: 1.8;">
+                    The department required detailed analysis of urban growth patterns, infrastructure development, and environmental impact assessments. Our custom enterprise solution integrated with their existing GIS systems and provided automated reporting for planning approvals.
+                </p>
+                
+                <div class="results">
+                    <h4>Results Achieved</h4>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <div class="result-value">70%</div>
+                            <div class="result-label">Faster Planning</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">40%</div>
+                            <div class="result-label">Reduced Manual Work</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">99.5%</div>
+                            <div class="result-label">Data Accuracy</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">5x</div>
+                            <div class="result-label">More Analysis Capacity</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security & Compliance -->
+        <div class="security-section">
+            <h2 style="text-align: center; margin-bottom: 40px; color: #1a237e;">Security & Compliance</h2>
+            
+            <p style="text-align: center; color: #666; max-width: 800px; margin: 0 auto 40px; line-height: 1.8;">
+                We maintain the highest security standards to protect your sensitive geospatial data and ensure compliance with industry regulations.
+            </p>
+            
+            <div class="compliance-grid">
+                <div class="compliance-item">
+                    <div class="compliance-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>SOC 2 Type II</h4>
+                    <p style="color: #666; font-size: 0.9rem;">Annual audited compliance for security, availability, and confidentiality</p>
+                </div>
+                
+                <div class="compliance-item">
+                    <div class="compliance-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h4>GDPR Ready</h4>
+                    <p style="color: #666; font-size: 0.9rem;">Full compliance with EU data protection regulations</p>
+                </div>
+                
+                <div class="compliance-item">
+                    <div class="compliance-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h4>HIPAA Compliant</h4>
+                    <p style="color: #666; font-size: 0.9rem;">Protected health information handling for healthcare applications</p>
+                </div>
+                
+                <div class="compliance-item">
+                    <div class="compliance-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h4>Data Sovereignty</h4>
+                    <p style="color: #666; font-size: 0.9rem;">Region-specific data storage and processing options</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Options -->
+        <h2 style="text-align: center; margin-bottom: 40px; color: #1a237e;">Enterprise Pricing Options</h2>
+        
+        <div class="pricing-options">
+            <div class="pricing-option">
+                <h3>Managed Enterprise</h3>
+                <div class="price">$5,000<span style="font-size: 1.2rem;">/month</span></div>
+                <div class="price-note">Minimum 12-month commitment</div>
+                <ul class="option-features">
+                    <li><i class="fas fa-check"></i> 50,000 analysis credits/month</li>
+                    <li><i class="fas fa-check"></i> 500GB storage</li>
+                    <li><i class="fas fa-check"></i> 100 training hours/month</li>
+                    <li><i class="fas fa-check"></i> Dedicated support team</li>
+                    <li><i class="fas fa-check"></i> 99.9% uptime SLA</li>
+                </ul>
+                <a href="{% url 'contact_sales' %}" class="btn-cta-primary">
+                    <i class="fas fa-calendar-alt"></i>
+                    Schedule Demo
+                </a>
+            </div>
+            
+            <div class="pricing-option popular">
+                <div class="popular-badge">Most Popular</div>
+                <h3>Custom Enterprise</h3>
+                <div class="price">Custom</div>
+                <div class="price-note">Tailored to your specific needs</div>
+                <ul class="option-features">
+                    <li><i class="fas fa-check"></i> Unlimited analysis credits</li>
+                    <li><i class="fas fa-check"></i> 1TB+ storage</li>
+                    <li><i class="fas fa-check"></i> Unlimited training hours</li>
+                    <li><i class="fas fa-check"></i> Custom AI model development</li>
+                    <li><i class="fas fa-check"></i> 99.95% uptime SLA</li>
+                </ul>
+                <a href="{% url 'contact_sales' %}" class="btn-cta-primary">
+                    <i class="fas fa-headset"></i>
+                    Contact Sales
+                </a>
+            </div>
+            
+            <div class="pricing-option">
+                <h3>On-Premise</h3>
+                <div class="price">$15,000<span style="font-size: 1.2rem;">/year</span></div>
+                <div class="price-note">Plus implementation fees</div>
+                <ul class="option-features">
+                    <li><i class="fas fa-check"></i> Full platform deployment</li>
+                    <li><i class="fas fa-check"></i> Your infrastructure</li>
+                    <li><i class="fas fa-check"></i> Complete data control</li>
+                    <li><i class="fas fa-check"></i> Annual license</li>
+                    <li><i class="fas fa-check"></i> Support & updates</li>
+                </ul>
+                <a href="{% url 'contact_sales' %}" class="btn-cta-primary">
+                    <i class="fas fa-server"></i>
+                    Learn More
+                </a>
+            </div>
+        </div>
+
+        <!-- Contact CTA -->
+        <div class="contact-cta">
+            <h2>Ready to Transform Your Geospatial Operations?</h2>
+            <p>Schedule a personalized demonstration and discover how GreenSpace AI can solve your organization's unique challenges.</p>
+            
+            <div class="cta-buttons">
+                <a href="{% url 'contact_sales' %}" class="btn-cta-primary">
+                    <i class="fas fa-video"></i>
+                    Book Enterprise Demo
+                </a>
+                <a href="tel:+14155550123" class="btn-cta-secondary">
+                    <i class="fas fa-phone-alt"></i>
+                    Call Sales: +1 (415) 555-0123
+                </a>
+            </div>
+            
+            <div style="margin-top: 40px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700;">1 hr</div>
+                    <div style="font-size: 0.9rem; opacity: 0.9;">Response Time SLA</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700;">99.95%</div>
+                    <div style="font-size: 0.9rem; opacity: 0.9;">Uptime Guarantee</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700;">24/7</div>
+                    <div style="font-size: 0.9rem; opacity: 0.9;">Premium Support</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="margin-top: 60px; padding: 40px 0; border-top: 1px solid #eee; background: #f8f9fa;">
+        <div class="enterprise-container" style="margin: 0 auto;">
+            <div style="text-align: center; color: #666; font-size: 0.9rem;">
+                <p>&copy; 2024 GreenSpace AI. All rights reserved.</p>
+                <p style="margin-top: 10px;">
+                    <a href="{% url 'privacy_policy' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                    <a href="{% url 'terms' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Terms of Service</a> | 
+                    <a href="{% url 'cookies_policy' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Cookie Policy</a> | 
+                    <a href="{% url 'contact_sales' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Contact Sales</a>
+                </p>
+                <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">
+                    GreenSpace AI, Inc. | 123 Innovation Drive, Suite 500, San Francisco, CA 94107
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Animate counters in case studies
+        function animateCounter(element, target, duration) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start);
+                }
+            }, 16);
+        }
+
+        // Initialize counters when in view
+        function initCounters() {
+            const counters = document.querySelectorAll('.result-value');
+            counters.forEach(counter => {
+                const target = parseInt(counter.textContent.replace(/[^\d]/g, ''));
+                const isInView = counter.getBoundingClientRect().top < window.innerHeight;
+                
+                if (isInView && !counter.dataset.animated) {
+                    counter.dataset.animated = 'true';
+                    animateCounter(counter, target, 1000);
+                }
+            });
+        }
+
+        window.addEventListener('scroll', initCounters);
+        window.addEventListener('load', initCounters);
+
+        // Contact form modal
+        function showContactModal() {
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.background = 'rgba(0,0,0,0.5)';
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
+            modal.style.zIndex = '1000';
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 40px; border-radius: 15px; max-width: 500px; width: 90%;">
+                    <h3 style="margin-top: 0; color: #1a237e;">Contact Enterprise Sales</h3>
+                    <p>Our enterprise team will contact you within 1 business hour.</p>
+                    
+                    <div style="margin-top: 20px;">
+                        <input type="text" placeholder="Full Name" style="width: 100%; padding: 15px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px;">
+                        <input type="email" placeholder="Work Email" style="width: 100%; padding: 15px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px;">
+                        <input type="text" placeholder="Company" style="width: 100%; padding: 15px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px;">
+                        <textarea placeholder="Tell us about your needs..." style="width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; min-height: 100px;"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px;">
+                        <button onclick="this.closest('div').remove()" style="flex: 1; padding: 15px; border: 2px solid #ddd; background: white; color: #666; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            Cancel
+                        </button>
+                        <button onclick="submitContactForm()" style="flex: 1; padding: 15px; border: none; background: linear-gradient(135deg, #1a237e, #283593); color: white; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function submitContactForm() {
+            alert('Thank you for your interest! Our enterprise sales team will contact you within 1 business hour.');
+            document.querySelector('div[style*="position: fixed"]').remove();
+        }
+
+        // Add click handlers to CTA buttons
+        document.querySelectorAll('.btn-cta-primary, .btn-cta-secondary').forEach(btn => {
+            if (btn.href.includes("{% url 'contact_sales' %}")) {
+                btn.addEventListener('click', function(e) {
+                    if (!this.href.includes('?')) {
+                        e.preventDefault();
+                        showContactModal();
+                    }
+                });
+            }
+        });
+
+        // Responsive adjustments
+        function handleResize() {
+            const container = document.querySelector('.enterprise-container');
+            if (window.innerWidth < 768) {
+                container.style.padding = '0 15px';
+            } else {
+                container.style.padding = '0 20px';
+            }
+        }
+        
+        window.addEventListener('resize', handleResize);
+        handleResize();
+    </script>
+</body>
+</html>

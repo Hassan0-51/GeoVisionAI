@@ -1,0 +1,536 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4" style="background-color: #f8f9fa;">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h3 mb-0 text-gray-800">Analysis Results</h1>
+                <p class="text-muted small mb-0">Analysis ID: {{ result_id }} | Date: {% now "Y-m-d H:i" %}</p>
+            </div>
+            <div class="btn-group">
+                <button onclick="window.print()" class="btn btn-outline-secondary">
+                    <i class="fas fa-print me-1"></i> Print Report
+                </button>
+                <a href="{% url 'analysis' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i> New Analysis
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Main Visualization Column -->
+        <div class="col-lg-8 mb-4">
+            <!-- Satellite Imagery Card -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-white">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-satellite me-2"></i>Satellite Imagery
+                        & Segmentation</h6>
+                    <div class="dropdown no-arrow">
+                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="viewDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            View Options
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="viewDropdown">
+                            <li><a class="dropdown-item" href="#" onclick="setImageView('split')">Split View</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setImageView('side-by-side')">Side by
+                                    Side</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Split View (Slider) -->
+                    <div id="split-view_container" class="position-relative"
+                        style="height: 500px; overflow: hidden; border-radius: 0.5rem;">
+                        <div class="comparison-slider-wrapper">
+                            <div class="comparison-slider">
+                                <img id="slider-before" src="" alt="Original Satellite View">
+                                <div class="resize-handle"></div>
+                                <img id="slider-after" src="" alt="AI Segmentation Mask">
+                            </div>
+                        </div>
+                        <div class="slider-labels">
+                            <span class="badge bg-secondary position-absolute top-0 start-0 m-3 opacity-75">RGB
+                                Image</span>
+                            <span class="badge bg-primary position-absolute top-0 end-0 m-3 opacity-75">AI Mask</span>
+                        </div>
+                    </div>
+
+                    <!-- Side-by-Side View (Hidden by default) -->
+                    <div id="side-by-side_container" class="row d-none">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-center text-muted mb-2">RGB Image</h6>
+                            <img id="sbs-rgb" src="" class="img-fluid rounded border" alt="RGB">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-center text-muted mb-2">Segmentation Mask</h6>
+                            <img id="sbs-mask" src="" class="img-fluid rounded border" alt="Mask">
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="mt-4 pt-3 border-top">
+                        <h6 class="small font-weight-bold text-muted mb-2">Class Legend:</h6>
+                        <div class="d-flex flex-wrap gap-3" id="class-legend">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+            <!-- Detailed Analysis Charts -->
+            <div class="card shadow">
+                <div class="card-header py-3 bg-white">
+                    <h6 class="m-0 font-weight-bold text-success"><i class="fas fa-chart-bar me-2"></i>Detailed Land
+                        Cover Distribution</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="landCoverChart" style="height: 300px; width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Statistics Column -->
+        <div class="col-lg-4">
+            <!-- Summary Stats Card -->
+            <div class="card shadow mb-4 border-left-success">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Analyzed Area
+                            </div>
+                            <div class="h3 mb-0 font-weight-bold text-gray-800" id="total-area-display">-- km²</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-ruler-combined fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Green Space Ratio Card -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-white">
+                    <h6 class="m-0 font-weight-bold text-primary">Green Space Ratio</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="greenRatioChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="me-2">
+                            <i class="fas fa-circle text-success"></i> Green Space
+                        </span>
+                        <span class="me-2">
+                            <i class="fas fa-circle text-secondary"></i> Non-Green
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Insights Card -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-white">
+                    <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-lightbulb me-2"></i>AI Insights</h6>
+                </div>
+                <div class="card-body">
+                    <div id="ai-insights-content">
+                        <div class="d-flex align-items-center justify-content-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Environmental Impact Card -->
+            <div class="card shadow mb-4 bg-gradient-success text-white">
+                <div class="card-body">
+                    <h6 class="font-weight-bold mb-3"><i class="fas fa-leaf me-2"></i>Environmental Impact</h6>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Est. Carbon Sequestration:</span>
+                        <span class="font-weight-bold" id="carbon-seq">-- tons</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Cooling Effect Potential:</span>
+                        <span class="font-weight-bold" id="cooling-effect">Moderate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Styles for Comparison Slider -->
+<style>
+    .comparison-slider-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .comparison-slider {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .comparison-slider img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    #slider-before {
+        z-index: 1;
+    }
+
+    #slider-after {
+        z-index: 2;
+        clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+        /* Initial split */
+        /* Implementation note: We will drive this via JS */
+    }
+
+    .resize-handle {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        bottom: 0;
+        width: 4px;
+        background: #fff;
+        cursor: col-resize;
+        z-index: 10;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        transform: translateX(-50%);
+    }
+
+    .resize-handle::after {
+        content: "< >";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        color: #333;
+        padding: 5px 8px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        white-space: nowrap;
+    }
+</style>
+
+<!-- Chart.js & Logic -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // --- Data Injection from Django ---
+    const resultData = JSON.parse('{{ result_data|escapejs }}');
+    const resultId = '{{ result_id }}';
+
+    // Class Definitions (Colors & Names)
+    const CLASS_CONFIG = {
+        0: { name: 'Background', color: '#000000' },
+        1: { name: 'Agricultural Land', color: '#3cb043' }, // Parrot
+        2: { name: 'Grasses & Bushes', color: '#ffff00' },  // Yellow
+        3: { name: 'Urban Area', color: '#ff0000' },        // Red
+        4: { name: 'Soil', color: '#8b4513' },              // Brown
+        5: { name: 'Water', color: '#0000ff' },             // Blue
+        6: { name: 'Trees', color: '#008000' }              // Green
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initializeDashboard();
+        initializeSlider();
+    });
+
+    function initializeDashboard() {
+        console.log("Initializing Dashboard with data:", resultData);
+
+        // 1. Process Area Data
+        let areaData = {};
+        let activeYear = '2024';
+        let activeSeason = 'spring';
+
+        if (resultData.area_dict) {
+            activeYear = Object.keys(resultData.area_dict)[0] || '2024';
+            if (activeYear) {
+                activeSeason = Object.keys(resultData.area_dict[activeYear])[0] || 'spring';
+                if (activeSeason) {
+                    areaData = resultData.area_dict[activeYear][activeSeason];
+                }
+            }
+        }
+
+        // ── Set dynamic image URLs ──────────────────────────────────────────
+        const s = activeSeason === 'single' ? 'spring' : activeSeason;
+
+        // Slider images
+        const sliderBefore = document.getElementById('slider-before');
+        const sliderAfter  = document.getElementById('slider-after');
+        if (sliderBefore) sliderBefore.src = `/api/new-image/${activeYear}/${s}/`; // Base 10m satellite image
+        if (sliderAfter)  sliderAfter.src  = `/api/mask-image/${resultId}/${activeYear}/${s}/`;
+
+        // Side-by-side images
+        const sbsRgb  = document.getElementById('sbs-rgb');
+        const sbsMask = document.getElementById('sbs-mask');
+        if (sbsRgb)  sbsRgb.src  = `/api/new-image/${activeYear}/${s}/`; // Base 10m satellite image
+        if (sbsMask) sbsMask.src = `/api/mask-image/${resultId}/${activeYear}/${s}/`;
+
+        if (!areaData || !areaData.classes) {
+            console.error("Area data not found in resultData");
+            document.getElementById('ai-insights-content').innerHTML = `
+                <div class="alert alert-warning">
+                    No area analysis data available. Please check the logs.
+                </div>
+             `;
+            return;
+        }
+
+        // 2. Update Summary Stats
+        document.getElementById('total-area-display').textContent =
+            (areaData.total_area_km2 || 0).toFixed(2) + ' km²';
+
+        // 3. Render Charts
+        renderLandCoverChart(areaData.classes);
+        renderGreenRatioChart(areaData.classes);
+
+        // 4. Render Legend
+        renderLegend();
+
+        // 5. Update Insights (Mock or Real)
+        updateInsights(areaData, resultData.llm_insights);
+    }
+
+    function renderLandCoverChart(classesData) {
+        const ctx = document.getElementById('landCoverChart').getContext('2d');
+
+        const labels = [];
+        const data = [];
+        const colors = [];
+
+        // Sort keys to maintain consistent order if needed, or iterate
+        Object.keys(classesData).forEach(className => {
+            if (className === 'Background') return; // Skip background
+
+            // Try to match color from config by name
+            let color = '#ccc';
+            for (const [id, conf] of Object.entries(CLASS_CONFIG)) {
+                if (conf.name === className) {
+                    color = conf.color;
+                    break;
+                }
+            }
+
+            labels.push(className);
+            data.push(classesData[className].area_km2);
+            colors.push(color);
+        });
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Area (km²)',
+                    data: data,
+                    backgroundColor: colors,
+                    borderColor: '#fff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.raw.toFixed(3) + ' km²';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Area (km²)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderGreenRatioChart(classesData) {
+        const ctx = document.getElementById('greenRatioChart').getContext('2d');
+
+        // Define Green Classes vs Non-Green Classes
+        const greenClasses = ['Trees', 'Grasses & Bushes', 'Agricultural Land'];
+        let greenArea = 0;
+        let nonGreenArea = 0;
+
+        Object.keys(classesData).forEach(className => {
+            if (className === 'Background') return;
+
+            if (greenClasses.includes(className)) {
+                greenArea += classesData[className].area_km2;
+            } else {
+                nonGreenArea += classesData[className].area_km2;
+            }
+        });
+
+        const total = greenArea + nonGreenArea;
+        const greenPct = total > 0 ? (greenArea / total) * 100 : 0;
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Green Space', 'Non-Green Space'],
+                datasets: [{
+                    data: [greenArea, nonGreenArea],
+                    backgroundColor: ['#1cc88a', '#858796'],
+                    hoverBackgroundColor: ['#17a673', '#60616f'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const val = context.raw.toFixed(2);
+                                const pct = ((context.raw / total) * 100).toFixed(1);
+                                return `${context.label}: ${val} km² (${pct}%)`;
+                            }
+                        }
+                    }
+                },
+                cutout: '70%',
+            }
+        });
+
+        // Update Environmental Impact Mock Data based on Green Ratio
+        const coolingElem = document.getElementById('cooling-effect');
+        if (greenPct > 40) coolingElem.textContent = "High";
+        else if (greenPct > 20) coolingElem.textContent = "Moderate";
+        else coolingElem.textContent = "Low";
+
+        // Estimated Carbon (Rough calc: 6 tons/ha for trees, avg 2 for others -> say 400 tons/km2 avg for green)
+        const carbonSeq = (greenArea * 400).toFixed(0);
+        document.getElementById('carbon-seq').textContent = `~${carbonSeq} tons/yr`;
+    }
+
+    function renderLegend() {
+        const container = document.getElementById('class-legend');
+        const uniqueClasses = new Set();
+
+        // Get classes actually present if possible, or just show all
+        for (const [id, conf] of Object.entries(CLASS_CONFIG)) {
+            if (conf.name === 'Background') continue;
+
+            const item = document.createElement('div');
+            item.className = 'd-flex align-items-center mb-2';
+            item.innerHTML = `
+                <span style="width: 15px; height: 15px; background-color: ${conf.color}; display: inline-block; margin-right: 8px; border-radius: 3px;"></span>
+                <span class="small text-muted">${conf.name}</span>
+            `;
+            container.appendChild(item);
+        }
+    }
+
+    function updateInsights(areaData, llmInsights) {
+        const container = document.getElementById('ai-insights-content');
+
+        if (llmInsights && llmInsights.summary) {
+            container.innerHTML = `<p class="small mb-0 text-gray-700">${llmInsights.summary}</p>`;
+        } else {
+            // Generate basic insights locally if LLM data missing
+            const greenClasses = ['Trees', 'Grasses & Bushes', 'Agricultural Land'];
+            let dominantClass = '';
+            let maxArea = -1;
+
+            Object.keys(areaData.classes).forEach(cls => {
+                if (areaData.classes[cls].area_km2 > maxArea) {
+                    maxArea = areaData.classes[cls].area_km2;
+                    dominantClass = cls;
+                }
+            });
+
+            const html = `
+                <ul class="list-unstyled small mb-0">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Dominant land cover: <strong>${dominantClass}</strong></li>
+                    <li class="mb-2"><i class="fas fa-info-circle text-info me-2"></i>Analysis completed for ${areaData.total_area_km2.toFixed(2)} km².</li>
+                </ul>
+            `;
+            container.innerHTML = html;
+        }
+    }
+
+    // --- Slider Logic ---
+    function initializeSlider() {
+        const slider = document.querySelector('.comparison-slider');
+        const handle = document.querySelector('.resize-handle');
+        const afterImg = document.getElementById('slider-after');
+
+        if (!slider || !handle || !afterImg) return;
+
+        let isDown = false;
+
+        function move(e) {
+            if (!isDown) return;
+            const rect = slider.getBoundingClientRect();
+            let x = e.clientX || e.touches[0].clientX;
+            x = x - rect.left;
+
+            // Constrain
+            x = Math.max(0, Math.min(x, rect.width));
+
+            const percent = (x / rect.width) * 100;
+
+            handle.style.left = percent + "%";
+            afterImg.style.clipPath = `polygon(${percent}% 0, 100% 0, 100% 100%, ${percent}% 100%)`;
+        }
+
+        handle.addEventListener('mousedown', () => isDown = true);
+        window.addEventListener('mouseup', () => isDown = false);
+        window.addEventListener('mousemove', move);
+
+        // Touch support
+        handle.addEventListener('touchstart', () => isDown = true);
+        window.addEventListener('touchend', () => isDown = false);
+        window.addEventListener('touchmove', move);
+    }
+
+    function setImageView(mode) {
+        const splitContainer = document.getElementById('split-view_container');
+        const sideContainer = document.getElementById('side-by-side_container');
+
+        if (mode === 'split') {
+            splitContainer.classList.remove('d-none');
+            sideContainer.classList.add('d-none');
+        } else {
+            splitContainer.classList.add('d-none');
+            sideContainer.classList.remove('d-none');
+            sideContainer.classList.add('d-flex');
+        }
+    }
+</script>
+{% endblock %}

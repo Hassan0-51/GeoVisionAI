@@ -1,0 +1,102 @@
+<div class="container-fluid advanced-analysis-container">
+    <div id="advanced-loading" class="text-center p-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Loading advanced analytics...</p>
+    </div>
+
+    <div id="advanced-error" class="alert alert-danger d-none" role="alert">
+        Failed to load advanced analysis data.
+    </div>
+
+    <div id="advanced-content-body" class="d-none">
+
+        <!-- Carbon Sequestration Section -->
+        <div class="mb-4">
+            <h6 class="border-bottom pb-2 mb-3 text-success">
+                <i class="fas fa-leaf me-2"></i>Carbon Sequestration
+            </h6>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <div class="card bg-light border-0">
+                        <div class="card-body text-center">
+                            <h3 class="display-6 fw-bold text-success mb-0" id="total-carbon">--</h3>
+                            <small class="text-muted">Total Carbon (tons)</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card bg-light border-0">
+                        <div class="card-body text-center">
+                            <h3 class="display-6 fw-bold text-dark mb-0" id="total-co2">--</h3>
+                            <small class="text-muted">CO2 Equivalent (tons)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-sm table-hover" id="carbon-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Class</th>
+                            <th class="text-end">Carbon (tons)</th>
+                            <th class="text-end">Contribution</th>
+                        </tr>
+                    </thead>
+                    <tbody><!-- Populated by JS --></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Spatial Metrics Section -->
+        <div class="mb-4">
+            <h6 class="border-bottom pb-2 mb-3 text-info">
+                <i class="fas fa-project-diagram me-2"></i>Landscape Metrics
+            </h6>
+
+            <div class="row g-2 mb-3">
+                <div class="col-4">
+                    <div class="p-2 border rounded text-center">
+                        <div class="fw-bold" id="shannon-index">--</div>
+                        <small class="text-muted" style="font-size: 0.75rem;">Shannon Index</small>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-2 border rounded text-center">
+                        <div class="fw-bold" id="simpson-index">--</div>
+                        <small class="text-muted" style="font-size: 0.75rem;">Simpson Index</small>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-2 border rounded text-center">
+                        <div class="fw-bold" id="patch-density">--</div>
+                        <small class="text-muted" style="font-size: 0.75rem;">Patch Density</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Anomaly Detection Section -->
+        <div class="mb-4">
+            <h6 class="border-bottom pb-2 mb-3 text-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>Anomaly Detection
+            </h6>
+            <div id="anomalies-list" class="list-group list-group-flush small">
+                <!-- Populated by JS -->
+            </div>
+            <div id="no-anomalies" class="text-center text-muted p-3 d-none">
+                <i class="fas fa-check-circle me-2 text-success"></i>No significant anomalies detected.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // This script will be triggered when the tab is shown or page loaded
+        // Logic will be in main dashboard script to avoid inline JS issues
+    });
+</script>

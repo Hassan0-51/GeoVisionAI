@@ -1,0 +1,2203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Analysis - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Leaflet Draw CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-dark: #1b5e20;
+            --secondary-color: #ff9800;
+            --accent-color: #2196f3;
+            --dark-color: #2c3e50;
+            --gray-color: #666;
+            --light-gray: #f5f5f5;
+            --shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .upload-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .upload-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .upload-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .upload-header p {
+            font-size: 1.1rem;
+            color: var(--gray-color);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .upload-wizard {
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .wizard-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .wizard-steps {
+            display: flex;
+            padding: 30px;
+            gap: 40px;
+            min-height: 500px;
+        }
+
+        .step-sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            border-right: 1px solid #eee;
+            padding-right: 30px;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-item {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .step-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--gray-color);
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+        }
+
+        .step-link:hover {
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary-color);
+        }
+
+        .step-link.active {
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #ddd;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .step-link.active .step-number {
+            background: var(--primary-color);
+        }
+
+        .step-link.completed .step-number {
+            background: #4caf50;
+        }
+
+        .step-content {
+            flex-grow: 1;
+            padding: 10px;
+        }
+
+        .step-pane {
+            display: none;
+        }
+
+        .step-pane.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Input Method Selection */
+        .input-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .method-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .method-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .method-card.selected {
+            border-color: var(--primary-color);
+            background: rgba(46, 125, 50, 0.05);
+        }
+
+        .method-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(46, 125, 50, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .method-icon i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .method-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .method-card p {
+            color: var(--gray-color);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .method-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        .method-features li {
+            padding: 5px 0;
+            color: #555;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .method-features li i {
+            color: #4caf50;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 3px dashed var(--primary-color);
+            border-radius: 10px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 30px 0;
+            background: rgba(46, 125, 50, 0.05);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-area.dragover {
+            background: rgba(46, 125, 50, 0.1);
+            border-color: var(--primary-dark);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .upload-area h3 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .upload-area p {
+            color: var(--gray-color);
+            margin-bottom: 20px;
+        }
+
+        .btn-browse {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-browse:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Map Container */
+        .map-container {
+            margin: 30px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .map-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .draw-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .draw-btn {
+            padding: 8px 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .draw-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .draw-btn.clear {
+            background: #f44336;
+        }
+
+        .draw-btn.clear:hover {
+            background: #d32f2f;
+        }
+
+        .coordinates-panel {
+            background: white;
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .coordinates-panel h4 {
+            margin: 0 0 10px 0;
+            color: var(--dark-color);
+        }
+
+        .coordinates-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .coordinates-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+
+        .coordinates-list li:last-child {
+            border-bottom: none;
+        }
+
+        .coordinates-list li strong {
+            color: var(--primary-color);
+        }
+
+        .area-info {
+            background: #e8f4fc;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .area-info.show {
+            display: block;
+        }
+
+        /* File Preview */
+        .file-preview {
+            margin-top: 30px;
+        }
+
+        .preview-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .preview-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .preview-box h4 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .image-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .file-info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .file-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        /* Analysis Options */
+        .analysis-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .option-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary-color);
+            background: rgba(46, 125, 50, 0.05);
+        }
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .option-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(46, 125, 50, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-icon i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* New: Time Analysis Options */
+        .time-analysis-options {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .time-analysis-options h4 {
+            margin-top: 0;
+            color: var(--dark-color);
+        }
+
+        .year-range {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .year-range input {
+            width: 100px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        /* Cost Estimate */
+        .cost-estimate {
+            background: rgba(33, 150, 243, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 30px 0;
+        }
+
+        .cost-breakdown {
+            margin-top: 15px;
+        }
+
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .cost-total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 15px;
+            text-align: right;
+        }
+
+        /* Wizard Footer */
+        .wizard-footer {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-back {
+            padding: 12px 25px;
+            background: white;
+            color: var(--dark-color);
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-next {
+            padding: 12px 30px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-next:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            padding: 15px 40px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover {
+            background: #f57c00;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .wizard-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .step-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                padding-right: 0;
+                padding-bottom: 20px;
+            }
+
+            .step-list {
+                display: flex;
+                overflow-x: auto;
+                gap: 15px;
+            }
+
+            .step-item {
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .preview-container {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-options,
+            .input-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .upload-area {
+                padding: 40px 20px;
+            }
+
+            .map-controls {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .draw-controls {
+                flex-wrap: wrap;
+            }
+
+            .year-range {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .year-range input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% csrf_token %}
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}"
+                    style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li><a href="{% url 'analysis' %}" class="active">Start Analysis</a></li>
+                <li class="nav-divider"></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'web_dashboard:dashboard' %}" class="btn-login">Dashboard</a></li>
+                <li><a href="{% url 'logout' %}" class="btn-register">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+                {% endif %}
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Upload Container -->
+    <div class="upload-container">
+        <div class="upload-header">
+            <h1>Start Your Green Space Analysis</h1>
+            <p>Upload satellite imagery or select area on map to evaluate urban green spaces and their cooling effects.
+            </p>
+        </div>
+
+        <!-- Upload Wizard -->
+        <div class="upload-wizard">
+            <div class="wizard-header">
+                <i class="fas fa-satellite"></i>
+                <h2 style="margin: 0; color: white;">Green Space Analysis Wizard</h2>
+            </div>
+
+            <div class="wizard-steps">
+                <!-- Step Sidebar -->
+                <div class="step-sidebar">
+                    <ul class="step-list">
+                        <li class="step-item">
+                            <a href="#step1" class="step-link active" data-step="1">
+                                <div class="step-number">1</div>
+                                <div>
+                                    <div style="font-weight: 600;">Input Method</div>
+                                    <div style="font-size: 0.9rem;">Choose input source</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="step-item">
+                            <a href="#step2" class="step-link" data-step="2">
+                                <div class="step-number">2</div>
+                                <div>
+                                    <div>Analysis Options</div>
+                                    <div style="font-size: 0.9rem;">Configure settings</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="step-item">
+                            <a href="#step3" class="step-link" data-step="3">
+                                <div class="step-number">3</div>
+                                <div>
+                                    <div>Project Details</div>
+                                    <div style="font-size: 0.9rem;">Add metadata</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="step-item">
+                            <a href="#step4" class="step-link" data-step="4">
+                                <div class="step-number">4</div>
+                                <div>
+                                    <div>Review & Submit</div>
+                                    <div style="font-size: 0.9rem;">Start analysis</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <!-- Step Content -->
+                <div class="step-content">
+                    <!-- Step 1: Input Method -->
+                    <div id="step1" class="step-pane active">
+                        <h3>Choose Input Method</h3>
+                        <p>Select how you want to provide the area for green space analysis.</p>
+
+                        <div class="input-methods">
+                            <!-- Image Upload Method -->
+                            <div class="method-card selected" id="methodUpload" onclick="selectInputMethod('upload')">
+                                <div class="method-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h3>Upload Satellite Image</h3>
+                                <p>Upload your own high-resolution satellite or aerial imagery for analysis.</p>
+                                <ul class="method-features">
+                                    <li><i class="fas fa-check"></i> Use your own satellite/drone images</li>
+                                    <li><i class="fas fa-check"></i> Full control over image quality</li>
+                                    <li><i class="fas fa-check"></i> Custom date selection</li>
+                                    <li><i class="fas fa-check"></i> Best for historical analysis</li>
+                                </ul>
+                            </div>
+
+                            <!-- Map Selection Method -->
+                            <div class="method-card" id="methodMap" onclick="selectInputMethod('map')">
+                                <div class="method-icon">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                </div>
+                                <h3>Select Area on Map</h3>
+                                <p>Draw your area of interest directly on the map. We'll fetch latest satellite imagery.
+                                </p>
+                                <ul class="method-features">
+                                    <li><i class="fas fa-check"></i> Latest satellite imagery</li>
+                                    <li><i class="fas fa-check"></i> Easy area selection</li>
+                                    <li><i class="fas fa-check"></i> Automatic coordinates</li>
+                                    <li><i class="fas fa-check"></i> No image upload needed</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Upload Section -->
+                        <div id="uploadSection" class="input-section">
+                            <h4 style="margin-top: 40px;">Upload Satellite Image</h4>
+                            <p>Upload a high-resolution satellite image for green space analysis. Supported formats:
+                                TIFF, JPEG, PNG (Max 100MB)</p>
+
+                            <div class="upload-area" id="uploadDropArea">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h3>Drag & Drop Your Image Here</h3>
+                                <p>or click to browse files</p>
+                                <button class="btn-browse" onclick="document.getElementById('fileInput').click()">Browse
+                                    Files</button>
+                                <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
+                                    <i class="fas fa-info-circle"></i> For best results, use cloud-free images with at
+                                    least 10m resolution
+                                </p>
+                                <input type="file" id="fileInput" accept=".tif,.tiff,.jpg,.jpeg,.png"
+                                    style="display: none;">
+                            </div>
+
+                            <div class="file-preview" id="filePreview" style="display: none;">
+                                <h4>Image Preview</h4>
+                                <div class="preview-container">
+                                    <div class="preview-box">
+                                        <h4>Original Image</h4>
+                                        <div class="image-placeholder" id="originalPreview">
+                                            <i class="fas fa-image" style="font-size: 3rem; color: #999;"></i>
+                                        </div>
+                                        <div id="originalInfo"></div>
+                                    </div>
+                                    <div class="preview-box">
+                                        <h4>Processing Preview</h4>
+                                        <div class="image-placeholder" id="processedPreview">
+                                            <i class="fas fa-cog fa-spin" style="font-size: 3rem; color: #999;"></i>
+                                        </div>
+                                        <div>AI processing preview will appear here</div>
+                                    </div>
+                                </div>
+
+                                <div class="file-info">
+                                    <h4>File Information</h4>
+                                    <div class="file-details" id="fileDetails">
+                                        <!-- Filled by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Map Section -->
+                        <div id="mapSection" class="input-section" style="display: none;">
+                            <h4 style="margin-top: 40px;">Select Area on Lahore Division Map</h4>
+                            <p>Draw a rectangle or polygon on the map below to select your area of interest. Coordinates
+                                will be automatically recorded.</p>
+
+                            <div class="map-container">
+                                <div class="map-controls">
+                                    <div>
+                                        <h4 style="margin: 0; color: var(--dark-color);">Lahore Division, Punjab,
+                                            Pakistan</h4>
+                                        <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #666;">
+                                            <i class="fas fa-info-circle"></i> Draw rectangle or polygon to select
+                                            analysis area
+                                        </p>
+                                    </div>
+                                    <div class="draw-controls">
+                                        <button class="draw-btn" onclick="startDrawing('rectangle')">
+                                            <i class="fas fa-vector-square"></i> Draw Rectangle
+                                        </button>
+                                        <button class="draw-btn" onclick="startDrawing('polygon')">
+                                            <i class="fas fa-draw-polygon"></i> Draw Polygon
+                                        </button>
+                                        <button class="draw-btn clear" onclick="clearAllDrawings()">
+                                            <i class="fas fa-trash-alt"></i> Clear
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="map"></div>
+                                <div class="coordinates-panel">
+                                    <h4>Selected Coordinates</h4>
+                                    <div id="coordinatesDisplay">
+                                        <p style="color: #666; margin: 0;">No area selected yet. Draw a rectangle or
+                                            polygon on the map.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="area-info" id="areaInfo">
+                                <h4 style="margin-top: 0; margin-bottom: 10px;">Area Information</h4>
+                                <div
+                                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                    <div>
+                                        <div class="detail-label">Area Size</div>
+                                        <div class="detail-value" id="areaSize">0 sq km</div>
+                                    </div>
+                                    <div>
+                                        <div class="detail-label">Bounds</div>
+                                        <div class="detail-value" id="areaBounds">Not set</div>
+                                    </div>
+                                    <div>
+                                        <div class="detail-label">Center Point</div>
+                                        <div class="detail-value" id="centerPoint">Not set</div>
+                                    </div>
+                                    <div>
+                                        <div class="detail-label">Imagery Date</div>
+                                        <div class="detail-value" id="imageryDate">Latest Available</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="checkbox-group" style="margin-top: 20px;">
+                                <input type="checkbox" id="useLatestImagery" checked>
+                                <label for="useLatestImagery">Use latest available satellite imagery</label>
+                            </div>
+
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="includeNearbyAreas">
+                                <label for="includeNearbyAreas">Include 1km buffer area around selection</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Analysis Options -->
+                    <div id="step2" class="step-pane">
+                        <h3>Analysis Configuration</h3>
+                        <p>Configure the analysis parameters for your green space assessment.</p>
+
+                        <!-- Time Analysis Options -->
+                        <div class="form-group">
+                            <label for="timeAnalysis">Time Analysis Type</label>
+                            <select id="timeAnalysis" class="form-select" onchange="toggleTemporalOptions()">
+                                <option value="temporal" selected>Temporal Analysis (Multiple Years) - Recommended
+                                </option>
+                                <option value="current">Current Analysis (Single Time Point 2024)</option>
+                            </select>
+                        </div>
+
+                        <!-- Temporal Options (Hidden by default) -->
+                        <div id="temporalOptions" class="time-analysis-options" style="display: none;">
+                            <h4>Temporal Analysis Settings</h4>
+                            <p>Analyze changes over multiple years to track green space evolution.</p>
+
+                            <div class="year-range">
+                                <div style="flex: 1;">
+                                    <label for="startYear">Start Year</label>
+                                    <input type="number" id="startYear" min="2010" max="2024" value="2016">
+                                </div>
+                                <div style="display: flex; align-items: center; margin-top: 25px;">
+                                    <span>to</span>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="endYear">End Year</label>
+                                    <input type="number" id="endYear" min="2010" max="2024" value="2024">
+                                </div>
+                            </div>
+
+                            <div class="checkbox-group" style="margin-top: 15px;">
+                                <input type="checkbox" id="includePredictions">
+                                <label for="includePredictions">Include future trend predictions</label>
+                            </div>
+
+                            <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">
+                                <i class="fas fa-info-circle"></i> Temporal analysis processes data for each season
+                                (Spring, Summer, Autumn, Winter)
+                            </p>
+                        </div>
+
+                        <div class="analysis-options">
+                            <!-- Model Selection -->
+                            <div class="option-card selected" id="modelUnet" onclick="selectOption('model', 'unet')">
+                                <div class="option-header">
+                                    <div class="option-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div>
+                                        <h3>U-Net Model</h3>
+                                        <p style="color: #4caf50; font-weight: 600;">Recommended</p>
+                                    </div>
+                                </div>
+                                <p>High accuracy segmentation for urban green spaces. Best for general analysis.</p>
+                                <ul style="margin-top: 15px; padding-left: 20px; color: #666;">
+                                    <li>Accuracy: 92%</li>
+                                    <li>Processing Time: 15-30s</li>
+                                    <li>Best for: Urban areas</li>
+                                </ul>
+                            </div>
+
+                            <div class="option-card" id="modelDeeplab" onclick="selectOption('model', 'deeplab')">
+                                <div class="option-header">
+                                    <div class="option-icon">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <div>
+                                        <h3>DeepLabv3+</h3>
+                                        <p>Advanced</p>
+                                    </div>
+                                </div>
+                                <p>State-of-the-art model for complex urban landscapes with mixed vegetation.</p>
+                                <ul style="margin-top: 15px; padding-left: 20px; color: #666;">
+                                    <li>Accuracy: 94%</li>
+                                    <li>Processing Time: 20-40s</li>
+                                    <li>Best for: Complex areas</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="analysisType">Analysis Type</label>
+                            <select id="analysisType" class="form-select">
+                                <option value="basic">Basic Green Space Segmentation</option>
+                                <option value="advanced" selected>Segmentation + Temperature Analysis</option>
+                                <option value="detailed">Detailed Analysis (Vegetation Health + Urban Heat)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resolution">Output Resolution</label>
+                            <select id="resolution" class="form-select">
+                                <option value="high">High (1-5m)</option>
+                                <option value="medium" selected>Medium (5-10m)</option>
+                                <option value="low">Low (10-30m)</option>
+                            </select>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="includeTemperature" checked>
+                            <label for="includeTemperature">Include temperature analysis</label>
+                            <span id="eeStatus" class="badge"
+                                style="display: none; margin-left: 10px; padding: 2px 8px; background: #ff9800; color: white; border-radius: 10px; font-size: 0.8rem;">
+                                (Earth Engine not available)
+                            </span>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="generateReport">
+                            <label for="generateReport">Generate detailed PDF report</label>
+                        </div>
+
+                        <div class="cost-estimate">
+                            <h4>Cost Estimate</h4>
+                            <p>Based on your selections, here's an estimate of analysis credits required:</p>
+                            <div class="cost-breakdown">
+                                <div class="cost-item">
+                                    <span>Basic Segmentation</span>
+                                    <span>1 credit</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>Temperature Analysis</span>
+                                    <span>+1 credit</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>Detailed Report</span>
+                                    <span>+1 credit</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>High Resolution</span>
+                                    <span>+1 credit</span>
+                                </div>
+                                <div class="cost-total">
+                                    Total: <span id="totalCost">2</span> credits
+                                </div>
+                            </div>
+                            <p style="margin-top: 10px; font-size: 0.9rem;">
+                                <i class="fas fa-info-circle"></i> Free tier includes 5 credits/month. <a
+                                    href="{% url 'upgrade_plan' %}">Upgrade plan</a> for more.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Project Details -->
+                    <div id="step3" class="step-pane">
+                        <h3>Project Information</h3>
+                        <p>Add details about your analysis project for better organization and reporting.</p>
+
+                        <div class="form-group">
+                            <label for="projectName">Project Name *</label>
+                            <input type="text" id="projectName" placeholder="e.g., Lahore Park Analysis 2024" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectDescription">Description</label>
+                            <textarea id="projectDescription" rows="4"
+                                placeholder="Describe your analysis objectives..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectTags">Tags (comma separated)</label>
+                            <input type="text" id="projectTags" placeholder="e.g., lahore, parks, urban, research">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectVisibility">Visibility</label>
+                            <select id="projectVisibility" class="form-select">
+                                <option value="private">Private (Only me)</option>
+                                <option value="team">Team (Shared with organization)</option>
+                                <option value="public">Public (Visible to all users)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Analysis Purpose</label>
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px;">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="purposeResearch">
+                                    <label for="purposeResearch">Academic Research</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="purposePlanning">
+                                    <label for="purposePlanning">Urban Planning</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="purposeEnvironmental">
+                                    <label for="purposeEnvironmental">Environmental Assessment</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="purposeCommercial">
+                                    <label for="purposeCommercial">Commercial Use</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Review & Submit -->
+                    <div id="step4" class="step-pane">
+                        <h3>Review & Submit</h3>
+                        <p>Review your analysis configuration before submission.</p>
+
+                        <div class="review-summary">
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin: 30px 0;">
+                                <div>
+                                    <h4>Input Information</h4>
+                                    <div id="reviewInputInfo"
+                                        style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 10px;">
+                                        <!-- Filled by JavaScript -->
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4>Analysis Configuration</h4>
+                                    <div id="reviewConfig"
+                                        style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 10px;">
+                                        <!-- Filled by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin: 20px 0;">
+                                <h4>Processing Estimate</h4>
+                                <div
+                                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 15px;">
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #666;">Estimated Time</div>
+                                        <div style="font-size: 1.5rem; font-weight: 600; color: var(--primary-color);"
+                                            id="estimatedTime">45 seconds</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #666;">Credits Required</div>
+                                        <div style="font-size: 1.5rem; font-weight: 600; color: var(--secondary-color);"
+                                            id="reviewCredits">2</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #666;">Your Balance</div>
+                                        <div style="font-size: 1.5rem; font-weight: 600; color: #4caf50;"
+                                            id="creditBalance">5 credits</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="checkbox-group" style="margin: 25px 0;">
+                                <input type="checkbox" id="termsAgree" required>
+                                <label for="termsAgree">I agree to the <a href="{% url 'terms' %}">Terms of Service</a>
+                                    and confirm that I have the rights to use this data.</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wizard Footer -->
+            <div class="wizard-footer">
+                <button class="btn-back" id="btnBack" style="visibility: hidden;">Back</button>
+                <div>
+                    <span id="stepIndicator">Step 1 of 4</span>
+                </div>
+                <button class="btn-next" id="btnNext">Next Step</button>
+            </div>
+        </div>
+
+        <!-- Quick Start Tips -->
+        <div style="background: #f8f9fa; padding: 30px; border-radius: 10px; margin-top: 40px;">
+            <h3 style="margin-bottom: 20px;"><i class="fas fa-lightbulb"></i> Quick Tips</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div>
+                    <h4><i class="fas fa-map-marked-alt"></i> Lahore Division Areas</h4>
+                    <p>Major areas: Lahore City, Kasur, Nankana Sahib, Sheikhupura. Consider analyzing specific zones.
+                    </p>
+                </div>
+                <div>
+                    <h4><i class="fas fa-satellite-dish"></i> Best Image Sources</h4>
+                    <p>For map selection, we use Sentinel-2 (10m) imagery. For upload, Landsat 8/9 recommended.</p>
+                </div>
+                <div>
+                    <h4><i class="fas fa-cloud-sun"></i> Cloud-Free Images</h4>
+                    <p>Choose images with less than 10% cloud cover for accurate analysis.</p>
+                </div>
+                <div>
+                    <h4><i class="fas fa-chart-line"></i> Temporal Analysis</h4>
+                    <p>Track changes over time (2016-2024) to understand urban development patterns.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced platform for urban green space analysis using remote sensing and deep learning.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Need Help?</h4>
+                <ul>
+                    <li><a href="{% url 'tutorials' %}">Getting Started Guide</a></li>
+                    <li><a href="{% url 'documentation' %}#image-upload">Upload Guidelines</a></li>
+                    <li><a href="{% url 'faqs' %}">FAQ</a></li>
+                    <li><a href="{% url 'support' %}">Contact Support</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Examples</h4>
+                <ul>
+                    <li><a href="#">Sample Images</a></li>
+                    <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                    <li><a href="#">Demo Results</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Account</h4>
+                <ul class="contact-info">
+                    <li><a href="#">My Projects</a></li>
+                    <li><a href="#">Credits: <span id="footerCredits">5</span></a></li>
+                    <li><a href="{% url 'upgrade_plan' %}">Upgrade Plan</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 GreenSpace AI - Start your analysis today</p>
+        </div>
+    </footer>
+
+    <!-- Processing Modal -->
+    <div id="processingModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
+        <div
+            style="background: white; padding: 40px; border-radius: 10px; text-align: center; max-width: 500px; width: 90%;">
+            <div class="upload-icon">
+                <i class="fas fa-cog fa-spin"></i>
+            </div>
+            <h3 style="margin: 20px 0 10px;">Processing Your Analysis</h3>
+            <p id="processingDescription">Your image is being analyzed by our AI models. This may take 30-60 seconds.
+            </p>
+
+            <div style="margin: 30px 0;">
+                <div style="height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden;">
+                    <div id="processingBar"
+                        style="height: 100%; background: var(--primary-color); width: 0%; transition: width 0.5s ease;">
+                    </div>
+                </div>
+                <div id="processingText" style="margin-top: 10px; font-size: 0.9rem; color: #666;">Starting analysis...
+                </div>
+            </div>
+
+            <div id="successMessage" style="display: none;">
+                <div style="color: #4caf50; font-size: 4rem; margin-bottom: 20px;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Analysis Complete!</h3>
+                <p>Your results are ready to view.</p>
+                <button onclick="redirectToResults()"
+                    style="padding: 12px 30px; background: var(--primary-color); color: white; border: none; border-radius: 5px; font-weight: 600; cursor: pointer; margin-top: 20px;">
+                    View Results
+                </button>
+            </div>
+
+            <div id="errorMessage" style="display: none;">
+                <div style="color: #f44336; font-size: 4rem; margin-bottom: 20px;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Analysis Failed</h3>
+                <p id="errorText">An error occurred during processing.</p>
+                <button onclick="hideModal()"
+                    style="padding: 12px 30px; background: #f44336; color: white; border: none; border-radius: 5px; font-weight: 600; cursor: pointer; margin-top: 20px;">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Leaflet Draw -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+    <script>
+        // Global variables
+        let currentStep = 1;
+        const totalSteps = 4;
+        let selectedInputMethod = 'upload';
+        let uploadedFile = null;
+        let selectedModel = 'unet';
+        let map = null;
+        let drawnItems = null;
+        let drawControl = null;
+        let csrfToken = null;
+        let analysisResult = null;
+        let resultRedirectUrl = null;
+
+        // Initialize Earth Engine status
+        function checkEarthEngineStatus() {
+            fetch('/api/earth-engine-status/')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.available) {
+                        document.getElementById('eeStatus').style.display = 'inline';
+                        document.getElementById('includeTemperature').disabled = true;
+                        document.getElementById('includeTemperature').checked = false;
+                        document.getElementById('includeTemperature').parentElement.style.opacity = '0.7';
+                    }
+                })
+                .catch(() => {
+                    // Silently fail if endpoint doesn't exist
+                });
+        }
+
+        // Toggle temporal options
+        function toggleTemporalOptions() {
+            const timeAnalysis = document.getElementById('timeAnalysis').value;
+            const temporalOptions = document.getElementById('temporalOptions');
+
+            if (timeAnalysis === 'temporal') {
+                temporalOptions.style.display = 'block';
+                // Update cost estimate
+                updateCostEstimate();
+            } else {
+                temporalOptions.style.display = 'none';
+                updateCostEstimate();
+            }
+        }
+
+        // Initialize map
+        function initializeMap() {
+            if (map) return; // Map already initialized
+
+            // Create map centered on Lahore
+            map = L.map('map').setView([31.5497, 74.3436], 11);
+
+            // Add base tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Add satellite imagery layer
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Initialize feature group for drawn items
+            drawnItems = new L.FeatureGroup();
+            map.addLayer(drawnItems);
+
+            // Add layer control
+            L.control.layers({
+                "Street Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+                "Satellite Imagery": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}')
+            }, {}, { position: 'topright' }).addTo(map);
+
+            // Initialize draw control
+            drawControl = new L.Control.Draw({
+                position: 'topleft',
+                draw: {
+                    polygon: {
+                        shapeOptions: {
+                            color: '#2e7d32',
+                            fillColor: '#2e7d32',
+                            fillOpacity: 0.2
+                        }
+                    },
+                    rectangle: {
+                        shapeOptions: {
+                            color: '#ff9800',
+                            fillColor: '#ff9800',
+                            fillOpacity: 0.2
+                        }
+                    },
+                    circle: false,
+                    marker: false,
+                    polyline: false
+                },
+                edit: {
+                    featureGroup: drawnItems
+                }
+            });
+            map.addControl(drawControl);
+
+            // Handle draw events
+            map.on(L.Draw.Event.CREATED, function (e) {
+                const type = e.layerType;
+                const layer = e.layer;
+
+                // Clear previous drawings
+                drawnItems.clearLayers();
+                drawnItems.addLayer(layer);
+
+                // Update coordinates display
+                updateCoordinatesDisplay(layer);
+            });
+
+            map.on(L.Draw.Event.EDITED, function (e) {
+                const layers = e.layers;
+                layers.eachLayer(function (layer) {
+                    updateCoordinatesDisplay(layer);
+                });
+            });
+
+            map.on(L.Draw.Event.DELETED, function () {
+                document.getElementById('coordinatesDisplay').innerHTML =
+                    '<p style="color: #666; margin: 0;">No area selected yet. Draw a rectangle or polygon on the map.</p>';
+                document.getElementById('areaInfo').classList.remove('show');
+            });
+        }
+
+        // Get CSRF token
+        function getCsrfToken() {
+            const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (csrfInput) {
+                return csrfInput.value;
+            }
+
+            // Fallback to cookie method
+            const name = 'csrftoken';
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Submit analysis
+        function submitAnalysis() {
+            const modal = document.getElementById('processingModal');
+            const processingBar = document.getElementById('processingBar');
+            const processingText = document.getElementById('processingText');
+            const processingDescription = document.getElementById('processingDescription');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Validate inputs
+            if (!validateStep(4)) return;
+
+            // Show modal
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            // Get CSRF token
+            csrfToken = getCsrfToken();
+            if (!csrfToken) {
+                console.warn('CSRF token missing from cookies, attempting to use template token');
+                csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+            }
+
+            if (!csrfToken) {
+                // If still missing but we are debugging, maybe it's okay because of @csrf_exempt
+                console.error('CSRF token truly missing');
+                // We'll try to proceed anyway if possible, or show a more helpful error
+            }
+
+            // Prepare form data
+            const formData = new FormData();
+
+            // Add CSRF token
+            formData.append('csrfmiddlewaretoken', csrfToken);
+
+            // Add analysis options
+            formData.append('analysis_type', document.getElementById('analysisType').value);
+            formData.append('model_type', selectedModel);
+            formData.append('time_analysis', document.getElementById('timeAnalysis').value);
+
+            // Add temporal parameters if applicable
+            if (document.getElementById('timeAnalysis').value === 'temporal') {
+                formData.append('start_year', document.getElementById('startYear').value);
+                formData.append('end_year', document.getElementById('endYear').value);
+                formData.append('include_predictions', document.getElementById('includePredictions').checked);
+            }
+
+            // Add temperature analysis
+            formData.append('include_temperature', document.getElementById('includeTemperature').checked);
+
+            // Add project name
+            const projectName = document.getElementById('projectName').value;
+            if (projectName) {
+                formData.append('project_name', projectName);
+            }
+
+            // Add input data
+            if (selectedInputMethod === 'upload') {
+                if (!uploadedFile) {
+                    showError('Please upload an image first.');
+                    return;
+                }
+                formData.append('image_file', uploadedFile);
+            } else if (selectedInputMethod === 'map') {
+                const drawnLayer = drawnItems.getLayers()[0];
+                if (!drawnLayer) {
+                    showError('Please draw an area on the map first.');
+                    return;
+                }
+
+                // Extract coordinates from drawn layer
+                let coordinates = [];
+                if (drawnLayer instanceof L.Rectangle) {
+                    const latlngs = drawnLayer.getLatLngs()[0];
+                    coordinates = latlngs.map(latlng => [latlng.lat, latlng.lng]);
+                } else if (drawnLayer instanceof L.Polygon) {
+                    const latlngs = drawnLayer.getLatLngs()[0];
+                    coordinates = latlngs.map(latlng => [latlng.lat, latlng.lng]);
+                }
+
+                if (coordinates.length < 3) {
+                    showError('Please draw a valid area with at least 3 points.');
+                    return;
+                }
+
+                formData.append('coordinates', JSON.stringify(coordinates));
+            }
+
+            // Start processing animation
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 1;
+                if (progress <= 90) { // Leave room for final completion
+                    processingBar.style.width = `${progress}%`;
+                    updateProcessingText(progress);
+                }
+            }, 500);
+
+            // Make AJAX request
+            fetch('{% url "analysis" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            })
+                .then(response => {
+                    clearInterval(progressInterval);
+                    processingBar.style.width = '100%';
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Show completion animation
+                        processingText.textContent = 'Processing complete!';
+
+                        setTimeout(() => {
+                            processingBar.parentElement.style.display = 'none';
+                            processingText.style.display = 'none';
+                            successMessage.style.display = 'block';
+
+                            // Store redirect URL
+                            resultRedirectUrl = data.redirect_url;
+
+                            // Store results for display
+                            analysisResult = data;
+
+                        }, 1000);
+                    } else {
+                        throw new Error(data.error || 'Analysis failed without error message');
+                    }
+                })
+                .catch(error => {
+                    clearInterval(progressInterval);
+                    console.error('Error:', error);
+
+                    // Show error
+                    let errorMessageText = error.message;
+                    if (error.message.includes('Failed to fetch')) {
+                        errorMessageText = 'Network error. Please check your connection and try again.';
+                    } else if (error.message.includes('HTTP error')) {
+                        errorMessageText = 'Server error. Please try again later.';
+                    }
+
+                    showError(errorMessageText);
+                });
+        }
+
+        function updateProcessingText(progress) {
+            const text = document.getElementById('processingText');
+            if (progress < 20) {
+                text.textContent = 'Initializing analysis...';
+            } else if (progress < 40) {
+                text.textContent = selectedInputMethod === 'map' ? 'Fetching satellite data...' : 'Processing image...';
+            } else if (progress < 60) {
+                text.textContent = 'Running AI segmentation...';
+            } else if (progress < 80) {
+                text.textContent = 'Calculating statistics...';
+            } else {
+                text.textContent = 'Finalizing results...';
+            }
+        }
+
+        // Redirect to results page
+        function redirectToResults() {
+            if (resultRedirectUrl) {
+                window.location.href = resultRedirectUrl;
+            } else {
+                showError('No results URL available. Please try the analysis again.');
+            }
+        }
+
+        // Show error in modal
+        function showError(message) {
+            const modal = document.getElementById('processingModal');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const processingBar = document.getElementById('processingBar');
+            const processingText = document.getElementById('processingText');
+
+            processingBar.style.display = 'none';
+            processingText.style.display = 'none';
+            errorText.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        // Hide modal
+        function hideModal() {
+            const modal = document.getElementById('processingModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Update coordinates display
+        function updateCoordinatesDisplay(layer) {
+            let coordinates = [];
+            let area = 0;
+            let bounds = null;
+            let center = null;
+
+            if (layer instanceof L.Rectangle) {
+                const latlngs = layer.getLatLngs()[0];
+                coordinates = latlngs.map(latlng => `(${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)})`);
+                bounds = layer.getBounds();
+                center = bounds.getCenter();
+                area = calculateArea(latlngs);
+            } else if (layer instanceof L.Polygon) {
+                const latlngs = layer.getLatLngs()[0];
+                coordinates = latlngs.map(latlng => `(${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)})`);
+                bounds = layer.getBounds();
+                center = bounds.getCenter();
+                area = calculateArea(latlngs);
+            }
+
+            // Update coordinates display
+            const coordHTML = coordinates.map((coord, index) =>
+                `<li><strong>Point ${index + 1}:</strong> ${coord}</li>`
+            ).join('');
+
+            document.getElementById('coordinatesDisplay').innerHTML =
+                `<ul class="coordinates-list">${coordHTML}</ul>`;
+
+            // Update area info
+            document.getElementById('areaSize').textContent = `${area.toFixed(2)} sq km`;
+            document.getElementById('areaBounds').textContent =
+                bounds ? `N:${bounds.getNorth().toFixed(4)} S:${bounds.getSouth().toFixed(4)} E:${bounds.getEast().toFixed(4)} W:${bounds.getWest().toFixed(4)}` : 'Not set';
+            document.getElementById('centerPoint').textContent =
+                center ? `${center.lat.toFixed(6)}, ${center.lng.toFixed(6)}` : 'Not set';
+            document.getElementById('areaInfo').classList.add('show');
+        }
+
+        // Calculate area in square kilometers
+        function calculateArea(latlngs) {
+            if (latlngs.length < 3) return 0;
+
+            let area = 0;
+            const R = 6371; // Earth's radius in km
+
+            for (let i = 0; i < latlngs.length; i++) {
+                const p1 = latlngs[i];
+                const p2 = latlngs[(i + 1) % latlngs.length];
+
+                const lat1 = p1.lat * Math.PI / 180;
+                const lon1 = p1.lng * Math.PI / 180;
+                const lat2 = p2.lat * Math.PI / 180;
+                const lon2 = p2.lng * Math.PI / 180;
+
+                area += (lon2 - lon1) * (2 + Math.sin(lat1) + Math.sin(lat2));
+            }
+
+            area = Math.abs(area * R * R / 2);
+            return area;
+        }
+
+        // Start drawing programmatically
+        function startDrawing(type) {
+            if (!map) return;
+
+            if (type === 'rectangle') {
+                new L.Draw.Rectangle(map, drawControl.options.draw.rectangle).enable();
+            } else if (type === 'polygon') {
+                new L.Draw.Polygon(map, drawControl.options.draw.polygon).enable();
+            }
+        }
+
+        // Clear all drawings
+        function clearAllDrawings() {
+            if (drawnItems) {
+                drawnItems.clearLayers();
+                document.getElementById('coordinatesDisplay').innerHTML =
+                    '<p style="color: #666; margin: 0;">No area selected yet. Draw a rectangle or polygon on the map.</p>';
+                document.getElementById('areaInfo').classList.remove('show');
+            }
+        }
+
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active')
+                    ? '<i class="fas fa-times"></i>'
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Wizard functionality
+        const stepPanes = document.querySelectorAll('.step-pane');
+        const stepLinks = document.querySelectorAll('.step-link');
+        const progressFill = document.getElementById('progressFill');
+        const stepIndicator = document.getElementById('stepIndicator');
+        const btnBack = document.getElementById('btnBack');
+        const btnNext = document.getElementById('btnNext');
+
+        function updateWizard() {
+            // Update step panes
+            stepPanes.forEach(pane => pane.classList.remove('active'));
+            document.getElementById(`step${currentStep}`).classList.add('active');
+
+            // Update step links
+            stepLinks.forEach(link => {
+                const step = parseInt(link.getAttribute('data-step'));
+                link.classList.remove('active', 'completed');
+
+                if (step === currentStep) {
+                    link.classList.add('active');
+                } else if (step < currentStep) {
+                    link.classList.add('completed');
+                }
+            });
+
+            // Update progress
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressFill.style.width = `${progress}%`;
+
+            // Update step indicator
+            stepIndicator.textContent = `Step ${currentStep} of ${totalSteps}`;
+
+            // Update buttons
+            btnBack.style.visibility = currentStep > 1 ? 'visible' : 'hidden';
+            btnNext.textContent = currentStep === totalSteps ? 'Submit Analysis' : 'Next Step';
+
+            // Update review on step 4
+            if (currentStep === 4) {
+                updateReview();
+            }
+        }
+
+        btnNext.addEventListener('click', function () {
+            if (currentStep === totalSteps) {
+                submitAnalysis();
+            } else {
+                // Validate current step
+                if (validateStep(currentStep)) {
+                    currentStep++;
+                    updateWizard();
+
+                    // Initialize map if needed
+                    if (currentStep === 2 && selectedInputMethod === 'map') {
+                        setTimeout(initializeMap, 100);
+                    }
+                }
+            }
+        });
+
+        btnBack.addEventListener('click', function () {
+            if (currentStep > 1) {
+                currentStep--;
+                updateWizard();
+            }
+        });
+
+        // Step validation
+        function validateStep(step) {
+            switch (step) {
+                case 1:
+                    if (selectedInputMethod === 'upload' && !uploadedFile) {
+                        alert('Please upload an image to continue.');
+                        return false;
+                    } else if (selectedInputMethod === 'map') {
+                        // Check if area is selected on map
+                        if (drawnItems && drawnItems.getLayers().length === 0) {
+                            alert('Please draw an area on the map to continue.');
+                            return false;
+                        }
+                    }
+                    return true;
+                case 3:
+                    const projectName = document.getElementById('projectName').value;
+                    if (!projectName.trim()) {
+                        alert('Please enter a project name.');
+                        return false;
+                    }
+                    return true;
+                case 4:
+                    if (!document.getElementById('termsAgree').checked) {
+                        alert('Please agree to the terms and conditions.');
+                        return false;
+                    }
+                    return true;
+                default:
+                    return true;
+            }
+        }
+
+        // Select input method
+        function selectInputMethod(method) {
+            selectedInputMethod = method;
+
+            // Update UI
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.getElementById(`method${method.charAt(0).toUpperCase() + method.slice(1)}`).classList.add('selected');
+
+            // Show/hide sections
+            document.getElementById('uploadSection').style.display = method === 'upload' ? 'block' : 'none';
+            document.getElementById('mapSection').style.display = method === 'map' ? 'block' : 'none';
+
+            // Initialize map if needed
+            if (method === 'map') {
+                setTimeout(initializeMap, 100);
+            }
+        }
+
+        // File upload functionality
+        const fileInput = document.getElementById('fileInput');
+        const uploadDropArea = document.getElementById('uploadDropArea');
+        const filePreview = document.getElementById('filePreview');
+        const originalPreview = document.getElementById('originalPreview');
+        const processedPreview = document.getElementById('processedPreview');
+        const fileDetails = document.getElementById('fileDetails');
+
+        // Drag and drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadDropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadDropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadDropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() {
+            uploadDropArea.classList.add('dragover');
+        }
+
+        function unhighlight() {
+            uploadDropArea.classList.remove('dragover');
+        }
+
+        uploadDropArea.addEventListener('drop', handleDrop, false);
+        fileInput.addEventListener('change', handleFileSelect, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handleFileSelect() {
+            handleFiles(this.files);
+        }
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+
+            const file = files[0];
+            uploadedFile = file;
+
+            // Validate file
+            const validTypes = ['image/tiff', 'image/jpeg', 'image/png', 'image/jpg'];
+            if (!validTypes.includes(file.type)) {
+                alert('Please upload a valid image file (TIFF, JPEG, PNG)');
+                return;
+            }
+
+            if (file.size > 100 * 1024 * 1024) {
+                alert('File size exceeds 100MB limit');
+                return;
+            }
+
+            // Show preview
+            showFilePreview(file);
+        }
+
+        function showFilePreview(file) {
+            // Show preview section
+            filePreview.style.display = 'block';
+
+            // Update file details
+            fileDetails.innerHTML = `
+                <div class="detail-item">
+                    <div class="detail-label">File Name</div>
+                    <div class="detail-value">${file.name}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">File Size</div>
+                    <div class="detail-value">${formatFileSize(file.size)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">File Type</div>
+                    <div class="detail-value">${file.type}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Last Modified</div>
+                    <div class="detail-value">${new Date(file.lastModified).toLocaleDateString()}</div>
+                </div>
+            `;
+
+            // Create preview image
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                originalPreview.innerHTML = `<img src="${e.target.result}" alt="Original Image">`;
+
+                // Simulate processed preview after 2 seconds
+                setTimeout(() => {
+                    processedPreview.innerHTML = `<img src="${e.target.result}" alt="Processed Image" style="filter: sepia(0.3) hue-rotate(90deg);">`;
+                }, 2000);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Analysis options selection
+        function selectOption(type, value) {
+            if (type === 'model') {
+                selectedModel = value;
+                document.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
+                document.getElementById(`model${value.charAt(0).toUpperCase() + value.slice(1)}`).classList.add('selected');
+            }
+
+            updateCostEstimate();
+        }
+
+        // Cost estimate update
+        function updateCostEstimate() {
+            let total = 1; // Base cost
+
+            if (document.getElementById('includeTemperature')?.checked) {
+                total += 1;
+            }
+
+            if (document.getElementById('generateReport')?.checked) {
+                total += 1;
+            }
+
+            const resolution = document.getElementById('resolution')?.value;
+            if (resolution === 'high') {
+                total += 1;
+            }
+
+            // Add temporal analysis cost
+            if (document.getElementById('timeAnalysis')?.value === 'temporal') {
+                const startYear = parseInt(document.getElementById('startYear').value) || 2016;
+                const endYear = parseInt(document.getElementById('endYear').value) || 2024;
+                const yearCount = endYear - startYear + 1;
+                total += Math.max(0, yearCount - 1); // Additional credit for each extra year
+            }
+
+            document.getElementById('totalCost').textContent = total;
+        }
+
+        // Update review summary
+        function updateReview() {
+            // Input info
+            let inputHTML = '';
+            if (selectedInputMethod === 'upload' && uploadedFile) {
+                inputHTML = `
+                    <div><strong>Method:</strong> Image Upload</div>
+                    <div><strong>File Name:</strong> ${uploadedFile.name}</div>
+                    <div><strong>File Size:</strong> ${formatFileSize(uploadedFile.size)}</div>
+                    <div><strong>File Type:</strong> ${uploadedFile.type}</div>
+                `;
+            } else if (selectedInputMethod === 'map') {
+                const areaSize = document.getElementById('areaSize')?.textContent || 'Not set';
+                const centerPoint = document.getElementById('centerPoint')?.textContent || 'Not set';
+                inputHTML = `
+                    <div><strong>Method:</strong> Map Selection</div>
+                    <div><strong>Location:</strong> Lahore Division, Pakistan</div>
+                    <div><strong>Area Size:</strong> ${areaSize}</div>
+                    <div><strong>Center Point:</strong> ${centerPoint}</div>
+                    <div><strong>Imagery:</strong> ${document.getElementById('useLatestImagery')?.checked ? 'Latest Available' : 'Custom Date'}</div>
+                `;
+            }
+            document.getElementById('reviewInputInfo').innerHTML = inputHTML;
+
+            // Config info
+            const analysisType = document.getElementById('analysisType').value;
+            const resolution = document.getElementById('resolution').value;
+            const timeAnalysis = document.getElementById('timeAnalysis').value;
+
+            let configHTML = `
+                <div><strong>Model:</strong> ${selectedModel === 'unet' ? 'U-Net' : 'DeepLabv3+'}</div>
+                <div><strong>Analysis Type:</strong> ${analysisType}</div>
+                <div><strong>Time Analysis:</strong> ${timeAnalysis === 'temporal' ? 'Temporal (Multiple Years)' : 'Current (Single Time)'}</div>
+                <div><strong>Resolution:</strong> ${resolution}</div>
+                <div><strong>Temperature Analysis:</strong> ${document.getElementById('includeTemperature')?.checked ? 'Yes' : 'No'}</div>
+                <div><strong>PDF Report:</strong> ${document.getElementById('generateReport')?.checked ? 'Yes' : 'No'}</div>
+            `;
+
+            if (timeAnalysis === 'temporal') {
+                const startYear = document.getElementById('startYear').value;
+                const endYear = document.getElementById('endYear').value;
+                configHTML += `<div><strong>Year Range:</strong> ${startYear} - ${endYear}</div>`;
+            }
+
+            document.getElementById('reviewConfig').innerHTML = configHTML;
+
+            // Update credits
+            updateCostEstimate();
+            document.getElementById('reviewCredits').textContent = document.getElementById('totalCost').textContent;
+
+            // Update estimated time based on method
+            let estimatedTime = '45-60 seconds';
+            if (selectedInputMethod === 'map') {
+                estimatedTime = '60-90 seconds';
+            }
+            if (timeAnalysis === 'temporal') {
+                const startYear = parseInt(document.getElementById('startYear').value) || 2016;
+                const endYear = parseInt(document.getElementById('endYear').value) || 2024;
+                const yearCount = endYear - startYear + 1;
+                estimatedTime = `${yearCount * 30}-${yearCount * 45} seconds`;
+            }
+            document.getElementById('estimatedTime').textContent = estimatedTime;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            updateWizard();
+            selectOption('model', 'unet');
+            checkEarthEngineStatus();
+            if (typeof toggleTemporalOptions === 'function') {
+                toggleTemporalOptions();
+            }
+
+            // Listen for changes that affect cost
+            document.getElementById('includeTemperature')?.addEventListener('change', updateCostEstimate);
+            document.getElementById('generateReport')?.addEventListener('change', updateCostEstimate);
+            document.getElementById('resolution')?.addEventListener('change', updateCostEstimate);
+            document.getElementById('timeAnalysis')?.addEventListener('change', updateCostEstimate);
+            document.getElementById('startYear')?.addEventListener('change', updateCostEstimate);
+            document.getElementById('endYear')?.addEventListener('change', updateCostEstimate);
+            document.getElementById('includePredictions')?.addEventListener('change', updateCostEstimate);
+        });
+    </script>
+</body>
+
+</html>

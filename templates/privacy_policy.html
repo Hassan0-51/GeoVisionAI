@@ -1,0 +1,1193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy & Terms - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .policy-container {
+            max-width: 1000px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .policy-header {
+            background: linear-gradient(135deg, #1565c0, #1976d2);
+            color: white;
+            padding: 60px 50px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .policy-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+
+        .last-updated {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Main content wrapper with flex layout */
+        .policy-main-wrapper {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .policy-nav {
+            flex: 0 0 250px; /* Fixed width for sidebar */
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 10px;
+            position: sticky;
+            top: 120px; /* Adjust based on your navbar height */
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .policy-nav h3 {
+            margin-top: 0;
+            color: #1976d2;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .policy-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .policy-nav li {
+            margin-bottom: 10px;
+        }
+
+        .policy-nav a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: block;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .policy-nav a:hover {
+            background: #e3f2fd;
+            color: #1976d2;
+            transform: translateX(5px);
+        }
+
+        .policy-nav a.active {
+            background: #1976d2;
+            color: white;
+            font-weight: 500;
+        }
+
+        .policy-content {
+            flex: 1;
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        .policy-section {
+            margin-bottom: 50px;
+            padding-bottom: 50px;
+            border-bottom: 1px solid #eee;
+            scroll-margin-top: 100px; /* For anchor links */
+        }
+
+        .policy-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .policy-section h2 {
+            color: #1976d2;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1976d2;
+            font-size: 1.8rem;
+        }
+
+        .policy-section h3 {
+            color: #333;
+            margin: 30px 0 15px;
+            font-size: 1.3rem;
+        }
+
+        .policy-text {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .highlight-box {
+            background: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 25px;
+            border-radius: 0 8px 8px 0;
+            margin: 25px 0;
+        }
+
+        .highlight-box h4 {
+            margin-top: 0;
+            color: #1976d2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+            background: #1976d2;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-category {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .category-personal { background: #ffebee; color: #c62828; }
+        .category-geospatial { background: #e8f5e9; color: #2e7d32; }
+        .category-usage { background: #fff3e0; color: #ef6c00; }
+        .category-technical { background: #e3f2fd; color: #1565c0; }
+
+        .compliance-badges {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .compliance-badge {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .badge-icon {
+            width: 60px;
+            height: 60px;
+            background: #e3f2fd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: #1976d2;
+            font-size: 1.5rem;
+        }
+
+        .terms-list {
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+
+        .terms-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .consent-options {
+            background: #f8f9ff;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .consent-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .option-control {
+            margin-top: 5px;
+        }
+
+        .contact-card {
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .contact-card h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .dpo-contact {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: inline-block;
+            max-width: 400px;
+        }
+
+        /* Buttons */
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #1976d2;
+            color: #1976d2;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: #1976d2;
+            color: white;
+        }
+
+        .btn-primary {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #1565c0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: #2e7d32;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .policy-main-wrapper {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .policy-nav {
+                position: static;
+                width: 100%;
+                max-height: none;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .policy-header {
+                padding: 40px 25px;
+            }
+            
+            .policy-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .policy-content {
+                padding: 30px 20px;
+            }
+            
+            .compliance-badges {
+                flex-direction: column;
+            }
+            
+            .policy-nav {
+                padding: 20px;
+            }
+            
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .policy-container {
+                margin: 80px auto 30px;
+                padding: 0 15px;
+            }
+            
+            .policy-header {
+                padding: 30px 20px;
+            }
+            
+            .policy-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .policy-section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .policy-section h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'enterprise' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li><a href="{% url 'support' %}">Support</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Policy Content -->
+    <div class="policy-container">
+        <!-- Header -->
+        <div class="policy-header">
+            <h1>Privacy Policy & Terms of Service</h1>
+            <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto; opacity: 0.9;">
+                Protecting your geospatial data and ensuring transparent AI analysis
+            </p>
+            <div class="last-updated">
+                <i class="fas fa-calendar-alt"></i> Last Updated: December 1, 2024 | Version: 3.2
+            </div>
+        </div>
+
+        <!-- Main Content Wrapper -->
+        <div class="policy-main-wrapper">
+            <!-- Navigation Sidebar -->
+            <div class="policy-nav">
+                <h3><i class="fas fa-bookmark"></i> Quick Navigation</h3>
+                <ul>
+                    <li><a href="#overview" class="active">Overview</a></li>
+                    <li><a href="#data-collection">Data Collection</a></li>
+                    <li><a href="#data-use">Data Use & Processing</a></li>
+                    <li><a href="#ai-models">AI Models & Algorithms</a></li>
+                    <li><a href="#data-rights">Your Data Rights</a></li>
+                    <li><a href="#security">Security Measures</a></li>
+                    <li><a href="#compliance">Compliance</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#contact">Contact DPO</a></li>
+                </ul>
+            </div>
+
+            <!-- Policy Content -->
+            <div class="policy-content">
+                <!-- Overview Section -->
+                <section id="overview" class="policy-section">
+                    <h2>1. Overview & Scope</h2>
+                    <p class="policy-text">
+                        GreenSpace AI provides geospatial analysis services using deep learning models to process satellite imagery and geographic data. This Privacy Policy explains how we collect, use, process, and protect your data when you use our platform.
+                    </p>
+                    
+                    <div class="highlight-box">
+                        <h4><i class="fas fa-exclamation-circle"></i> Important Notice</h4>
+                        <p>
+                            <strong>Geospatial Data Sensitivity:</strong> Uploaded satellite imagery and GIS data may contain sensitive location information. We implement enterprise-grade security measures and process data in compliance with international regulations.
+                        </p>
+                    </div>
+                    
+                    <h3>1.1 Platform Components Covered</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 25px 0;">
+                        <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; text-align: center;">
+                            <div style="width: 50px; height: 50px; background: #1976d2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                                <i class="fas fa-satellite"></i>
+                            </div>
+                            <h4 style="margin: 0 0 10px;">Satellite Imagery Analysis</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">AI-powered land cover classification and feature extraction</p>
+                        </div>
+                        
+                        <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; text-align: center;">
+                            <div style="width: 50px; height: 50px; background: #1976d2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </div>
+                            <h4 style="margin: 0 0 10px;">GIS Data Processing</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Vector and raster data analysis, transformation, and export</p>
+                        </div>
+                        
+                        <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; text-align: center;">
+                            <div style="width: 50px; height: 50px; background: #1976d2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h4 style="margin: 0 0 10px;">AI Model Training</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Custom deep learning model development and deployment</p>
+                        </div>
+                        
+                        <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; text-align: center;">
+                            <div style="width: 50px; height: 50px; background: #1976d2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h4 style="margin: 0 0 10px;">API Services</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Programmatic access to analysis capabilities</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Data Collection Section -->
+                <section id="data-collection" class="policy-section">
+                    <h2>2. Data Collection & Categories</h2>
+                    <p class="policy-text">
+                        We collect different types of data depending on your interaction with our platform:
+                    </p>
+                    
+                    <h3>2.1 Personal Information</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Data Category</th>
+                                <th>What We Collect</th>
+                                <th>Purpose</th>
+                                <th>Retention Period</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="data-category category-personal">Account Data</span>
+                                </td>
+                                <td>Name, email, organization, billing address</td>
+                                <td>Account management, authentication, billing</td>
+                                <td>3 years after account closure</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="data-category category-technical">Technical Data</span>
+                                </td>
+                                <td>IP address, device information, browser type, usage logs</td>
+                                <td>Security, analytics, platform improvement</td>
+                                <td>2 years</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="data-category category-usage">Usage Data</span>
+                                </td>
+                                <td>Analysis history, API calls, feature usage, error logs</td>
+                                <td>Service optimization, capacity planning</td>
+                                <td>18 months</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>2.2 Geospatial & Analysis Data</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Data Type</th>
+                                <th>Examples</th>
+                                <th>Processing</th>
+                                <th>Sensitivity Level</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="data-category category-geospatial">Uploaded Imagery</span>
+                                </td>
+                                <td>Satellite images, aerial photography, drone imagery</td>
+                                <td>AI analysis, storage, transformation</td>
+                                <td>High (location data)</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="data-category category-geospatial">GIS Data</span>
+                                </td>
+                                <td>Shapefiles, GeoJSON, KML, raster data</td>
+                                <td>Analysis, conversion, export</td>
+                                <td>High (vector data)</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="data-category category-geospatial">Analysis Results</span>
+                                </td>
+                                <td>Land cover maps, change detection, statistics</td>
+                                <td>Storage, visualization, export</td>
+                                <td>Medium (derived data)</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="data-category category-technical">Training Data</span>
+                                </td>
+                                <td>Annotated samples, ground truth, validation sets</td>
+                                <td>Model improvement, accuracy validation</td>
+                                <td>Medium (if anonymized)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="highlight-box">
+                        <h4><i class="fas fa-shield-alt"></i> Data Ownership Clarification</h4>
+                        <p>
+                            <strong>You retain full ownership</strong> of all uploaded geospatial data and analysis results. GreenSpace AI only processes your data to provide the requested analysis services. We do not claim ownership over your uploaded data or derived results.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Data Use Section -->
+                <section id="data-use" class="policy-section">
+                    <h2>3. Data Use & Processing</h2>
+                    
+                    <h3>3.1 How We Use Your Data</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin: 25px 0;">
+                        <div style="background: #f8f9ff; padding: 25px; border-radius: 10px;">
+                            <div style="width: 50px; height: 50px; background: #1976d2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <h4 style="margin: 0 0 10px;">Service Provision</h4>
+                            <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                                Execute geospatial analysis, run AI models, generate reports, and provide GIS exports
+                            </p>
+                        </div>
+                        
+                        <div style="background: #f8f9ff; padding: 25px; border-radius: 10px;">
+                            <div style="width: 50px; height: 50px; background: #1976d2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4 style="margin: 0 0 10px;">Platform Improvement</h4>
+                            <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                                Enhance AI model accuracy, optimize processing algorithms, improve user experience
+                            </p>
+                        </div>
+                        
+                        <div style="background: #f8f9ff; padding: 25px; border-radius: 10px;">
+                            <div style="width: 50px; height: 50px; background: #1976d2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h4 style="margin: 0 0 10px;">Security & Compliance</h4>
+                            <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                                Monitor for unauthorized access, prevent fraud, comply with legal obligations
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <h3>3.2 AI Model Training & Improvement</h3>
+                    <p class="policy-text">
+                        To improve our deep learning models, we may use <strong>anonymized and aggregated</strong> analysis results. This process follows strict protocols:
+                    </p>
+                    <ul class="terms-list">
+                        <li><strong>Anonymization:</strong> All location identifiers are removed before model training</li>
+                        <li><strong>Aggregation:</strong> Data is combined from multiple sources to prevent re-identification</li>
+                        <li><strong>Opt-Out:</strong> Users can opt-out of data use for model improvement in account settings</li>
+                        <li><strong>Research Ethics:</strong> All data use for research follows academic ethics guidelines</li>
+                    </ul>
+                    
+                    <h3>3.3 Third-Party Data Processors</h3>
+                    <p class="policy-text">
+                        We use specialized third-party services for specific processing needs:
+                    </p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Processor</th>
+                                <th>Service</th>
+                                <th>Data Type</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AWS (Amazon Web Services)</td>
+                                <td>Cloud storage, compute infrastructure</td>
+                                <td>All geospatial data</td>
+                                <td>Region of choice (US/EU/APAC)</td>
+                            </tr>
+                            <tr>
+                                <td>Google Cloud Platform</td>
+                                <td>AI/ML processing, BigQuery analytics</td>
+                                <td>Anonymized training data</td>
+                                <td>Global (GDPR compliant)</td>
+                            </tr>
+                            <tr>
+                                <td>Stripe</td>
+                                <td>Payment processing</td>
+                                <td>Billing information only</td>
+                                <td>Global</td>
+                            </tr>
+                            <tr>
+                                <td>SendGrid</td>
+                                <td>Email communications</td>
+                                <td>Contact information</td>
+                                <td>GDPR compliant</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- AI Models Section -->
+                <section id="ai-models" class="policy-section">
+                    <h2>4. AI Models & Algorithm Transparency</h2>
+                    
+                    <h3>4.1 Model Architecture & Capabilities</h3>
+                    <div style="background: #f0f7ff; padding: 30px; border-radius: 10px; margin: 25px 0;">
+                        <h4 style="margin-top: 0; color: #1976d2;">Deep Learning Models Used</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                            <div style="background: white; padding: 15px; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #1976d2; margin-bottom: 5px;">U-Net++</div>
+                                <div style="font-size: 0.85rem; color: #666;">Semantic segmentation (94.2% accuracy)</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #1976d2; margin-bottom: 5px;">DeepLabv3+</div>
+                                <div style="font-size: 0.85rem; color: #666;">Urban feature extraction</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #1976d2; margin-bottom: 5px;">Vision Transformer</div>
+                                <div style="font-size: 0.85rem; color: #666;">Land use classification</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #1976d2; margin-bottom: 5px;">HRNet</div>
+                                <div style="font-size: 0.85rem; color: #666;">High-resolution processing</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>4.2 Algorithmic Fairness & Bias Mitigation</h3>
+                    <p class="policy-text">
+                        We implement comprehensive bias mitigation strategies:
+                    </p>
+                    <ul class="terms-list">
+                        <li><strong>Diverse Training Data:</strong> Models trained on 500,000+ images from 25 countries across 6 continents</li>
+                        <li><strong>Bias Audits:</strong> Quarterly algorithmic fairness assessments using standardized metrics</li>
+                        <li><strong>Regional Adaptation:</strong> Model fine-tuning for different geographical and cultural contexts</li>
+                        <li><strong>Transparency Reports:</strong> Annual publication of model performance across different regions</li>
+                    </ul>
+                    
+                    <h3>4.3 Model Limitations & Accuracy</h3>
+                    <div class="highlight-box">
+                        <h4><i class="fas fa-info-circle"></i> Important Limitations</h4>
+                        <p>
+                            <strong>Accuracy Variances:</strong> Model performance varies by region, season, and data quality. Urban areas typically achieve 94-96% accuracy, while complex landscapes may show 85-90% accuracy.
+                        </p>
+                        <p style="margin-top: 10px;">
+                            <strong>Not for Critical Decisions:</strong> Our analysis should not be used as the sole basis for critical decisions (emergency response, legal boundaries, etc.) without ground validation.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Data Rights Section -->
+                <section id="data-rights" class="policy-section">
+                    <h2>5. Your Data Rights & Control</h2>
+                    
+                    <div class="consent-options">
+                        <h3>5.1 Data Control Options</h3>
+                        <p class="policy-text">
+                            You have full control over your data through our platform:
+                        </p>
+                        
+                        <div class="consent-option">
+                            <div class="option-control">
+                                <input type="checkbox" id="data-retention" checked disabled>
+                            </div>
+                            <div>
+                                <label for="data-retention" style="font-weight: 600; display: block; margin-bottom: 5px;">Automatic Data Deletion</label>
+                                <p style="margin: 0; color: #666; font-size: 0.95rem;">
+                                    Uploaded data automatically deleted after 90 days of inactivity. Analysis results retained for 365 days.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="consent-option">
+                            <div class="option-control">
+                                <input type="checkbox" id="model-training" checked>
+                            </div>
+                            <div>
+                                <label for="model-training" style="font-weight: 600; display: block; margin-bottom: 5px;">Model Improvement Contribution</label>
+                                <p style="margin: 0; color: #666; font-size: 0.95rem;">
+                                    Allow anonymized data to be used for improving our AI models (opt-out available)
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="consent-option">
+                            <div class="option-control">
+                                <input type="checkbox" id="email-notifications" checked>
+                            </div>
+                            <div>
+                                <label for="email-notifications" style="font-weight: 600; display: block; margin-bottom: 5px;">Email Notifications</label>
+                                <p style="margin: 0; color: #666; font-size: 0.95rem;">
+                                    Receive platform updates, analysis completion notices, and educational content
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>5.2 GDPR & CCPA Rights</h3>
+                    <p class="policy-text">
+                        Under data protection regulations, you have the following rights:
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 25px 0;">
+                        <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e0e0e0;">
+                            <h4 style="margin-top: 0; color: #1976d2;">Right to Access</h4>
+                            <p style="color: #666; font-size: 0.95rem; margin: 0 0 15px;">Request all data we hold about you in machine-readable format</p>
+                            <button class="btn-outline" style="width: 100%;">Request Data Export</button>
+                        </div>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e0e0e0;">
+                            <h4 style="margin-top: 0; color: #1976d2;">Right to Deletion</h4>
+                            <p style="color: #666; font-size: 0.95rem; margin: 0 0 15px;">Request deletion of your personal data and uploaded geospatial data</p>
+                            <button class="btn-outline" style="width: 100%;">Request Deletion</button>
+                        </div>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e0e0e0;">
+                            <h4 style="margin-top: 0; color: #1976d2;">Right to Correction</h4>
+                            <p style="color: #666; font-size: 0.95rem; margin: 0 0 15px;">Request correction of inaccurate personal information</p>
+                            <button class="btn-outline" style="width: 100%;">Update Information</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Security Section -->
+                <section id="security" class="policy-section">
+                    <h2>6. Security Measures & Data Protection</h2>
+                    
+                    <h3>6.1 Technical Security Measures</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 25px 0;">
+                        <div style="background: #f8f9ff; padding: 25px; border-radius: 10px; text-align: center;">
+                            <div style="width: 60px; height: 60px; background: #1976d2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h4 style="margin: 0 0 10px;">Encryption</h4>
+                            <ul style="text-align: left; padding-left: 20px; font-size: 0.9rem; color: #666; margin: 10px 0 0;">
+                                <li>AES-256 encryption at rest</li>
+                                <li>TLS 1.3 encryption in transit</li>
+                                <li>End-to-end encryption for sensitive data</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: #f8f9ff; padding: 25px; border-radius: 10px; text-align: center;">
+                            <div style="width: 60px; height: 60px; background: #1976d2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h4 style="margin: 0 0 10px;">Access Control</h4>
+                            <ul style="text-align: left; padding-left: 20px; font-size: 0.9rem; color: #666; margin: 10px 0 0;">
+                                <li>Role-based access control (RBAC)</li>
+                                <li>Multi-factor authentication</li>
+                                <li>Single sign-on (SSO) support</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: #f8f9ff; padding: 25px; border-radius: 10px; text-align: center;">
+                            <div style="width: 60px; height: 60px; background: #1976d2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <h4 style="margin: 0 0 10px;">Monitoring & Audit</h4>
+                            <ul style="text-align: left; padding-left: 20px; font-size: 0.9rem; color: #666; margin: 10px 0 0;">
+                                <li>24/7 security monitoring</li>
+                                <li>Comprehensive audit logs</li>
+                                <li>Real-time intrusion detection</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h3>6.2 Data Center Security</h3>
+                    <p class="policy-text">
+                        Our infrastructure is hosted in SOC 2 Type II certified data centers with:
+                    </p>
+                    <ul class="terms-list">
+                        <li><strong>Physical Security:</strong> Biometric access, 24/7 surveillance, manned security</li>
+                        <li><strong>Redundancy:</strong> N+1 power and cooling, multiple network carriers</li>
+                        <li><strong>Disaster Recovery:</strong> Geo-redundant backups, 99.99% uptime SLA</li>
+                        <li><strong>Environmental Controls:</strong> Climate control, fire suppression systems</li>
+                    </ul>
+                </section>
+
+                <!-- Compliance Section -->
+                <section id="compliance" class="policy-section">
+                    <h2>7. Compliance & Certifications</h2>
+                    
+                    <div class="compliance-badges">
+                        <div class="compliance-badge">
+                            <div class="badge-icon">
+                                <i class="fas fa-gavel"></i>
+                            </div>
+                            <h4>GDPR Compliant</h4>
+                            <p style="font-size: 0.9rem; color: #666;">Fully compliant with EU General Data Protection Regulation</p>
+                        </div>
+                        
+                        <div class="compliance-badge">
+                            <div class="badge-icon">
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                            <h4>CCPA Ready</h4>
+                            <p style="font-size: 0.9rem; color: #666;">Compliant with California Consumer Privacy Act</p>
+                        </div>
+                        
+                        <div class="compliance-badge">
+                            <div class="badge-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>ISO 27001</h4>
+                            <p style="font-size: 0.9rem; color: #666;">Information security management certified</p>
+                        </div>
+                        
+                        <div class="compliance-badge">
+                            <div class="badge-icon">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                            <h4>SOC 2 Type II</h4>
+                            <p style="font-size: 0.9rem; color: #666;">Service organization controls certified</p>
+                        </div>
+                    </div>
+                    
+                    <h3>7.1 International Data Transfers</h3>
+                    <p class="policy-text">
+                        For international data transfers, we use Standard Contractual Clauses (SCCs) approved by the European Commission and implement additional safeguards including:
+                    </p>
+                    <ul class="terms-list">
+                        <li>Data encryption both in transit and at rest</li>
+                        <li>Pseudonymization of personal data where possible</li>
+                        <li>Regular data protection impact assessments</li>
+                        <li>Transparency reports on government access requests</li>
+                    </ul>
+                </section>
+
+                <!-- Terms of Service -->
+                <section id="terms" class="policy-section">
+                    <h2>8. Terms of Service</h2>
+                    
+                    <h3>8.1 Acceptable Use Policy</h3>
+                    <p class="policy-text">
+                        By using GreenSpace AI, you agree not to:
+                    </p>
+                    <ul class="terms-list">
+                        <li>Upload data containing personally identifiable information without proper consent</li>
+                        <li>Use the platform for illegal surveillance or intelligence gathering</li>
+                        <li>Attempt to reverse engineer our AI models or algorithms</li>
+                        <li>Overload the system with excessive automated requests</li>
+                        <li>Share access credentials or violate account security</li>
+                    </ul>
+                    
+                    <h3>8.2 Service Level Agreement (SLA)</h3>
+                    <div style="background: #f0f7ff; padding: 25px; border-radius: 10px; margin: 25px 0;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: #1976d2;">99.9%</div>
+                                <div style="font-size: 0.9rem; color: #666;">Platform Uptime</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: #1976d2;">24/7</div>
+                                <div style="font-size: 0.9rem; color: #666;">Monitoring</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: #1976d2;">4 hr</div>
+                                <div style="font-size: 0.9rem; color: #666;">Response Time (Enterprise)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>8.3 Intellectual Property</h3>
+                    <div class="highlight-box">
+                        <h4><i class="fas fa-balance-scale"></i> Intellectual Property Rights</h4>
+                        <p>
+                            <strong>You Own:</strong> All uploaded geospatial data, custom annotations, and analysis results derived from your data.
+                        </p>
+                        <p style="margin-top: 10px;">
+                            <strong>We Own:</strong> The GreenSpace AI platform, underlying software, pre-trained AI models, and aggregated anonymized data used for model improvement.
+                        </p>
+                    </div>
+                    
+                    <h3>8.4 Limitation of Liability</h3>
+                    <p class="policy-text">
+                        GreenSpace AI provides analysis tools and AI models for informational purposes. We are not liable for:
+                    </p>
+                    <ul class="terms-list">
+                        <li>Decisions made based on our analysis without proper validation</li>
+                        <li>Data loss due to user error or third-party actions</li>
+                        <li>Service interruptions due to force majeure events</li>
+                        <li>Accuracy limitations inherent in satellite imagery analysis</li>
+                    </ul>
+                </section>
+
+                <!-- Contact Section -->
+                <section id="contact" class="policy-section">
+                    <h2>9. Contact & Data Protection Officer</h2>
+                    
+                    <div class="contact-card">
+                        <h3>Data Protection Officer (DPO)</h3>
+                        <p>For privacy-related inquiries, data access requests, or security concerns:</p>
+                        
+                        <div class="dpo-contact">
+                            <h4 style="margin-top: 0; margin-bottom: 10px;">Sarah Johnson, CIPP/E</h4>
+                            <p style="margin: 0 0 10px;">
+                                <i class="fas fa-envelope"></i> dpo@greenspaceai.com<br>
+                                <i class="fas fa-phone"></i> +1 (555) 789-0123 (Privacy Line)
+                            </p>
+                            <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
+                                Certified Information Privacy Professional/Europe
+                            </p>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <p><strong>Mailing Address for Legal Notices:</strong></p>
+                            <p>
+                                GreenSpace AI Inc.<br>
+                                Attn: Legal Department<br>
+                                123 Geospatial Avenue<br>
+                                San Francisco, CA 94107<br>
+                                United States
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 40px;">
+                        <p class="policy-text">
+                            This policy may be updated periodically. We will notify users of significant changes via email and platform announcements.
+                        </p>
+                        <button id="acceptPolicy" class="btn-primary">
+                            <i class="fas fa-check-circle"></i> I Accept Privacy Policy & Terms
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced GIS and remote sensing platform powered by deep learning for environmental analysis.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#compliance">Compliance</a></li>
+                    <li><a href="#security">Security</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Data Protection</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-user-shield"></i> Data Protection Officer</li>
+                    <li><i class="fas fa-gavel"></i> GDPR Compliance</li>
+                    <li><i class="fas fa-shield-alt"></i> Security Certifications</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact Legal</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> legal@greenspaceai.com</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 789-0123</li>
+                    <li><i class="fas fa-file-contract"></i> DPA Requests</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 GreenSpace AI. All rights reserved. | Privacy Policy Version 3.2 | Last Updated: December 1, 2024</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Policy navigation
+        document.querySelectorAll('.policy-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.policy-nav a').forEach(a => {
+                    a.classList.remove('active');
+                });
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Scroll to section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Update active nav based on scroll
+        const sections = document.querySelectorAll('.policy-section');
+        const navLinks = document.querySelectorAll('.policy-nav a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Accept policy button
+        document.getElementById('acceptPolicy').addEventListener('click', function() {
+            // In a real implementation, this would set a cookie or update user preferences
+            localStorage.setItem('policyAccepted', 'true');
+            localStorage.setItem('policyVersion', '3.2');
+            localStorage.setItem('policyAcceptDate', new Date().toISOString());
+            
+            this.innerHTML = '<i class="fas fa-check"></i> Policy Accepted';
+            this.style.background = '#2e7d32';
+            this.disabled = true;
+            
+            // Show confirmation
+            const confirmation = document.createElement('div');
+            confirmation.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4caf50;
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            confirmation.innerHTML = '<i class="fas fa-check-circle"></i> Privacy policy acceptance saved';
+            document.body.appendChild(confirmation);
+            
+            setTimeout(() => {
+                confirmation.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => confirmation.remove(), 300);
+            }, 3000);
+        });
+
+        // Check if policy was already accepted
+        window.addEventListener('load', () => {
+            const accepted = localStorage.getItem('policyAccepted');
+            const version = localStorage.getItem('policyVersion');
+            
+            if (accepted === 'true' && version === '3.2') {
+                const acceptBtn = document.getElementById('acceptPolicy');
+                if (acceptBtn) {
+                    acceptBtn.innerHTML = '<i class="fas fa-check"></i> Policy Already Accepted';
+                    acceptBtn.style.background = '#2e7d32';
+                    acceptBtn.disabled = true;
+                }
+            }
+        });
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

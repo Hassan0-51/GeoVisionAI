@@ -1,0 +1,881 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookies Policy - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .cookies-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .cookies-header {
+            background: linear-gradient(135deg, #5d4037, #795548);
+            color: white;
+            padding: 80px 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .cookies-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .cookies-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .last-updated {
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 20px;
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+
+        .policy-content {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .policy-section {
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .policy-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .policy-section h2 {
+            color: #5d4037;
+            margin-top: 0;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #8d6e63;
+        }
+
+        .policy-section h3 {
+            color: #795548;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .policy-text {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .policy-text p {
+            margin-bottom: 20px;
+        }
+
+        .highlight-box {
+            background: #efebe9;
+            border-left: 4px solid #8d6e63;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .cookie-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: #fafafa;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .cookie-table th {
+            background: #8d6e63;
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .cookie-table td {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cookie-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .cookie-category {
+            font-weight: 600;
+            color: #5d4037;
+            margin-bottom: 5px;
+        }
+
+        .cookie-purpose {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .cookie-duration {
+            font-size: 0.85rem;
+            color: #888;
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .control-options {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+
+        .control-options h3 {
+            margin-top: 0;
+            color: #5d4037;
+        }
+
+        .option-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .option-item {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #8d6e63;
+        }
+
+        .option-item h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #795548;
+        }
+
+        .contact-cookies {
+            background: #efebe9;
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .contact-cookies a {
+            color: #5d4037;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-cookies a:hover {
+            text-decoration: underline;
+        }
+
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(93, 64, 55, 0.95);
+            color: white;
+            padding: 25px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+        }
+
+        .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .banner-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .banner-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-cookie {
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cookie-accept {
+            background: white;
+            color: #5d4037;
+        }
+
+        .btn-cookie-settings {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        @media (max-width: 768px) {
+            .cookies-container {
+                margin: 80px auto 30px;
+                padding: 0 15px;
+            }
+            
+            .cookies-header {
+                padding: 60px 20px;
+            }
+            
+            .cookies-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .policy-content {
+                padding: 30px 20px;
+            }
+            
+            .cookie-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .banner-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .banner-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cookies Policy Content -->
+    <div class="cookies-container">
+        <!-- Header -->
+        <div class="cookies-header">
+            <h1>Cookies Policy</h1>
+            <p>Learn how GreenSpace AI uses cookies and similar technologies to enhance your experience</p>
+            <div class="last-updated">
+                <i class="fas fa-calendar-alt"></i>
+                Last Updated: January 15, 2024
+            </div>
+        </div>
+
+        <!-- Policy Content -->
+        <div class="policy-content">
+            <!-- Introduction -->
+            <div class="policy-section">
+                <h2>Introduction</h2>
+                <div class="policy-text">
+                    <p>This Cookies Policy explains how GreenSpace AI ("we", "us", or "our") uses cookies and similar tracking technologies when you visit our website at greenspaceai.com and use our services. By using our website, you consent to the use of cookies as described in this policy.</p>
+                    
+                    <div class="highlight-box">
+                        <p><strong>What are Cookies?</strong> Cookies are small text files that are stored on your device (computer, tablet, or mobile) when you visit websites. They help the website remember information about your visit, which can make it easier to visit the site again and make the site more useful to you.</p>
+                    </div>
+                    
+                    <p>This policy covers:</p>
+                    <ul>
+                        <li>The types of cookies we use</li>
+                        <li>The purposes for using these cookies</li>
+                        <li>Your choices regarding cookie usage</li>
+                        <li>How to manage or disable cookies</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Types of Cookies -->
+            <div class="policy-section">
+                <h2>Types of Cookies We Use</h2>
+                <div class="policy-text">
+                    <p>We use several types of cookies for different purposes:</p>
+                    
+                    <h3>1. Essential Cookies</h3>
+                    <p>These cookies are necessary for the website to function and cannot be switched off in our systems. They are usually only set in response to actions made by you such as logging in or filling in forms.</p>
+                    
+                    <h3>2. Performance Cookies</h3>
+                    <p>These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site. They help us to know which pages are the most and least popular and see how visitors move around the site.</p>
+                    
+                    <h3>3. Functional Cookies</h3>
+                    <p>These cookies enable the website to provide enhanced functionality and personalization. They may be set by us or by third-party providers whose services we have added to our pages.</p>
+                    
+                    <h3>4. Targeting Cookies</h3>
+                    <p>These cookies may be set through our site by our advertising partners. They may be used by those companies to build a profile of your interests and show you relevant advertisements on other sites.</p>
+                    
+                    <h3>5. Analytics Cookies</h3>
+                    <p>We use analytics cookies to understand how users interact with our website, which helps us improve our services and user experience.</p>
+                </div>
+            </div>
+
+            <!-- Detailed Cookie Table -->
+            <div class="policy-section">
+                <h2>Detailed Cookie Information</h2>
+                <div class="policy-text">
+                    <p>The table below provides detailed information about the cookies we use:</p>
+                    
+                    <table class="cookie-table">
+                        <thead>
+                            <tr>
+                                <th>Cookie Name</th>
+                                <th>Category</th>
+                                <th>Purpose</th>
+                                <th>Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="cookie-category">session_id</div>
+                                    <div class="cookie-purpose">Essential</div>
+                                </td>
+                                <td>Essential</td>
+                                <td>Maintains your session state across page requests</td>
+                                <td><span class="cookie-duration">Session</span></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="cookie-category">csrf_token</div>
+                                    <div class="cookie-purpose">Security</div>
+                                </td>
+                                <td>Essential</td>
+                                <td>Protects against Cross-Site Request Forgery attacks</td>
+                                <td><span class="cookie-duration">Session</span></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="cookie-category">_ga</div>
+                                    <div class="cookie-purpose">Google Analytics</div>
+                                </td>
+                                <td>Analytics</td>
+                                <td>Distinguishes users for analytics tracking</td>
+                                <td><span class="cookie-duration">2 years</span></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="cookie-category">_gid</div>
+                                    <div class="cookie-purpose">Google Analytics</div>
+                                </td>
+                                <td>Analytics</td>
+                                <td>Distinguishes users for 24-hour period</td>
+                                <td><span class="cookie-duration">24 hours</span></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="cookie-category">_gat</div>
+                                    <div class="cookie-purpose">Google Analytics</div>
+                                </td>
+                                <td>Analytics</td>
+                                <td>Throttles request rate to Google Analytics</td>
+                                <td><span class="cookie-duration">1 minute</span></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="cookie-category">preferences</div>
+                                    <div class="cookie-purpose">User Settings</div>
+                                </td>
+                                <td>Functional</td>
+                                <td>Stores your UI preferences and settings</td>
+                                <td><span class="cookie-duration">1 year</span></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="cookie-category">auth_token</div>
+                                    <div class="cookie-purpose">Authentication</div>
+                                </td>
+                                <td>Essential</td>
+                                <td>Maintains your authenticated session</td>
+                                <td><span class="cookie-duration">30 days</span></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="cookie-category">cookie_consent</div>
+                                    <div class="cookie-purpose">Consent Management</div>
+                                </td>
+                                <td>Functional</td>
+                                <td>Remembers your cookie preferences</td>
+                                <td><span class="cookie-duration">1 year</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Third-Party Cookies -->
+            <div class="policy-section">
+                <h2>Third-Party Cookies</h2>
+                <div class="policy-text">
+                    <p>We also use cookies from trusted third-party services:</p>
+                    
+                    <h3>Google Analytics</h3>
+                    <p>We use Google Analytics to collect information about how visitors use our website. Google Analytics cookies help us understand:</p>
+                    <ul>
+                        <li>Which pages are most frequently visited</li>
+                        <li>How users navigate through the site</li>
+                        <li>What content is most engaging</li>
+                        <li>Where our visitors come from</li>
+                    </ul>
+                    
+                    <p>For more information about Google Analytics cookies, please visit <a href="https://policies.google.com/technologies/cookies" target="_blank">Google's Cookies Policy</a>.</p>
+                    
+                    <h3>Stripe</h3>
+                    <p>When processing payments, we use Stripe's secure payment system. Stripe may set cookies necessary for payment processing and fraud prevention.</p>
+                    
+                    <h3>Intercom</h3>
+                    <p>We use Intercom for customer support and engagement. Intercom cookies help us provide personalized support and communicate effectively with our users.</p>
+                </div>
+            </div>
+
+            <!-- Your Cookie Choices -->
+            <div class="policy-section">
+                <h2>Managing Your Cookie Preferences</h2>
+                <div class="policy-text">
+                    <p>You have several options to control or limit how we and our partners use cookies:</p>
+                    
+                    <div class="control-options">
+                        <h3>Browser Controls</h3>
+                        <p>Most web browsers allow you to control cookies through their settings preferences. However, limiting cookies may affect your ability to use certain features of our website.</p>
+                        
+                        <div class="option-list">
+                            <div class="option-item">
+                                <h4>Google Chrome</h4>
+                                <p>Settings → Privacy and security → Cookies and other site data</p>
+                            </div>
+                            
+                            <div class="option-item">
+                                <h4>Mozilla Firefox</h4>
+                                <p>Preferences → Privacy & Security → Cookies and Site Data</p>
+                            </div>
+                            
+                            <div class="option-item">
+                                <h4>Safari</h4>
+                                <p>Preferences → Privacy → Cookies and website data</p>
+                            </div>
+                            
+                            <div class="option-item">
+                                <h4>Microsoft Edge</h4>
+                                <p>Settings → Cookies and site permissions → Cookies and site data</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>Opt-Out Tools</h3>
+                    <p>You can opt out of certain types of cookies:</p>
+                    <ul>
+                        <li><strong>Google Analytics:</strong> Use the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank">Google Analytics Opt-out Browser Add-on</a></li>
+                        <li><strong>Advertising cookies:</strong> Visit <a href="https://www.aboutads.info/choices/" target="_blank">YourAdChoices</a> or <a href="https://www.youronlinechoices.com/" target="_blank">Your Online Choices</a></li>
+                    </ul>
+                    
+                    <h3>Do Not Track Signals</h3>
+                    <p>Some browsers have a "Do Not Track" feature that lets you tell websites you do not want to have your online activities tracked. Currently, we do not respond to browser "Do Not Track" signals.</p>
+                </div>
+            </div>
+
+            <!-- Cookie Consent -->
+            <div class="policy-section">
+                <h2>Cookie Consent</h2>
+                <div class="policy-text">
+                    <p>When you first visit our website, you will see a cookie consent banner that allows you to:</p>
+                    
+                    <ul>
+                        <li><strong>Accept All Cookies:</strong> Accept all cookies for optimal website functionality</li>
+                        <li><strong>Essential Only:</strong> Accept only essential cookies necessary for the website to function</li>
+                        <li><strong>Customize Settings:</strong> Choose which types of cookies you want to allow</li>
+                    </ul>
+                    
+                    <p>Your consent preferences will be stored for one year, after which you will be asked to provide consent again.</p>
+                    
+                    <p>You can change your cookie preferences at any time by clicking the "Cookie Settings" link in the footer of our website.</p>
+                </div>
+            </div>
+
+            <!-- Updates -->
+            <div class="policy-section">
+                <h2>Updates to This Policy</h2>
+                <div class="policy-text">
+                    <p>We may update this Cookies Policy from time to time to reflect changes in technology, regulation, or our services. When we make significant changes, we will:</p>
+                    
+                    <ul>
+                        <li>Update the "Last Updated" date at the top of this policy</li>
+                        <li>Notify users through our website or email</li>
+                        <li>Display a prominent notice on our website</li>
+                    </ul>
+                    
+                    <p>We encourage you to review this policy periodically to stay informed about how we use cookies.</p>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="policy-section">
+                <h2>Contact Us</h2>
+                <div class="policy-text">
+                    <p>If you have any questions about this Cookies Policy or our use of cookies, please contact us:</p>
+                    
+                    <div class="contact-cookies">
+                        <p><strong>GreenSpace AI Data Protection Officer</strong></p>
+                        <p>Email: <a href="mailto:privacy@greenspaceai.com">privacy@greenspaceai.com</a></p>
+                        <p>Address: 123 Innovation Drive, Suite 500, San Francisco, CA 94107</p>
+                        <p>Phone: +1 (415) 555-0123</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="banner-content">
+            <div class="banner-text">
+                <p>We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. By clicking "Accept All", you consent to our use of cookies. You can manage your preferences at any time.</p>
+            </div>
+            <div class="banner-actions">
+                <button class="btn-cookie btn-cookie-settings" onclick="showCookieSettings()">
+                    <i class="fas fa-cog"></i>
+                    Cookie Settings
+                </button>
+                <button class="btn-cookie btn-cookie-accept" onclick="acceptAllCookies()">
+                    <i class="fas fa-check-circle"></i>
+                    Accept All Cookies
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Settings Modal -->
+    <div id="cookieSettingsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 40px; border-radius: 15px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
+            <h3 style="margin-top: 0; color: #5d4037;">Cookie Settings</h3>
+            <p style="color: #666; margin-bottom: 30px;">Customize your cookie preferences. Essential cookies cannot be disabled.</p>
+            
+            <div style="margin-bottom: 25px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <div style="font-weight: 600; color: #5d4037;">Essential Cookies</div>
+                        <div style="font-size: 0.9rem; color: #666;">Required for the website to function</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked disabled>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p style="font-size: 0.9rem; color: #666; margin: 0;">These cookies are necessary for basic functions like security, authentication, and session management.</p>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <div style="font-weight: 600; color: #5d4037;">Performance Cookies</div>
+                        <div style="font-size: 0.9rem; color: #666;">Help us improve our website</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="performanceCookies" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p style="font-size: 0.9rem; color: #666; margin: 0;">These cookies help us understand how visitors interact with our website.</p>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <div style="font-weight: 600; color: #5d4037;">Functional Cookies</div>
+                        <div style="font-size: 0.9rem; color: #666;">Enable enhanced features</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="functionalCookies" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p style="font-size: 0.9rem; color: #666; margin: 0;">These cookies remember your preferences and settings.</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <div style="font-weight: 600; color: #5d4037;">Targeting Cookies</div>
+                        <div style="font-size: 0.9rem; color: #666;">Personalized advertising</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="targetingCookies">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p style="font-size: 0.9rem; color: #666; margin: 0;">These cookies may be used to show you relevant advertisements.</p>
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+                <button onclick="saveCookieSettings()" style="flex: 1; padding: 15px; border: none; background: linear-gradient(135deg, #5d4037, #795548); color: white; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    Save Preferences
+                </button>
+                <button onclick="closeCookieSettings()" style="flex: 1; padding: 15px; border: 2px solid #ddd; background: white; color: #666; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="margin-top: 60px; padding: 40px 0; border-top: 1px solid #eee; background: #f8f9fa;">
+        <div class="cookies-container" style="margin: 0 auto;">
+            <div style="text-align: center; color: #666; font-size: 0.9rem;">
+                <p>&copy; 2024 GreenSpace AI. All rights reserved.</p>
+                <p style="margin-top: 10px;">
+                    <a href="{% url 'privacy_policy' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                    <a href="{% url 'terms' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Terms of Service</a> | 
+                    <a href="{% url 'cookies_policy' %}" style="color: #666; text-decoration: none; margin: 0 10px; font-weight: 600;">Cookies Policy</a> | 
+                    <a href="#" onclick="showCookieSettings(); return false;" style="color: #666; text-decoration: none; margin: 0 10px;">Cookie Settings</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Cookie banner functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const consent = localStorage.getItem('cookieConsent');
+            
+            if (!consent) {
+                setTimeout(() => {
+                    document.getElementById('cookieBanner').style.display = 'block';
+                }, 1000);
+            }
+        });
+
+        function acceptAllCookies() {
+            localStorage.setItem('cookieConsent', 'all');
+            localStorage.setItem('cookieSettings', JSON.stringify({
+                essential: true,
+                performance: true,
+                functional: true,
+                targeting: true,
+                timestamp: new Date().toISOString()
+            }));
+            
+            document.getElementById('cookieBanner').style.display = 'none';
+            alert('Thank you! All cookies have been accepted.');
+        }
+
+        function showCookieSettings() {
+            document.getElementById('cookieSettingsModal').style.display = 'flex';
+            
+            // Load saved settings
+            const settings = JSON.parse(localStorage.getItem('cookieSettings'));
+            if (settings) {
+                document.getElementById('performanceCookies').checked = settings.performance;
+                document.getElementById('functionalCookies').checked = settings.functional;
+                document.getElementById('targetingCookies').checked = settings.targeting;
+            }
+        }
+
+        function closeCookieSettings() {
+            document.getElementById('cookieSettingsModal').style.display = 'none';
+        }
+
+        function saveCookieSettings() {
+            const settings = {
+                essential: true, // Always true
+                performance: document.getElementById('performanceCookies').checked,
+                functional: document.getElementById('functionalCookies').checked,
+                targeting: document.getElementById('targetingCookies').checked,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('cookieSettings', JSON.stringify(settings));
+            localStorage.setItem('cookieConsent', 'custom');
+            
+            document.getElementById('cookieSettingsModal').style.display = 'none';
+            document.getElementById('cookieBanner').style.display = 'none';
+            
+            alert('Your cookie preferences have been saved.');
+        }
+
+        // Print functionality
+        function setupPrintButton() {
+            const printBtn = document.createElement('button');
+            printBtn.innerHTML = '<i class="fas fa-print"></i> Print Policy';
+            printBtn.style.position = 'fixed';
+            printBtn.style.bottom = '20px';
+            printBtn.style.right = '20px';
+            printBtn.style.background = '#5d4037';
+            printBtn.style.color = 'white';
+            printBtn.style.border = 'none';
+            printBtn.style.padding = '12px 20px';
+            printBtn.style.borderRadius = '25px';
+            printBtn.style.cursor = 'pointer';
+            printBtn.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+            printBtn.style.zIndex = '999';
+            printBtn.style.fontFamily = 'inherit';
+            printBtn.style.fontSize = '0.9rem';
+            printBtn.style.display = 'flex';
+            printBtn.style.alignItems = 'center';
+            printBtn.style.gap = '8px';
+            
+            printBtn.addEventListener('click', function() {
+                window.print();
+            });
+            
+            document.body.appendChild(printBtn);
+        }
+        
+        setupPrintButton();
+
+        // Add CSS for toggle switches
+        const style = document.createElement('style');
+        style.textContent = `
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 60px;
+                height: 34px;
+            }
+            
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+            
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                transition: .4s;
+                border-radius: 34px;
+            }
+            
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+            }
+            
+            input:checked + .slider {
+                background-color: #5d4037;
+            }
+            
+            input:disabled + .slider {
+                background-color: #795548;
+                cursor: not-allowed;
+            }
+            
+            input:checked + .slider:before {
+                transform: translateX(26px);
+            }
+        `;
+        
+        document.head.appendChild(style);
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    history.pushState(null, null, targetId);
+                }
+            });
+        });
+
+        // Responsive adjustments
+        function handleResize() {
+            const container = document.querySelector('.cookies-container');
+            if (window.innerWidth < 768) {
+                container.style.padding = '0 15px';
+            } else {
+                container.style.padding = '0 20px';
+            }
+        }
+        
+        window.addEventListener('resize', handleResize);
+        handleResize();
+    </script>
+</body>
+</html>
