@@ -1,0 +1,1468 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIS Export Tutorial - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .tutorial-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .tutorial-header {
+            background: linear-gradient(135deg, #0097a7, #00bcd4);
+            color: white;
+            padding: 80px 50px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .tutorial-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .export-overview {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .format-card {
+            background: #f8f9ff;
+            padding: 35px;
+            border-radius: 12px;
+            border-left: 5px solid #00bcd4;
+            transition: transform 0.3s ease;
+        }
+
+        .format-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .format-icon {
+            width: 70px;
+            height: 70px;
+            background: #e0f7fa;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0097a7;
+            font-size: 2rem;
+            margin-bottom: 25px;
+        }
+
+        .format-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .format-badge {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #0097a7;
+            border: 1px solid #b2ebf2;
+        }
+
+        .export-tool {
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .tool-interface {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .export-option {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .export-option.selected {
+            border-color: #00bcd4;
+            background: #e0f7fa;
+        }
+
+        .option-checkbox {
+            width: 25px;
+            height: 25px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .export-option.selected .option-checkbox {
+            background: #00bcd4;
+            border-color: #00bcd4;
+            color: white;
+        }
+
+        .software-integration {
+            background: #e8f5e9;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .software-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+        }
+
+        .software-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .logo-qgis { background: linear-gradient(135deg, #179c7d, #1eb980); }
+        .logo-arcgis { background: linear-gradient(135deg, #2c5aa0, #4c8bf5); }
+        .logo-google { background: linear-gradient(135deg, #4285f4, #34a853); }
+        .logo-r { background: linear-gradient(135deg, #276dc3, #5e9cec); }
+
+        .code-examples {
+            background: #263238;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .code-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .code-tab {
+            background: #37474f;
+            color: #cfd8dc;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .code-tab.active {
+            background: #00bcd4;
+            color: white;
+        }
+
+        .code-block {
+            background: #1c2833;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        .code-comment { color: #81c784; }
+        .code-keyword { color: #64b5f6; }
+        .code-string { color: #ffcc80; }
+        .code-function { color: #4fc3f7; }
+        .code-number { color: #ff8a65; }
+
+        .batch-export {
+            background: #fff3e0;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .export-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .export-step {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #00bcd4;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+
+        .troubleshooting {
+            background: #ffebee;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #f44336;
+        }
+
+        .problem-icon {
+            width: 50px;
+            height: 50px;
+            background: #ffebee;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f44336;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .api-export {
+            background: #e3f2fd;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .api-endpoints {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .endpoint-item {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-family: monospace;
+        }
+
+        @media (max-width: 768px) {
+            .tutorial-header {
+                padding: 60px 30px;
+            }
+            
+            .tutorial-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .export-overview,
+            .export-tool,
+            .software-integration,
+            .code-examples,
+            .batch-export,
+            .troubleshooting,
+            .api-export {
+                padding: 30px 20px;
+            }
+            
+            .format-grid,
+            .software-grid,
+            .export-steps,
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tool-interface {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tutorial Content -->
+    <div class="tutorial-container">
+        <!-- Header -->
+        <div class="tutorial-header">
+            <h1>GIS Export Tutorial</h1>
+            <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto 30px; opacity: 0.9;">
+                Learn how to export analysis results to GIS software and integrate with spatial workflows
+            </p>
+            <div style="background: rgba(255,255,255,0.2); padding: 15px 30px; border-radius: 25px; display: inline-block;">
+                <i class="fas fa-clock"></i>
+                <span style="margin-left: 10px;">Intermediate Level | 30-45 minutes</span>
+            </div>
+        </div>
+
+        <!-- Overview -->
+        <div class="export-overview">
+            <h2 class="section-title">GIS Export Formats Overview</h2>
+            <p style="color: #666; line-height: 1.8; margin-bottom: 30px;">
+                GreenSpace AI supports comprehensive GIS export capabilities, allowing you to transfer analysis 
+                results seamlessly into your preferred GIS software for further analysis, visualization, and integration 
+                with existing spatial datasets.
+            </p>
+            
+            <div class="format-grid">
+                <div class="format-card">
+                    <div class="format-icon">
+                        <i class="fas fa-shapes"></i>
+                    </div>
+                    <h3>Shapefile (.shp)</h3>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Industry-standard vector format compatible with ArcGIS, QGIS, and most GIS software. 
+                        Includes required supporting files (.shx, .dbf, .prj).
+                    </p>
+                    <div class="format-badges">
+                        <span class="format-badge">ArcGIS</span>
+                        <span class="format-badge">QGIS</span>
+                        <span class="format-badge">Multi-part</span>
+                    </div>
+                </div>
+                
+                <div class="format-card">
+                    <div class="format-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3>GeoJSON (.geojson)</h3>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Web-friendly format ideal for web mapping applications, JavaScript libraries, 
+                        and modern GIS workflows. Human-readable JSON structure.
+                    </p>
+                    <div class="format-badges">
+                        <span class="format-badge">Web Mapping</span>
+                        <span class="format-badge">JavaScript</span>
+                        <span class="format-badge">Leaflet/Mapbox</span>
+                    </div>
+                </div>
+                
+                <div class="format-card">
+                    <div class="format-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>KML/KMZ (.kml/.kmz)</h3>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Google Earth compatible format with built-in styling and visualization. 
+                        KMZ format includes compressed files with embedded resources.
+                    </p>
+                    <div class="format-badges">
+                        <span class="format-badge">Google Earth</span>
+                        <span class="format-badge">3D Visualization</span>
+                        <span class="format-badge">Style Included</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="format-grid">
+                <div class="format-card">
+                    <div class="format-icon">
+                        <i class="fas fa-file-image"></i>
+                    </div>
+                    <h3>GeoTIFF (.tif)</h3>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Raster format with embedded georeferencing information. Perfect for classification 
+                        results, confidence layers, and continuous data.
+                    </p>
+                    <div class="format-badges">
+                        <span class="format-badge">Raster Data</span>
+                        <span class="format-badge">Multi-band</span>
+                        <span class="format-badge">Compression</span>
+                    </div>
+                </div>
+                
+                <div class="format-card">
+                    <div class="format-icon">
+                        <i class="fas fa-file-csv"></i>
+                    </div>
+                    <h3>CSV with WKT (.csv)</h3>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Tabular data with Well-Known Text (WKT) geometry representation. Ideal for 
+                        statistical analysis, data science workflows, and database imports.
+                    </p>
+                    <div class="format-badges">
+                        <span class="format-badge">Excel</span>
+                        <span class="format-badge">Python/R</span>
+                        <span class="format-badge">Database</span>
+                    </div>
+                </div>
+                
+                <div class="format-card">
+                    <div class="format-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>PostGIS/Spatialite</h3>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Direct export to spatial databases. Includes SQL scripts for table creation 
+                        and data import with spatial indexing.
+                    </p>
+                    <div class="format-badges">
+                        <span class="format-badge">PostgreSQL</span>
+                        <span class="format-badge">SQLite</span>
+                        <span class="format-badge">Spatial DB</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Tool -->
+        <div class="export-tool">
+            <h2 class="section-title" style="color: #0097a7;">Interactive Export Tool</h2>
+            
+            <div class="tool-interface">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Configure Your Export</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 30px;">
+                    <div>
+                        <h4 style="margin-bottom: 15px;">Export Layers</h4>
+                        <div style="background: #f8f9ff; padding: 20px; border-radius: 10px;">
+                            <label style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                                <div class="option-checkbox">
+                                    <i class="fas fa-check" style="display: none;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Classification Map</div>
+                                    <div style="font-size: 0.9rem; color: #666;">Land cover classification results</div>
+                                </div>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                                <div class="option-checkbox">
+                                    <i class="fas fa-check" style="display: none;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Confidence Layer</div>
+                                    <div style="font-size: 0.9rem; color: #666;">Model confidence scores (0-100%)</div>
+                                </div>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                                <div class="option-checkbox">
+                                    <i class="fas fa-check" style="display: none;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Statistics Report</div>
+                                    <div style="font-size: 0.9rem; color: #666;">Area calculations and metrics</div>
+                                </div>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 15px;">
+                                <div class="option-checkbox">
+                                    <i class="fas fa-check" style="display: none;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Original Imagery</div>
+                                    <div style="font-size: 0.9rem; color: #666;">Source satellite image (georeferenced)</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 style="margin-bottom: 15px;">Export Settings</h4>
+                        <div style="background: #f8f9ff; padding: 20px; border-radius: 10px;">
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 10px; font-weight: 600;">Coordinate System</label>
+                                <select class="form-control">
+                                    <option>WGS84 (EPSG:4326)</option>
+                                    <option selected>Web Mercator (EPSG:3857)</option>
+                                    <option>UTM Zone 33N (EPSG:32633)</option>
+                                    <option>Custom CRS...</option>
+                                </select>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 10px; font-weight: 600;">Compression</label>
+                                <select class="form-control">
+                                    <option>None (Fastest)</option>
+                                    <option selected>ZIP (Balanced)</option>
+                                    <option>7Z (Maximum)</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label style="display: block; margin-bottom: 10px; font-weight: 600;">Include Metadata</label>
+                                <div style="display: flex; gap: 20px;">
+                                    <label style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="checkbox" checked>
+                                        <span style="font-size: 0.9rem;">Analysis parameters</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="checkbox" checked>
+                                        <span style="font-size: 0.9rem;">Accuracy metrics</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4 style="margin-bottom: 15px;">Select Export Formats</h4>
+                <div class="export-options" id="exportOptions">
+                    <div class="export-option" data-format="shapefile">
+                        <div style="display: flex; align-items: center;">
+                            <div class="option-checkbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Shapefile</div>
+                                <div style="font-size: 0.9rem; color: #666;">.shp + supporting files</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="export-option" data-format="geojson">
+                        <div style="display: flex; align-items: center;">
+                            <div class="option-checkbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">GeoJSON</div>
+                                <div style="font-size: 0.9rem; color: #666;">.geojson for web mapping</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="export-option" data-format="geotiff">
+                        <div style="display: flex; align-items: center;">
+                            <div class="option-checkbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">GeoTIFF</div>
+                                <div style="font-size: 0.9rem; color: #666;">.tif with georeferencing</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="export-option" data-format="kml">
+                        <div style="display: flex; align-items: center;">
+                            <div class="option-checkbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">KML/KMZ</div>
+                                <div style="font-size: 0.9rem; color: #666;">.kml for Google Earth</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: #e0f7fa; padding: 20px; border-radius: 10px; margin-top: 30px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 5px;">Export Summary</div>
+                            <div style="font-size: 0.9rem; color: #666;" id="exportSummary">Shapefile, GeoJSON, GeoTIFF, KML/KMZ | ZIP compression | WGS84 CRS</div>
+                            <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">Estimated size: <strong id="exportSize">~45 MB</strong></div>
+                        </div>
+                        <button class="btn-primary" style="background: #0097a7; padding: 12px 40px;" onclick="startExport()">
+                            <i class="fas fa-download"></i> Start Export
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Software Integration -->
+        <div class="software-integration">
+            <h2 class="section-title" style="color: #388e3c;">Software Integration Guide</h2>
+            
+            <div class="software-grid">
+                <div class="software-card">
+                    <div class="software-logo logo-qgis">
+                        <i class="fas fa-map"></i>
+                    </div>
+                    <h3>QGIS Integration</h3>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">
+                        Open exported files directly in QGIS for advanced spatial analysis and visualization.
+                    </p>
+                    <div style="font-size: 0.9rem;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>Direct file import</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>Style preservation</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>CRS auto-detection</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="software-card">
+                    <div class="software-logo logo-arcgis">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>ArcGIS Integration</h3>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">
+                        Import into ArcGIS Pro or ArcMap for enterprise GIS workflows and analysis.
+                    </p>
+                    <div style="font-size: 0.9rem;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>Shapefile compatibility</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>Geodatabase support</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>Projection files</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="software-card">
+                    <div class="software-logo logo-google">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <h3>Google Earth</h3>
+                    <p style="color: #666; font-size: 0.9595rem; margin-bottom: 20px;">
+                        Visualize results in 3D with Google Earth Pro for presentations and exploration.
+                    </p>
+                    <div style="font-size: 0.9rem;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>KML/KMZ support</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>3D visualization</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>Time animation</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="software-card">
+                    <div class="software-logo logo-r">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>R/Python</h3>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">
+                        Import into data science workflows for statistical analysis and modeling.
+                    </p>
+                    <div style="font-size: 0.9rem;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>CSV with WKT</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>GeoJSON parsing</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: #388e3c;"></i>
+                            <span>Shapefile libraries</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 30px; border-radius: 10px; margin-top: 40px;">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Quick Import Scripts</h3>
+                <div class="code-tabs">
+                    <button class="code-tab active" data-tab="python">Python</button>
+                    <button class="code-tab" data-tab="r">R</button>
+                    <button class="code-tab" data-tab="javascript">JavaScript</button>
+                </div>
+                
+                <div class="code-block" id="pythonCode">
+                    <pre><code><span class="code-comment"># Python: Import GreenSpace AI exports</span>
+<span class="code-keyword">import</span> geopandas <span class="code-keyword">as</span> gpd
+<span class="code-keyword">import</span> rasterio
+<span class="code-keyword">import</span> json
+
+<span class="code-comment"># Method 1: Read Shapefile</span>
+<span class="code-function">def</span> read_shapefile(file_path):
+    gdf = gpd.read_file(file_path)
+    <span class="code-keyword">print</span>(<span class="code-string">f"CRS: {gdf.crs}"</span>)
+    <span class="code-keyword">print</span>(<span class="code-string">f"Features: {len(gdf)}"</span>)
+    <span class="code-keyword">print</span>(<span class="code-string">f"Columns: {gdf.columns.tolist()}"</span>)
+    <span class="code-keyword">return</span> gdf
+
+<span class="code-comment"># Method 2: Read GeoJSON</span>
+<span class="code-function">def</span> read_geojson(file_path):
+    <span class="code-keyword">with</span> <span class="code-function">open</span>(file_path, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> f:
+        data = json.load(f)
+    gdf = gpd.GeoDataFrame.from_features(data[<span class="code-string">'features'</span>])
+    <span class="code-keyword">return</span> gdf
+
+<span class="code-comment"># Method 3: Read GeoTIFF</span>
+<span class="code-function">def</span> read_geotiff(file_path):
+    <span class="code-keyword">with</span> rasterio.<span class="code-function">open</span>(file_path) <span class="code-keyword">as</span> src:
+        data = src.read()
+        profile = src.profile
+        bounds = src.bounds
+    <span class="code-keyword">return</span> data, profile, bounds
+
+<span class="code-comment"># Usage example</span>
+<span class="code-keyword">if</span> __name__ == <span class="code-string">"__main__"</span>:
+    <span class="code-comment"># Read classification results</span>
+    results = read_shapefile(<span class="code-string">"greenspace_export.shp"</span>)
+    
+    <span class="code-comment"># Calculate area by class</span>
+    area_by_class = results.groupby(<span class="code-string">'class_name'</span>)[<span class="code-string">'geometry'</span>].area.sum()
+    <span class="code-keyword">print</span>(<span class="code-string">"\nArea by land cover class:"</span>)
+    <span class="code-keyword">print</span>(area_by_class)</code></pre>
+                </div>
+                
+                <div class="code-block" id="rCode" style="display: none;">
+                    <pre><code><span class="code-comment"># R: Import GreenSpace AI exports</span>
+library(sf)
+library(raster)
+library(jsonlite)
+
+<span class="code-comment"># Method 1: Read Shapefile</span>
+read_shapefile <- function(file_path) {
+  gdf <- st_read(file_path, quiet = TRUE)
+  cat("CRS:", st_crs(gdf)$input, "\n")
+  cat("Features:", nrow(gdf), "\n")
+  cat("Columns:", names(gdf), "\n")
+  return(gdf)
+}
+
+<span class="code-comment"># Method 2: Read GeoJSON</span>
+read_geojson <- function(file_path) {
+  gdf <- st_read(file_path, quiet = TRUE)
+  return(gdf)
+}
+
+<span class="code-comment"># Method 3: Read GeoTIFF</span>
+read_geotiff <- function(file_path) {
+  raster_data <- raster(file_path)
+  return(raster_data)
+}
+
+<span class="code-comment"># Usage example</span>
+results <- read_shapefile("greenspace_export.shp")
+
+<span class="code-comment"># Calculate area by class</span>
+results$area <- st_area(results)
+area_by_class <- aggregate(area ~ class_name, data = results, sum)
+print("Area by land cover class:")
+print(area_by_class)</code></pre>
+                </div>
+                
+                <div class="code-block" id="javascriptCode" style="display: none;">
+                    <pre><code><span class="code-comment">// JavaScript: Import GreenSpace AI exports for web mapping</span>
+<span class="code-keyword">import</span> * <span class="code-keyword">as</span> L from 'leaflet';
+
+<span class="code-comment">// Method 1: Load GeoJSON for Leaflet</span>
+<span class="code-function">async</span> <span class="code-keyword">function</span> loadGeoJSON(filePath) {
+    <span class="code-keyword">const</span> response = <span class="code-function">await</span> fetch(filePath);
+    <span class="code-keyword">const</span> geojson = <span class="code-function">await</span> response.json();
+    
+    <span class="code-comment">// Create Leaflet layer with styling</span>
+    <span class="code-keyword">const</span> geojsonLayer = L.geoJSON(geojson, {
+        style: <span class="code-function">function</span>(feature) {
+            <span class="code-keyword">const</span> className = feature.properties.class_name;
+            <span class="code-keyword">return</span> {
+                fillColor: getColorForClass(className),
+                weight: <span class="code-number">1</span>,
+                opacity: <span class="code-number">1</span>,
+                color: <span class="code-string">'white'</span>,
+                fillOpacity: <span class="code-number">0.7</span>
+            };
+        },
+        onEachFeature: <span class="code-function">function</span>(feature, layer) {
+            <span class="code-keyword">const</span> props = feature.properties;
+            <span class="code-keyword">const</span> popupContent = <span class="code-string">`
+                &lt;strong&gt;${props.class_name}&lt;/strong&gt;&lt;br&gt;
+                Area: ${props.area.toFixed(2)} km²&lt;br&gt;
+                Confidence: ${props.confidence}%
+            `</span>;
+            layer.bindPopup(popupContent);
+        }
+    });
+    
+    <span class="code-keyword">return</span> geojsonLayer;
+}
+
+<span class="code-comment">// Helper function for class colors</span>
+<span class="code-keyword">function</span> getColorForClass(className) {
+    <span class="code-keyword">const</span> colors = {
+        <span class="code-string">'Urban'</span>: <span class="code-string">'#ff5722'</span>,
+        <span class="code-string">'Vegetation'</span>: <span class="code-string">'#4caf50'</span>,
+        <span class="code-string">'Water'</span>: <span class="code-string">'#2196f3'</span>,
+        <span class="code-string">'Bare Soil'</span>: <span class="code-string">'#795548'</span>
+    };
+    <span class="code-keyword">return</span> colors[className] || <span class="code-string">'#cccccc'</span>;
+}
+
+<span class="code-comment">// Usage example</span>
+<span class="code-function">async</span> <span class="code-keyword">function</span> initMap() {
+    <span class="code-keyword">const</span> map = L.map(<span class="code-string">'map'</span>).setView([<span class="code-number">51.505</span>, -<span class="code-number">0.09</span>], <span class="code-number">13</span>);
+    L.tileLayer(<span class="code-string">'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'</span>).addTo(map);
+    
+    <span class="code-keyword">const</span> greenspaceLayer = <span class="code-function">await</span> loadGeoJSON(<span class="code-string">'greenspace_export.geojson'</span>);
+    greenspaceLayer.addTo(map);
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batch Export -->
+        <div class="batch-export">
+            <h2 class="section-title" style="color: #ff9800;">Batch Export & Automation</h2>
+            
+            <div class="export-steps">
+                <div class="export-step">
+                    <div class="step-number">1</div>
+                    <h4>Select Multiple Analyses</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Choose multiple completed analyses from your project dashboard for batch processing.
+                    </p>
+                </div>
+                
+                <div class="export-step">
+                    <div class="step-number">2</div>
+                    <h4>Configure Export Template</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Set up export preferences once and apply to all selected analyses.
+                    </p>
+                </div>
+                
+                <div class="export-step">
+                    <div class="step-number">3</div>
+                    <h4>Queue Exports</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Add exports to processing queue. Large batches are processed in the background.
+                    </p>
+                </div>
+                
+                <div class="export-step">
+                    <div class="step-number">4</div>
+                    <h4>Download Results</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        Download all exported files as a single ZIP archive with organized folder structure.
+                    </p>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 30px; border-radius: 10px; margin-top: 40px;">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Python Batch Export Script</h3>
+                <div class="code-block">
+                    <pre><code><span class="code-comment"># Python: Batch export multiple analyses</span>
+<span class="code-keyword">import</span> requests
+<span class="code-keyword">import</span> time
+<span class="code-keyword">import</span> zipfile
+<span class="code-keyword">import</span> os
+
+API_KEY = <span class="code-string">"your_api_key_here"</span>
+BASE_URL = <span class="code-string">"https://api.greenspaceai.com/v1"</span>
+
+<span class="code-keyword">def</span> <span class="code-function">batch_export_analyses</span>(analysis_ids, export_formats=[<span class="code-string">"shapefile"</span>, <span class="code-string">"geojson"</span>]):
+    headers = {<span class="code-string">"Authorization"</span>: <span class="code-string">f"Bearer {API_KEY}"</span>}
+    
+    export_jobs = []
+    
+    <span class="code-comment"># Create export jobs for each analysis</span>
+    <span class="code-keyword">for</span> analysis_id <span class="code-keyword">in</span> analysis_ids:
+        export_payload = {
+            <span class="code-string">"analysis_id"</span>: analysis_id,
+            <span class="code-string">"formats"</span>: export_formats,
+            <span class="code-string">"include_metadata"</span>: <span class="code-keyword">True</span>,
+            <span class="code-string">"crs"</span>: <span class="code-string">"EPSG:4326"</span>,
+            <span class="code-string">"compression"</span>: <span class="code-string">"zip"</span>
+        }
+        
+        response = requests.post(
+            <span class="code-string">f"{BASE_URL}/export"</span>,
+            headers=headers,
+            json=export_payload
+        )
+        
+        <span class="code-keyword">if</span> response.status_code == <span class="code-number">202</span>:
+            job_id = response.json()[<span class="code-string">'job_id'</span>]
+            export_jobs.append({<span class="code-string">"analysis_id"</span>: analysis_id, <span class="code-string">"job_id"</span>: job_id})
+            <span class="code-keyword">print</span>(<span class="code-string">f"✓ Export queued for analysis {analysis_id}"</span>)
+        <span class="code-keyword">else</span>:
+            <span class="code-keyword">print</span>(<span class="code-string">f"✗ Failed to queue export for {analysis_id}"</span>)
+    
+    <span class="code-comment"># Monitor job progress</span>
+    completed_jobs = []
+    <span class="code-keyword">while</span> export_jobs:
+        <span class="code-keyword">for</span> job <span class="code-keyword">in</span> export_jobs[:]:
+            status_response = requests.get(
+                <span class="code-string">f"{BASE_URL}/export/{job['job_id']}/status"</span>,
+                headers=headers
+            )
+            
+            status = status_response.json()[<span class="code-string">'status'</span>]
+            
+            <span class="code-keyword">if</span> status == <span class="code-string">"completed"</span>:
+                download_url = status_response.json()[<span class="code-string">'download_url'</span>]
+                job[<span class="code-string">'download_url'</span>] = download_url
+                completed_jobs.append(job)
+                export_jobs.remove(job)
+                <span class="code-keyword">print</span>(<span class="code-string">f"✓ Export completed for analysis {job['analysis_id']}"</span>)
+            <span class="code-keyword">elif</span> status == <span class="code-string">"failed"</span>:
+                <span class="code-keyword">print</span>(<span class="code-string">f"✗ Export failed for analysis {job['analysis_id']}"</span>)
+                export_jobs.remove(job)
+        
+        <span class="code-keyword">if</span> export_jobs:
+            <span class="code-keyword">print</span>(<span class="code-string">f"Waiting for {len(export_jobs)} exports..."</span>)
+            time.sleep(<span class="code-number">5</span>)
+    
+    <span class="code-comment"># Download all exports</span>
+    <span class="code-keyword">for</span> job <span class="code-keyword">in</span> completed_jobs:
+        download_response = requests.get(job[<span class="code-string">'download_url'</span>])
+        
+        <span class="code-keyword">with</span> <span class="code-function">open</span>(<span class="code-string">f"exports/analysis_{job['analysis_id']}.zip"</span>, <span class="code-string">'wb'</span>) <span class="code-keyword">as</span> f:
+            f.write(download_response.content)
+        
+        <span class="code-comment"># Extract and organize</span>
+        <span class="code-keyword">with</span> zipfile.ZipFile(<span class="code-string">f"exports/analysis_{job['analysis_id']}.zip"</span>, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> zip_ref:
+            extract_path = <span class="code-string">f"exports/analysis_{job['analysis_id']}"</span>
+            zip_ref.extractall(extract_path)
+    
+    <span class="code-keyword">print</span>(<span class="code-string">"✓ All exports downloaded and extracted!"</span>)
+    <span class="code-keyword">return</span> completed_jobs
+
+<span class="code-comment"># Example usage</span>
+analysis_ids = [<span class="code-string">"analysis_123"</span>, <span class="code-string">"analysis_456"</span>, <span class="code-string">"analysis_789"</span>]
+<span class="code-function">batch_export_analyses</span>(analysis_ids)</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="troubleshooting">
+            <h2 class="section-title" style="color: #f44336;">Common Issues & Troubleshooting</h2>
+            
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h4>Missing Projection Files</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        <strong>Symptoms:</strong> GIS software shows "Unknown CRS" or incorrect coordinates.
+                    </p>
+                    <div style="margin-top: 15px;">
+                        <div style="font-weight: 600; color: #f44336; margin-bottom: 5px;">Solution:</div>
+                        <ul style="color: #666; font-size: 0.9rem; padding-left: 20px; margin: 0;">
+                            <li>Re-export with "Include PRJ file" option</li>
+                            <li>Manually assign CRS in your GIS software</li>
+                            <li>Use WGS84 (EPSG:4326) for web applications</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-file-excel"></i>
+                    </div>
+                    <h4>Large File Size</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        <strong>Symptoms:</strong> Export takes too long or fails due to size limits.
+                    </p>
+                    <div style="margin-top: 15px;">
+                        <div style="font-weight: 600; color: #f44336; margin-bottom: 5px;">Solution:</div>
+                        <ul style="color: #666; font-size: 0.9rem; padding-left: 20px; margin: 0;">
+                            <li>Use compression (ZIP or 7Z)</li>
+                            <li>Export only necessary layers</li>
+                            <li>Split large areas into tiles</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h4>Attribute Data Issues</h4>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        <strong>Symptoms:</strong> Missing fields or incorrect data types in exported files.
+                    </p>
+                    <div style="margin-top: 15px;">
+                        <div style="font-weight: 600; color: #f44336; margin-bottom: 5px;">Solution:</div>
+                        <ul style="color: #666; font-size: 0.9rem; padding-left: 20px; margin: 0;">
+                            <li>Check "Include Metadata" option</li>
+                            <li>Use CSV format for complex attributes</li>
+                            <li>Validate field names (avoid special characters)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 30px; border-radius: 10px; margin-top: 40px;">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Export Validation Checklist</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div>
+                        <h4 style="color: #f44336; margin-bottom: 15px;">Before Export</h4>
+                        <ul style="color: #666; padding-left: 20px;">
+                            <li>Verify analysis completion status</li>
+                            <li>Check available storage space</li>
+                            <li>Confirm required export formats</li>
+                            <li>Set appropriate coordinate system</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #f44336; margin-bottom: 15px;">After Export</h4>
+                        <ul style="color: #666; padding-left: 20px;">
+                            <li>Verify file integrity (no corruption)</li>
+                            <li>Check CRS assignment in GIS software</li>
+                            <li>Validate attribute table completeness</li>
+                            <li>Test layer visualization</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #f44336; margin-bottom: 15px;">Integration Testing</h4>
+                        <ul style="color: #666; padding-left: 20px;">
+                            <li>Import into target GIS software</li>
+                            <li>Verify styling and symbology</li>
+                            <li>Test overlay with other datasets</li>
+                            <li>Validate coordinate alignment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Export -->
+        <div class="api-export">
+            <h2 class="section-title" style="color: #1976d2;">API Export Integration</h2>
+            
+            <div class="api-endpoints">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">REST API Endpoints</h3>
+                
+                <div class="endpoint-item">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                        <span style="background: #1976d2; color: white; padding: 5px 15px; border-radius: 5px; font-weight: 600;">POST</span>
+                        <code style="color: #1976d2; font-size: 1.1rem;">/v1/export</code>
+                    </div>
+                    <div style="color: #666; font-size: 0.95rem;">
+                        Create a new export job for an analysis. Returns job ID and status URL.
+                    </div>
+                </div>
+                
+                <div class="endpoint-item">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                        <span style="background: #4caf50; color: white; padding: 5px 15px; border-radius: 5px; font-weight: 600;">GET</span>
+                        <code style="color: #1976d2; font-size: 1.1rem;">/v1/export/{job_id}/status</code>
+                    </div>
+                    <div style="color: #666; font-size: 0.95rem;">
+                        Check export job status. Returns progress percentage and download URL when complete.
+                    </div>
+                </div>
+                
+                <div class="endpoint-item">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                        <span style="background: #ff9800; color: white; padding: 5px 15px; border-radius: 5px; font-weight: 600;">GET</span>
+                        <code style="color: #1976d2; font-size: 1.1rem;">/v1/export/formats</code>
+                    </div>
+                    <div style="color: #666; font-size: 0.95rem;">
+                        List available export formats and their capabilities.
+                    </div>
+                </div>
+                
+                <div class="endpoint-item">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                        <span style="background: #f44336; color: white; padding: 5px 15px; border-radius: 5px; font-weight: 600;">DELETE</span>
+                        <code style="color: #1976d2; font-size: 1.1rem;">/v1/export/{job_id}</code>
+                    </div>
+                    <div style="color: #666; font-size: 0.95rem;">
+                        Cancel an export job. Only works for jobs that haven't started processing.
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 30px; border-radius: 10px; margin-top: 40px;">
+                <h3 style="margin-top: 0; margin-bottom: 20px;">Webhook Integration</h3>
+                <p style="color: #666; margin-bottom: 20px;">
+                    Set up webhooks to receive automatic notifications when exports are ready:
+                </p>
+                
+                <div class="code-block">
+                    <pre><code><span class="code-comment">// Webhook payload example</span>
+{
+  <span class="code-string">"event"</span>: <span class="code-string">"export.completed"</span>,
+  <span class="code-string">"timestamp"</span>: <span class="code-string">"2024-01-15T14:30:00Z"</span>,
+  <span class="code-string">"data"</span>: {
+    <span class="code-string">"job_id"</span>: <span class="code-string">"export_abc123"</span>,
+    <span class="code-string">"analysis_id"</span>: <span class="code-string">"analysis_xyz789"</span>,
+    <span class="code-string">"formats"</span>: [<span class="code-string">"shapefile"</span>, <span class="code-string">"geojson"</span>],
+    <span class="code-string">"download_url"</span>: <span class="code-string">"https://exports.greenspaceai.com/export_abc123.zip"</span>,
+    <span class="code-string">"expires_at"</span>: <span class="code-string">"2024-01-22T14:30:00Z"</span>,
+    <span class="code-string">"file_size"</span>: <span class="code-number">45218764</span>
+  }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Steps -->
+        <div style="background: linear-gradient(135deg, #0097a7, #00bcd4); color: white; padding: 50px; border-radius: 15px; margin-top: 50px; text-align: center;">
+            <h2 style="margin: 0 0 20px;">Ready to Export Your Analysis?</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto 30px;">
+                Export your analysis results and integrate them into your GIS workflows and applications.
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'analysis' %}" class="btn-primary" style="background: white; color: #0097a7; padding: 15px 40px;">
+                    <i class="fas fa-download"></i> Start Exporting
+                </a>
+                <a href="{% url 'api_integration' %}" class="btn-outline" style="border-color: white; color: white; padding: 15px 40px;">
+                    <i class="fas fa-code"></i> Learn API Integration
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced GIS and remote sensing platform powered by deep learning for environmental analysis.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>GIS Export</h4>
+                <ul>
+                    <li><a href="#formats">Export Formats</a></li>
+                    <li><a href="#integration">Software Integration</a></li>
+                    <li><a href="#batch">Batch Export</a></li>
+                    <li><a href="#api">API Export</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Related Tutorials</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-play-circle"></i> <a href="{% url 'getting_started' %}">Getting Started</a></li>
+                    <li><i class="fas fa-chart-bar"></i> <a href="{% url 'understanding_result' %}">Understanding Results</a></li>
+                    <li><i class="fas fa-calendar-alt"></i> <a href="{% url 'temporal_analysis' %}">Temporal Analysis</a></li>
+                    <li><i class="fas fa-brain"></i> <a href="{% url 'custom_models' %}">Custom Models</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Export Resources</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-file-download"></i> Sample Exports</li>
+                    <li><i class="fas fa-code"></i> SDK Libraries</li>
+                    <li><i class="fas fa-tools"></i> Export Tools</li>
+                    <li><i class="fas fa-life-ring"></i> Export Support</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 GreenSpace AI. GIS Export Tutorial v2.1</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Export options selection
+        const exportOptions = document.querySelectorAll('.export-option');
+        const exportSummary = document.getElementById('exportSummary');
+        const exportSize = document.getElementById('exportSize');
+        
+        // Toggle selection
+        exportOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                updateExportSummary();
+            });
+        });
+
+        // Update export summary based on selections
+        function updateExportSummary() {
+            const selectedFormats = Array.from(exportOptions)
+                .filter(opt => opt.classList.contains('selected'))
+                .map(opt => opt.dataset.format);
+            
+            if (selectedFormats.length === 0) {
+                exportSummary.textContent = 'No formats selected';
+                exportSize.textContent = '~0 MB';
+                return;
+            }
+            
+            // Format names for display
+            const formatNames = {
+                'shapefile': 'Shapefile',
+                'geojson': 'GeoJSON',
+                'geotiff': 'GeoTIFF',
+                'kml': 'KML/KMZ'
+            };
+            
+            const displayNames = selectedFormats.map(f => formatNames[f]);
+            exportSummary.textContent = `${displayNames.join(', ')} | ZIP compression | WGS84 CRS`;
+            
+            // Estimate file size
+            const sizePerFormat = {
+                'shapefile': 15,
+                'geojson': 8,
+                'geotiff': 20,
+                'kml': 12
+            };
+            
+            let totalSize = selectedFormats.reduce((sum, format) => sum + sizePerFormat[format], 0);
+            exportSize.textContent = `~${totalSize} MB`;
+        }
+
+        // Initialize with default selections
+        updateExportSummary();
+
+        // Layer selection checkboxes
+        const layerCheckboxes = document.querySelectorAll('.tool-interface .option-checkbox');
+        layerCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (icon.style.display === 'none') {
+                    icon.style.display = 'block';
+                    this.parentElement.parentElement.classList.add('selected');
+                } else {
+                    icon.style.display = 'none';
+                    this.parentElement.parentElement.classList.remove('selected');
+                }
+            });
+        });
+
+        // Code tabs
+        const codeTabs = document.querySelectorAll('.code-tab');
+        const codeBlocks = {
+            'python': document.getElementById('pythonCode'),
+            'r': document.getElementById('rCode'),
+            'javascript': document.getElementById('javascriptCode')
+        };
+
+        codeTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+                
+                // Update active tab
+                codeTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show selected code block
+                Object.values(codeBlocks).forEach(block => block.style.display = 'none');
+                if (codeBlocks[tabName]) {
+                    codeBlocks[tabName].style.display = 'block';
+                }
+            });
+        });
+
+        // Start export simulation
+        function startExport() {
+            const selectedFormats = Array.from(exportOptions)
+                .filter(opt => opt.classList.contains('selected'))
+                .map(opt => opt.dataset.format);
+            
+            if (selectedFormats.length === 0) {
+                alert('Please select at least one export format.');
+                return;
+            }
+            
+            // Show export progress
+            const exportButton = document.querySelector('.tool-interface .btn-primary');
+            const originalText = exportButton.innerHTML;
+            let progress = 0;
+            
+            exportButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing Export...';
+            exportButton.disabled = true;
+            
+            // Simulate export progress
+            const interval = setInterval(() => {
+                progress += 10;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    // Show completion message
+                    const formatNames = selectedFormats.map(f => 
+                        f.charAt(0).toUpperCase() + f.slice(1)
+                    ).join(', ');
+                    
+                    alert(`Export completed successfully!\n\nFormats: ${formatNames}\nFile size: ${exportSize.textContent}\n\nYour download will start automatically.`);
+                    
+                    exportButton.innerHTML = originalText;
+                    exportButton.disabled = false;
+                    
+                    // Reset selections (optional)
+                    // exportOptions.forEach(opt => opt.classList.remove('selected'));
+                    // layerCheckboxes.forEach(cb => {
+                    //     cb.querySelector('i').style.display = 'none';
+                    // });
+                    // updateExportSummary();
+                } else {
+                    exportButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Exporting... ${progress}%`;
+                }
+            }, 300);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + E to start export
+            if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+                e.preventDefault();
+                startExport();
+            }
+            
+            // Ctrl/Cmd + 1-4 to toggle export formats
+            if ((e.ctrlKey || e.metaKey) && e.key >= '1' && e.key <= '4') {
+                e.preventDefault();
+                const index = parseInt(e.key) - 1;
+                if (exportOptions[index]) {
+                    exportOptions[index].click();
+                }
+            }
+        });
+
+        // Add tooltips for format badges
+        const formatBadges = document.querySelectorAll('.format-badge');
+        formatBadges.forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                tooltip.textContent = this.textContent;
+                tooltip.style.cssText = `
+                    position: absolute;
+                    background: #333;
+                    color: white;
+                    padding: 5px 10px;
+                    border-radius: 4px;
+                    font-size: 0.8rem;
+                    z-index: 1000;
+                    transform: translateY(-30px);
+                `;
+                this.appendChild(tooltip);
+            });
+            
+            badge.addEventListener('mouseleave', function() {
+                const tooltip = this.querySelector('.tooltip');
+                if (tooltip) tooltip.remove();
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Analysis History — GeoAI Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --clr-temporal: #0ea5e9;
+        --clr-current: #22c55e;
+        --clr-upload: #8b5cf6;
+    }
+    .history-hero {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f4c81 100%);
+        padding: 2.5rem 2rem 6rem;
+        margin-bottom: -4rem;
+    }
+    .history-hero h2 { color: #f1f5f9; }
+    .history-hero p  { color: #94a3b8; }
+    .stat-chip {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 50px;
+        padding: 0.35rem 1.1rem;
+        color: #e2e8f0;
+        font-size: 0.82rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    .history-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        background: #fff;
+        transition: box-shadow 0.2s, transform 0.2s;
+        overflow: hidden;
+    }
+    .history-card:hover {
+        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+        transform: translateY(-2px);
+    }
+    .type-bar {
+        width: 4px;
+        border-radius: 4px 0 0 4px;
+        min-height: 100%;
+        flex-shrink: 0;
+    }
+    .type-bar.temporal { background: var(--clr-temporal); }
+    .type-bar.current  { background: var(--clr-current); }
+    .type-bar.upload   { background: var(--clr-upload); }
+    .badge-temporal { background: rgba(14,165,233,0.12); color: #0284c7; border: 1px solid rgba(14,165,233,0.25); }
+    .badge-current  { background: rgba(34,197,94,0.12);  color: #15803d; border: 1px solid rgba(34,197,94,0.25); }
+    .badge-upload   { background: rgba(139,92,246,0.12); color: #7c3aed; border: 1px solid rgba(139,92,246,0.25); }
+    .empty-state { padding: 4rem 2rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Banner -->
+<div class="history-hero">
+    <div class="container" style="max-width:960px;">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+            <div>
+                <p class="text-uppercase fw-bold mb-1" style="color:#7dd3fc;font-size:0.72rem;letter-spacing:2px;">
+                    <i class="fas fa-history me-1"></i> Analysis Archive
+                </p>
+                <h2 class="fw-bold mb-1">Analysis History</h2>
+                <p class="mb-0">Browse and reopen all your past GeoAI analyses.</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="stat-chip"><i class="fas fa-layer-group"></i> {{ total_analyses }} Total</span>
+                {% if temporal_count %}<span class="stat-chip" style="color:#7dd3fc;"><i class="fas fa-chart-line"></i> {{ temporal_count }} Temporal</span>{% endif %}
+                {% if current_count %}<span class="stat-chip" style="color:#86efac;"><i class="fas fa-map-pin"></i> {{ current_count }} Current</span>{% endif %}
+                {% if upload_count %}<span class="stat-chip" style="color:#c4b5fd;"><i class="fas fa-upload"></i> {{ upload_count }} Uploads</span>{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container py-4" style="max-width:960px; position:relative; z-index:2;">
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="mb-3">
+        {% for message in messages %}
+        <div class="alert alert-{% if 'error' in message.tags %}danger{% elif 'success' in message.tags %}success{% else %}info{% endif %} alert-dismissible fade show rounded-3 border-0 shadow-sm"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Toolbar -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted small"><strong>{{ history|length }}</strong> record{{ history|length|pluralize }} found</span>
+        <a href="{% url 'analysis' %}" class="btn btn-primary rounded-pill px-4 shadow-sm">
+            <i class="fas fa-plus me-2"></i>New Analysis
+        </a>
+    </div>
+
+    <!-- History List -->
+    {% if history %}
+    <div class="d-flex flex-column gap-3">
+        {% for item in history %}
+        <div class="history-card shadow-sm d-flex">
+            <!-- Type bar -->
+            <div class="type-bar {{ item.analysis_type }}"></div>
+
+            <div class="flex-grow-1 p-3 p-md-4 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+                <!-- Icon + Info -->
+                <div class="d-flex align-items-start gap-3 flex-grow-1">
+                    <div class="flex-shrink-0 rounded-circle d-flex justify-content-center align-items-center"
+                        style="width:42px;height:42px;background:{% if item.analysis_type == 'temporal' %}rgba(14,165,233,0.1){% elif item.analysis_type == 'upload' %}rgba(139,92,246,0.1){% else %}rgba(34,197,94,0.1){% endif %};">
+                        <i class="fas {% if item.analysis_type == 'temporal' %}fa-chart-line text-info{% elif item.analysis_type == 'upload' %}fa-upload{% else %}fa-map-pin text-success{% endif %}"
+                           style="{% if item.analysis_type == 'upload' %}color:#7c3aed;{% endif %}"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-dark mb-1">{{ item.title|default:"Untitled Analysis" }}</div>
+                        {% if item.summary %}
+                        <p class="text-muted small mb-1" style="line-height:1.4;">{{ item.summary|truncatechars:120 }}</p>
+                        {% endif %}
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <span class="badge rounded-pill badge-{{ item.analysis_type }} px-3 py-1" style="font-size:0.72rem;">
+                                {% if item.analysis_type == 'temporal' %}<i class="fas fa-clock me-1"></i>Temporal
+                                {% elif item.analysis_type == 'upload' %}<i class="fas fa-upload me-1"></i>Custom Upload
+                                {% else %}<i class="fas fa-map-marker-alt me-1"></i>Current{% endif %}
+                            </span>
+                            <span class="text-muted small">
+                                <i class="far fa-calendar me-1"></i>{{ item.created_at|date:"M d, Y" }}
+                                &nbsp;<i class="far fa-clock ms-1 me-1"></i>{{ item.created_at|time:"h:i A" }}
+                            </span>
+                            <code class="text-muted" style="font-size:0.65rem;">{{ item.result_id|truncatechars:16 }}</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex gap-2 flex-shrink-0">
+                    <a href="{% url 'web_dashboard:dashboard' %}?result_id={{ item.result_id }}"
+                        class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                        <i class="fas fa-external-link-alt me-1"></i>Open
+                    </a>
+                    <form method="post" action="{% url 'web_dashboard:delete_history' item.pk %}"
+                        class="d-inline" onsubmit="return confirm('Remove this analysis from history?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill"
+                            title="Remove from history">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center empty-state">
+        <div class="mb-4">
+            <div class="rounded-circle d-inline-flex justify-content-center align-items-center mx-auto"
+                style="width:80px;height:80px;background:linear-gradient(135deg,#e0f2fe,#bfdbfe);">
+                <i class="fas fa-satellite-dish fa-2x text-primary opacity-75"></i>
+            </div>
+        </div>
+        <h5 class="fw-bold text-dark mb-2">No analyses yet</h5>
+        <p class="text-muted mb-4">Run your first analysis to see it recorded here automatically.</p>
+        <a href="{% url 'analysis' %}" class="btn btn-primary rounded-pill px-5 shadow-sm">
+            <i class="fas fa-satellite me-2"></i>Start Your First Analysis
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

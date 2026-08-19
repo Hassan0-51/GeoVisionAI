@@ -1,0 +1,325 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* Custom overrides if needed */
+</style>
+{% endblock %}
+
+{% block header_actions %}
+<div class="text-end">
+    <div class="badge bg-secondary">AOI: Lahore Region</div>
+    <div id="loading-indicator" class="spinner-border spinner-border-sm text-light d-none" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<button onclick="generatePDF()" id="export-btn" class="btn btn-primary btn-sm">
+    <i class="fas fa-file-pdf me-1"></i> Export Report
+</button>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 bg-light min-vh-100">
+    <!-- Header Summary Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body d-flex justify-content-between align-items-center py-3 px-4">
+                    <div>
+                        <h4 class="mb-1 fw-bold text-dark">GeoAI Land Cover Dashboard</h4>
+                        <p class="text-muted mb-0 small"><i class="fas fa-map-marker-alt me-1 text-primary"></i> Lahore
+                            Region Analysis Portfolio</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="text-end">
+                            <span class="d-block small text-muted text-uppercase fw-bold">Active Selection</span>
+                            <span class="badge bg-primary rounded-pill px-3">Result: {{ result_id|truncatechars:12
+                                }}</span>
+                        </div>
+                        <div class="vr mx-2"></div>
+                        <button onclick="generatePDF()" class="btn btn-dark rounded-pill px-4 shadow-sm">
+                            <i class="fas fa-file-export me-2"></i>Export Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Sidebar - Controls (25%) -->
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100 h-lg-auto mb-4">
+                <div class="card-header bg-white border-0 py-3 rounded-top-4">
+                    <h6 class="mb-0 fw-bold"><i class="fas fa-sliders-h me-2 text-primary"></i>Analytical Controls</h6>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="mb-4">
+                        <label class="form-label small text-muted fw-bold text-uppercase">Analysis Year</label>
+                        <select id="year-filter" class="form-select border-0 bg-light rounded-3 shadow-none py-2">
+                            {% for year in analysis_years %}
+                            <option value="{{ year }}" {% if forloop.last %}selected{% endif %}>{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label small text-muted fw-bold text-uppercase">Seasonal Context</label>
+                        <div class="btn-group w-100 shadow-sm" role="group">
+                            <input type="radio" class="btn-check" name="season-filter" id="spring" checked>
+                            <label class="btn btn-outline-primary border-0 py-2 small" for="spring">Spring</label>
+
+                            <input type="radio" class="btn-check" name="season-filter" id="summer">
+                            <label class="btn btn-outline-primary border-0 py-2 small" for="summer">Summer</label>
+
+                            <input type="radio" class="btn-check" name="season-filter" id="autumn">
+                            <label class="btn btn-outline-primary border-0 py-2 small" for="autumn">Autumn</label>
+
+                            <input type="radio" class="btn-check" name="season-filter" id="winter">
+                            <label class="btn btn-outline-primary border-0 py-2 small" for="winter">Winter</label>
+
+                            <input type="radio" class="btn-check" name="season-filter" id="all">
+                            <label class="btn btn-outline-primary border-0 py-2 small" for="all">All</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="form-label small text-muted fw-bold text-uppercase mb-0">Mask Opacity</label>
+                            <span id="opacity-value" class="badge bg-light text-dark border">70%</span>
+                        </div>
+                        <input type="range" class="form-range custom-range" id="layer-opacity" min="0" max="1"
+                            step="0.1" value="0.7">
+                    </div>
+
+                    <hr class="my-4 text-muted opacity-25">
+
+                    <div class="form-check form-switch custom-switch">
+                        <input class="form-check-input" type="checkbox" id="toggle-mask" checked>
+                        <label class="form-check-label small fw-bold text-muted" for="toggle-mask">ENABLE CLASSIFICATION
+                            MASK</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROI Summary Widget -->
+            <div class="card border-0 shadow-sm rounded-4 mt-4 bg-primary text-white overflow-hidden">
+                <div class="card-body p-4 position-relative">
+                    <i class="fas fa-globe-asia fa-5x position-absolute opacity-10"
+                        style="right: -10px; bottom: -10px;"></i>
+                    <h6 class="text-uppercase small opacity-75 fw-bold mb-3">Region of Interest</h6>
+                    <h5 class="mb-2">Lahore Metropolitan</h5>
+                    <p class="small mb-0 opacity-75">Automated Change Detection & Environmental Audit System</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Workspace - Map & Charts (50%) -->
+        <div class="col-lg-6">
+            <!-- Map Card -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4" style="height: 500px;">
+                <div class="card-header bg-white border-0 position-absolute top-0 start-0 p-3 z-3 w-100 bg-opacity-75">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0 fw-bold px-2 py-1 bg-white rounded-3 shadow-sm">
+                            <i class="fas fa-satellite me-2 text-danger"></i>Interactive Visualization
+                        </h6>
+                        <div id="loading-indicator" class="spinner-border spinner-border-sm text-primary d-none"></div>
+                    </div>
+                </div>
+                {% include 'components/map_widget.html' %}
+            </div>
+
+            <!-- Charts Container -->
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                    <ul class="nav nav-pills small" id="analysisTabs" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active rounded-pill px-3 me-2" id="temp-tab" data-bs-toggle="tab"
+                                data-bs-target="#temp-content">Temperature Analysis</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link rounded-pill px-3" id="area-tab" data-bs-toggle="tab"
+                                data-bs-target="#area-content">Land Cover Trends</button>
+                        </li>
+                    </ul>
+                    <span class="text-muted small fw-bold text-uppercase"><i class="fas fa-chart-bar me-1"></i>Metrics
+                        View</span>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="tab-content" id="analysisTabsContent">
+                        <div class="tab-pane fade show active" id="temp-content">
+                            {% include 'components/plot_viewer.html' with type='temperature' %}
+                        </div>
+                        <div class="tab-pane fade" id="area-content">
+                            {% include 'components/plot_viewer.html' with type='area' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar - Intelligence & Metrics (25%) -->
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-header bg-white border-0 py-3 d-flex align-items-center">
+                    <i class="fas fa-microchip me-2 text-primary"></i>
+                    <h6 class="mb-0 fw-bold">Intelligence Feed</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="px-3 pb-3">
+                        {% include 'components/json_viewer.html' %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 py-3 d-flex align-items-center">
+                    <i class="fas fa-project-diagram me-2 text-success"></i>
+                    <h6 class="mb-0 fw-bold">Advanced Metrics</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="px-3 pb-3">
+                        {% include 'components/advanced_analysis.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- External Libraries for PDF Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+    const RESULT_ID = "{{ result_id|default:'' }}";
+</script>
+<script src="{% static 'js/map.js' %}"></script>
+<script src="{% static 'js/charts.js' %}"></script>
+<script src="{% static 'js/dataDisplay.js' %}"></script>
+<script src="{% static 'js/advancedAnalysis.js' %}"></script>
+<script src="{% static 'js/reportGenerator.js' %}"></script>
+
+<script>
+    (function () {
+        // ── Interactive Area Trend Chart ─────────────────────────────────────
+        const AREA_TREND_COLORS = {
+            agriculture: '#f59e0b',
+            grass: '#84cc16',
+            urban: '#ef4444',
+            soil: '#92400e',
+            water: '#3b82f6',
+            trees: '#16a34a',
+        };
+        const AREA_TREND_NAMES = {
+            agriculture: 'Agriculture',
+            grass: 'Grass & Bushes',
+            urban: 'Urban',
+            soil: 'Soil',
+            water: 'Water',
+            trees: 'Trees',
+        };
+
+        let _areaData = null;        // cached API response
+        let _currentSeason = 'average';
+        let _rendered = false;
+
+        function buildTraces(seasonData) {
+            return Object.keys(AREA_TREND_COLORS).map(key => {
+                const vals = seasonData[key] || [];
+                return {
+                    x: seasonData.year,
+                    y: vals,
+                    name: AREA_TREND_NAMES[key],
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    line: { color: AREA_TREND_COLORS[key], width: 2.5 },
+                    marker: { color: AREA_TREND_COLORS[key], size: 7 },
+                    hovertemplate: '<b>' + AREA_TREND_NAMES[key] + '</b><br>Year: %{x}<br>Coverage: %{y:.1f}%<extra></extra>'
+                };
+            });
+        }
+
+        function renderAreaTrend(season) {
+            if (!_areaData) return;
+            const seasonData = _areaData[season];
+            if (!seasonData) {
+                document.getElementById('area-trend-error').textContent = 'No data for season: ' + season;
+                document.getElementById('area-trend-error').classList.remove('d-none');
+                return;
+            }
+            document.getElementById('area-trend-error').classList.add('d-none');
+
+            const traces = buildTraces(seasonData);
+            const seasonLabel = season.charAt(0).toUpperCase() + season.slice(1);
+            const layout = {
+                title: { text: 'Land Cover Area Trends — ' + seasonLabel, font: { size: 13 }, x: 0.5 },
+                xaxis: { title: 'Year', tickmode: 'linear', dtick: 1, showgrid: true, gridcolor: '#f0f0f0' },
+                yaxis: { title: 'Coverage (%)', showgrid: true, gridcolor: '#f0f0f0', rangemode: 'tozero' },
+                legend: { orientation: 'h', x: 0.5, xanchor: 'center', y: -0.22 },
+                margin: { t: 45, b: 80, l: 55, r: 20 },
+                paper_bgcolor: '#fff',
+                plot_bgcolor: '#fafafa',
+                hovermode: 'x unified',
+            };
+            Plotly.react('plot-area-trend-interactive', traces, layout, { responsive: true, displayModeBar: false });
+        }
+
+        function loadAndRender(season) {
+            if (_areaData) { renderAreaTrend(season); return; }
+
+            document.getElementById('area-trend-loading').classList.remove('d-none');
+            document.getElementById('plot-area-trend-interactive').innerHTML = '';
+
+            const resultId = (typeof RESULT_ID !== 'undefined' && RESULT_ID) ? '?result_id=' + RESULT_ID : '';
+            fetch('/dashboard/api/area-trend/' + resultId)
+                .then(r => r.json())
+                .then(json => {
+                    document.getElementById('area-trend-loading').classList.add('d-none');
+                    if (json.error) throw new Error(json.error);
+                    _areaData = json.data;
+                    renderAreaTrend(season);
+                    _rendered = true;
+                })
+                .catch(err => {
+                    document.getElementById('area-trend-loading').classList.add('d-none');
+                    const errEl = document.getElementById('area-trend-error');
+                    errEl.textContent = 'Failed to load area trend data: ' + err.message;
+                    errEl.classList.remove('d-none');
+                });
+        }
+
+        function initAreaTrendChart() {
+            // Season toggle buttons
+            document.querySelectorAll('.area-trend-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('.area-trend-btn').forEach(b => b.classList.remove('active', 'btn-success'));
+                    this.classList.add('active', 'btn-success');
+                    _currentSeason = this.dataset.season;
+                    loadAndRender(_currentSeason);
+                });
+            });
+
+            // Load when Land Cover Trends tab is shown
+            const areaTab = document.getElementById('area-tab');
+            if (areaTab) {
+                areaTab.addEventListener('shown.bs.tab', function () {
+                    if (!_rendered) loadAndRender(_currentSeason);
+                    else Plotly.Plots.resize('plot-area-trend-interactive');
+                });
+                // If already active on page load
+                if (areaTab.classList.contains('active')) loadAndRender(_currentSeason);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initAreaTrendChart);
+        } else {
+            initAreaTrendChart();
+        }
+    })();
+</script>
+{% endblock %}

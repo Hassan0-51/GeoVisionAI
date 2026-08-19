@@ -1,0 +1,793 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karachi University Research Project - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .case-study-container {
+            max-width: 1000px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .case-study-header {
+            background: linear-gradient(135deg, #006064, #00838f);
+            color: white;
+            padding: 60px 50px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-study-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .case-study-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .case-study-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        .case-study-meta {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .meta-item i {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .case-study-content {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .content-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #00838f;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: #00838f;
+        }
+
+        .section-text {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .research-objectives {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .objective-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #00838f;
+        }
+
+        .objective-number {
+            width: 40px;
+            height: 40px;
+            background: #00838f;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .coastal-analysis {
+            background: #e0f7fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border-left: 4px solid #00838f;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .analysis-item {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .analysis-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00838f;
+            margin-bottom: 10px;
+        }
+
+        .analysis-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .comparison-chart {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, #e0f7fa, #b2ebf2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-caption {
+            font-style: italic;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .data-sources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .data-source {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .data-icon {
+            width: 50px;
+            height: 50px;
+            background: #e0f7fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .data-icon i {
+            color: #00838f;
+            font-size: 1.5rem;
+        }
+
+        .publications {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+
+        .publication-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #00838f;
+        }
+
+        .publication-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .publication-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .publication-details {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .publication-link {
+            color: #00838f;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .research-team {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            background: #00838f;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto 15px;
+        }
+
+        .member-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .member-role {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .member-contact {
+            color: #00838f;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .case-study-header {
+                padding: 40px 25px;
+            }
+            
+            .case-study-header h1 {
+                font-size: 2rem;
+            }
+            
+            .case-study-content {
+                padding: 30px 20px;
+            }
+            
+            .case-study-meta {
+                gap: 20px;
+            }
+            
+            .research-objectives,
+            .analysis-grid,
+            .data-sources,
+            .research-team {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Case Study Content -->
+    <div class="case-study-container">
+        <!-- Header -->
+        <div class="case-study-header">
+            <h1>Karachi University Research Project</h1>
+            <p class="case-study-subtitle">PhD research on the correlation between green spaces and urban heat islands in Karachi's coastal areas</p>
+            
+            <div class="case-study-meta">
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                        <div class="meta-label">Research Period</div>
+                        <div class="meta-value">2022-2024</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <div class="meta-label">Location</div>
+                        <div class="meta-value">Karachi, Sindh, Pakistan</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-university"></i>
+                    <div>
+                        <div class="meta-label">Institution</div>
+                        <div class="meta-value">University of Karachi</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <div>
+                        <div class="meta-label">Program</div>
+                        <div class="meta-value">PhD Environmental Science</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="case-study-content">
+            <!-- Project Overview -->
+            <section class="content-section">
+                <h2 class="section-title">Project Overview</h2>
+                <p class="section-text">
+                    This doctoral research project investigates the complex relationship between urban green spaces and heat island effects 
+                    in Karachi, Pakistan's largest coastal metropolis. The study focuses on how coastal influences moderate temperature 
+                    patterns and how green infrastructure can be optimized for maximum cooling benefits in a marine-urban environment.
+                </p>
+                
+                <div class="coastal-analysis">
+                    <h3 style="margin-top: 0; color: #00838f;">Coastal Context</h3>
+                    <p>
+                        Karachi's unique coastal location creates distinct microclimates that interact with urban heat island effects. 
+                        The research examines how sea breezes, humidity, and coastal vegetation influence temperature patterns across 
+                        different parts of the city.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Research Objectives -->
+            <section class="content-section">
+                <h2 class="section-title">Research Objectives</h2>
+                
+                <div class="research-objectives">
+                    <div class="objective-card">
+                        <div class="objective-number">1</div>
+                        <h3>Quantify Green Coverage</h3>
+                        <p>Measure green space distribution across Karachi's 18 towns using satellite imagery analysis.</p>
+                    </div>
+                    
+                    <div class="objective-card">
+                        <div class="objective-number">2</div>
+                        <h3>Analyze Temperature Patterns</h3>
+                        <p>Map urban heat islands and correlate with green space density, considering coastal influences.</p>
+                    </div>
+                    
+                    <div class="objective-card">
+                        <div class="objective-number">3</div>
+                        <h3>Assess Coastal Effects</h3>
+                        <p>Evaluate how proximity to the Arabian Sea affects cooling benefits of green spaces.</p>
+                    </div>
+                    
+                    <div class="objective-card">
+                        <div class="objective-number">4</div>
+                        <h3>Optimize Green Infrastructure</h3>
+                        <p>Develop recommendations for climate-resilient urban planning in coastal cities.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Methodology -->
+            <section class="content-section">
+                <h2 class="section-title">Methodology</h2>
+                
+                <h3 style="color: var(--dark-color); margin: 25px 0 15px;">Data Collection</h3>
+                <div class="data-sources">
+                    <div class="data-source">
+                        <div class="data-icon">
+                            <i class="fas fa-satellite"></i>
+                        </div>
+                        <h4>Sentinel-2</h4>
+                        <p>10m resolution imagery for vegetation analysis</p>
+                    </div>
+                    
+                    <div class="data-source">
+                        <div class="data-icon">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <h4>Landsat 8 TIRS</h4>
+                        <p>Thermal bands for surface temperature</p>
+                    </div>
+                    
+                    <div class="data-source">
+                        <div class="data-icon">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <h4>NOAA Data</h4>
+                        <p>Coastal and marine parameters</p>
+                    </div>
+                    
+                    <div class="data-source">
+                        <div class="data-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <h4>Ground Surveys</h4>
+                        <p>200+ field validation points</p>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--dark-color); margin: 25px 0 15px;">Analysis Approach</h3>
+                <p class="section-text">
+                    The research employs a mixed-methods approach combining quantitative spatial analysis with qualitative field observations. 
+                    Deep learning models (U-Net architecture) were trained on Karachi-specific imagery to account for local vegetation types 
+                    and urban patterns.
+                </p>
+            </section>
+
+            <!-- Key Findings -->
+            <section class="content-section">
+                <h2 class="section-title">Key Findings</h2>
+                
+                <div class="analysis-grid">
+                    <div class="analysis-item">
+                        <div class="analysis-value">12.5%</div>
+                        <div class="analysis-label">Overall Green Coverage</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">Karachi metropolitan area (3,527 km²)</p>
+                    </div>
+                    
+                    <div class="analysis-item">
+                        <div class="analysis-value">4.1°C</div>
+                        <div class="analysis-label">Max Temperature Reduction</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">In coastal green spaces</p>
+                    </div>
+                    
+                    <div class="analysis-item">
+                        <div class="analysis-value">2.3°C</div>
+                        <div class="analysis-label">Avg Coastal Cooling</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">From sea breeze effect</p>
+                    </div>
+                    
+                    <div class="analysis-item">
+                        <div class="analysis-value">-0.76</div>
+                        <div class="analysis-label">Correlation Coefficient</div>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">Green density vs temperature</p>
+                    </div>
+                </div>
+
+                <div class="comparison-chart">
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-bar" style="font-size: 4rem; color: #00838f; opacity: 0.3;"></i>
+                    </div>
+                    <div class="chart-caption">
+                        Figure 1: Temperature variation across Karachi's coastal to inland gradient
+                    </div>
+                </div>
+
+                <h3 style="color: var(--dark-color); margin: 25px 0 15px;">Spatial Patterns</h3>
+                <p class="section-text">
+                    The analysis revealed significant spatial disparities in green space distribution and cooling effects:
+                </p>
+                
+                <ul style="color: #555; line-height: 1.8; margin: 15px 0 15px 20px;">
+                    <li><strong>Coastal Areas:</strong> Higher green coverage (18.2%) with enhanced cooling from sea breezes</li>
+                    <li><strong>Central Business District:</strong> Lowest green coverage (6.8%) with highest UHI intensity</li>
+                    <li><strong>Eastern Industrial Zones:</strong> Limited vegetation and severe heat stress</li>
+                    <li><strong>Northern Suburbs:</strong> Moderate green coverage but limited cooling due to inland location</li>
+                </ul>
+            </section>
+
+            <!-- Coastal Specific Insights -->
+            <section class="content-section">
+                <h2 class="section-title">Coastal-Specific Insights</h2>
+                
+                <div class="coastal-analysis">
+                    <h3 style="margin-top: 0; color: #00838f;">Unique Coastal Dynamics</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div>
+                            <h4 style="color: #00838f; margin-bottom: 10px;">Sea Breeze Penetration</h4>
+                            <p style="font-size: 0.9rem;">Green spaces within 5km of coast show 40% greater cooling than inland equivalents.</p>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: #00838f; margin-bottom: 10px;">Humidity Interaction</h4>
+                            <p style="font-size: 0.9rem;">High humidity reduces evapotranspiration cooling but enhances shade benefits.</p>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: #00838f; margin-bottom: 10px;">Salt Tolerance</h4>
+                            <p style="font-size: 0.9rem;">Coastal vegetation requires salt-tolerant species for sustainable greening.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Research Impact -->
+            <section class="content-section">
+                <h2 class="section-title">Research Impact</h2>
+                
+                <div class="publications">
+                    <h3 style="margin-top: 0; color: #00838f;">Publications & Dissemination</h3>
+                    
+                    <div class="publication-item">
+                        <div class="publication-title">
+                            Coastal Urban Heat Islands: The Karachi Case Study
+                        </div>
+                        <div class="publication-details">
+                            International Journal of Urban Climate, Volume 45, 2023
+                        </div>
+                        <a href="#" class="publication-link">Read Publication →</a>
+                    </div>
+                    
+                    <div class="publication-item">
+                        <div class="publication-title">
+                            Optimizing Green Infrastructure in Coastal Metropolises
+                        </div>
+                        <div class="publication-details">
+                            Coastal Cities Climate Conference, Singapore, 2023
+                        </div>
+                        <a href="#" class="publication-link">View Presentation →</a>
+                    </div>
+                    
+                    <div class="publication-item">
+                        <div class="publication-title">
+                            PhD Dissertation: Urban Green Spaces and Thermal Comfort in Karachi
+                        </div>
+                        <div class="publication-details">
+                            University of Karachi, Expected 2024
+                        </div>
+                        <a href="#" class="publication-link">Abstract Available →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Research Team -->
+            <section class="content-section">
+                <h2 class="section-title">Research Team</h2>
+                
+                <div class="research-team">
+                    <div class="team-member">
+                        <div class="member-avatar">SR</div>
+                        <div class="member-name">Dr. Sarah Rehman</div>
+                        <div class="member-role">Principal Investigator</div>
+                        <div class="member-contact">Professor of Environmental Science</div>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">AK</div>
+                        <div class="member-name">Ahmed Khan</div>
+                        <div class="member-role">PhD Candidate</div>
+                        <div class="member-contact">Lead Researcher</div>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">FA</div>
+                        <div class="member-name">Fatima Ahmed</div>
+                        <div class="member-role">Research Assistant</div>
+                        <div class="member-contact">GIS Specialist</div>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">MA</div>
+                        <div class="member-name">M. Ali</div>
+                        <div class="member-role">Technical Advisor</div>
+                        <div class="member-contact">GreenSpace AI Team</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Policy Recommendations -->
+            <section class="content-section">
+                <h2 class="section-title">Policy Recommendations</h2>
+                
+                <div style="background: #f0f8ff; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                    <h3 style="color: #00838f; margin-top: 0;">Coastal-Centric Urban Planning</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 15px;">
+                        <div>
+                            <h4 style="color: var(--dark-color); margin-bottom: 10px;">1. Coastal Green Corridors</h4>
+                            <p style="font-size: 0.9rem; color: #555;">
+                                Develop continuous green spaces along the coastline to maximize sea breeze penetration.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: var(--dark-color); margin-bottom: 10px;">2. Salt-Tolerant Species</h4>
+                            <p style="font-size: 0.9rem; color: #555;">
+                                Prioritize mangroves and other salt-resistant vegetation for sustainable greening.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: var(--dark-color); margin-bottom: 10px;">3. Wind Channel Planning</h4>
+                            <p style="font-size: 0.9rem; color: #555;">
+                                Design urban layouts that facilitate sea breeze flow into the city interior.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Related Studies -->
+        <div style="background: #f8f9fa; padding: 40px; border-radius: 10px; margin-top: 40px;">
+            <h3 style="text-align: center; margin-bottom: 30px;">Related Research Projects</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                    <h4 style="margin-bottom: 10px;">Lahore Urban Assessment</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Comprehensive green space analysis of Lahore</p>
+                    <a href="{% url 'lahore_2023' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Read Study →</a>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                    <h4 style="margin-bottom: 10px;">Comparative Analysis</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Karachi vs. Lahore climate resilience</p>
+                    <a href="{% url 'delhi_lahore' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Read Study →</a>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                    <h4 style="margin-bottom: 10px;">Coastal Cities Guide</h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Best practices for coastal urban greening</p>
+                    <a href="#" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Read Guide →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced platform for urban green space analysis using remote sensing and deep learning.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Research Details</h4>
+                <ul>
+                    <li><a href="#methodology">Methodology</a></li>
+                    <li><a href="#findings">Findings</a></li>
+                    <li><a href="#publications">Publications</a></li>
+                    <li><a href="#team">Research Team</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Academic Partners</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-university"></i> University of Karachi</li>
+                    <li><i class="fas fa-flask"></i> Environmental Science Department</li>
+                    <li><i class="fas fa-graduation-cap"></i> PhD Research Program</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact Researchers</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> karachi.research@greenspaceai.com</li>
+                    <li><i class="fas fa-phone"></i> +92 21 123 4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> University of Karachi</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 GreenSpace AI - Karachi University Research Project. Academic Research.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

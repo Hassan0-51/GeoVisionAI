@@ -1,0 +1,674 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Request - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .academic-container {
+            max-width: 800px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .academic-header {
+            background: linear-gradient(135deg, #6a1b9a, #9c27b0);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .academic-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .academic-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .benefits-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-top: 4px solid #6a1b9a;
+        }
+
+        .benefit-icon {
+            width: 70px;
+            height: 70px;
+            background: #f3e5f5;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #6a1b9a;
+            font-size: 1.8rem;
+        }
+
+        .application-form {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 50px;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section h3 {
+            color: #6a1b9a;
+            margin-top: 0;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f3e5f5;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group label.required:after {
+            content: " *";
+            color: #e53935;
+        }
+
+        .form-control, .form-select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #6a1b9a;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1);
+        }
+
+        .form-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .file-upload {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: #6a1b9a;
+            background: #faf5ff;
+        }
+
+        .file-upload i {
+            font-size: 2.5rem;
+            color: #9c27b0;
+            margin-bottom: 15px;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-list {
+            margin-top: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-info i {
+            color: #6a1b9a;
+        }
+
+        .btn-remove {
+            background: none;
+            border: none;
+            color: #e53935;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 5px;
+        }
+
+        .checkbox-group label {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #6a1b9a, #9c27b0);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(106, 27, 154, 0.2);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .requirements-list {
+            background: #f3e5f5;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .requirements-list h4 {
+            color: #6a1b9a;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .requirements-list ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #555;
+        }
+
+        .requirements-list li {
+            margin-bottom: 8px;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 60px 40px;
+            display: none;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: #4caf50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .academic-container {
+                margin: 80px auto 30px;
+                padding: 0 15px;
+            }
+            
+            .academic-header {
+                padding: 40px 20px;
+            }
+            
+            .application-form {
+                padding: 30px 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .benefits-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'home' %}#pricing">Pricing</a></li>
+                <li><a href="{% url 'academic_request' %}" class="active">Academic</a></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Academic Request Content -->
+    <div class="academic-container">
+        <div class="academic-header">
+            <h1>Academic Access Request</h1>
+            <p>Apply for special academic pricing and enhanced access for educational and research purposes</p>
+        </div>
+
+        <div class="benefits-section">
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3>Discounted Pricing</h3>
+                <p>Up to 75% off for students, researchers, and academic institutions</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-database"></i></div>
+                <h3>Enhanced Limits</h3>
+                <p>Higher analysis credits and storage for research projects</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-users"></i></div>
+                <h3>Team Access</h3>
+                <p>Collaborative features for research groups and classrooms</p>
+            </div>
+        </div>
+
+        <div class="application-form" id="applicationForm">
+            <form id="academicRequestForm">
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h3>Personal Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName" class="required">First Name</label>
+                            <input type="text" id="firstName" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName" class="required">Last Name</label>
+                            <input type="text" id="lastName" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email" class="required">Academic Email</label>
+                            <input type="email" id="email" class="form-control" placeholder="name@university.edu" required>
+                            <div class="form-text">Must be a valid academic institution email</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Information -->
+                <div class="form-section">
+                    <h3>Academic Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="institution" class="required">Institution</label>
+                        <input type="text" id="institution" class="form-control" placeholder="University of..." required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="department" class="required">Department</label>
+                            <input type="text" id="department" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="position" class="required">Position</label>
+                            <select id="position" class="form-select" required>
+                                <option value="">Select position</option>
+                                <option value="undergrad">Undergraduate Student</option>
+                                <option value="grad">Graduate Student</option>
+                                <option value="phd">PhD Candidate</option>
+                                <option value="postdoc">Postdoctoral Researcher</option>
+                                <option value="faculty">Faculty Member</option>
+                                <option value="researcher">Research Staff</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="supervisor">Supervisor/Advisor (if applicable)</label>
+                        <input type="text" id="supervisor" class="form-control">
+                        <div class="form-text">Professor or research supervisor name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project">Research Project Description</label>
+                        <textarea id="project" class="form-control" rows="4" placeholder="Briefly describe your research project and how you plan to use GreenSpace AI..."></textarea>
+                        <div class="form-text">Please include project duration, goals, and expected outcomes</div>
+                    </div>
+                </div>
+
+                <!-- Documentation -->
+                <div class="form-section">
+                    <h3>Supporting Documentation</h3>
+                    
+                    <div class="requirements-list">
+                        <h4>Required Documents (Upload at least one):</h4>
+                        <ul>
+                            <li>Proof of enrollment (student ID, transcript)</li>
+                            <li>Proof of employment (faculty ID, staff email)</li>
+                            <li>Letter from supervisor/department</li>
+                            <li>Research proposal or grant documentation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Upload Documents</label>
+                        <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <div style="font-weight: 600; color: #6a1b9a; margin-bottom: 10px;">Click to upload files</div>
+                            <div style="color: #666; font-size: 0.9rem;">PDF, JPG, PNG up to 10MB each</div>
+                            <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png" onchange="handleFileSelect(event)">
+                        </div>
+                        
+                        <div class="file-list" id="fileList"></div>
+                    </div>
+                </div>
+
+                <!-- Terms & Submission -->
+                <div class="form-section">
+                    <h3>Terms & Conditions</h3>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="termsAcademic" required>
+                        <label for="termsAcademic">
+                            I certify that I am using GreenSpace AI for academic or research purposes only
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="dataPolicy" required>
+                        <label for="dataPolicy">
+                            I agree to the <a href="{% url 'terms' %}" target="_blank">Terms of Service</a> and 
+                            <a href="{% url 'privacy_policy' %}" target="_blank">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="acknowledge">
+                        <label for="acknowledge">
+                            I acknowledge that approval may take 3-5 business days and I may be contacted for additional verification
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comments">Additional Comments</label>
+                        <textarea id="comments" class="form-control" rows="3" placeholder="Any additional information or special requests..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Academic Request
+                </button>
+            </form>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 style="color: #2c3e50; margin-bottom: 15px;">Application Submitted!</h2>
+            <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">
+                Thank you for submitting your academic access request. 
+                Your application ID is <strong style="color: #6a1b9a;">ACAD-2024-<span id="applicationId"></span></strong>
+            </p>
+            <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">
+                We will review your application and contact you within <strong>3-5 business days</strong>. 
+                You will receive updates at the email address you provided.
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 40px;">
+                <a href="{% url 'home' %}" class="btn-submit" style="width: auto; padding: 12px 30px; text-decoration: none;">
+                    <i class="fas fa-home"></i> Return Home
+                </a>
+                <button onclick="trackApplication()" class="btn-submit" style="width: auto; padding: 12px 30px; background: #f3e5f5; color: #6a1b9a;">
+                    <i class="fas fa-search"></i> Track Application
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile navigation toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        let uploadedFiles = [];
+
+        // Handle file selection
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            const fileList = document.getElementById('fileList');
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                // Check file size (10MB max)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert(`File ${file.name} exceeds 10MB limit`);
+                    continue;
+                }
+                
+                // Check file type
+                const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+                if (!validTypes.includes(file.type)) {
+                    alert(`File ${file.name} must be PDF, JPG, or PNG`);
+                    continue;
+                }
+                
+                uploadedFiles.push(file);
+                
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <i class="fas fa-file"></i>
+                        <div>
+                            <div style="font-weight: 600;">${file.name}</div>
+                            <div style="font-size: 0.85rem; color: #666;">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-remove" onclick="removeFile(${uploadedFiles.length - 1})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                fileList.appendChild(fileItem);
+            }
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Remove file from list
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            updateFileList();
+        }
+
+        // Update file list display
+        function updateFileList() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            
+            uploadedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <i class="fas fa-file"></i>
+                        <div>
+                            <div style="font-weight: 600;">${file.name}</div>
+                            <div style="font-size: 0.85rem; color: #666;">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-remove" onclick="removeFile(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        // Form submission
+        document.getElementById('academicRequestForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate files
+            if (uploadedFiles.length === 0) {
+                alert('Please upload at least one supporting document.');
+                return;
+            }
+            
+            // Validate academic email
+            const email = document.getElementById('email').value;
+            if (!email.includes('.edu') && !email.includes('.ac.')) {
+                const proceed = confirm('The email provided does not appear to be an academic email. Do you want to continue?');
+                if (!proceed) return;
+            }
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            submitBtn.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                // Generate application ID
+                const appId = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+                document.getElementById('applicationId').textContent = appId;
+                
+                // Show success message
+                document.getElementById('applicationForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Log submission
+                console.log('Academic request submitted:', {
+                    name: `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`,
+                    email: email,
+                    institution: document.getElementById('institution').value,
+                    files: uploadedFiles.length
+                });
+            }, 2000);
+        });
+
+        // Track application
+        function trackApplication() {
+            const appId = document.getElementById('applicationId').textContent;
+            alert(`Tracking application ${appId}\nYou will be redirected to the tracking portal.`);
+            // In production: window.location.href = `track-application.html?id=${appId}`;
+        }
+
+        // Email validation
+        document.getElementById('email').addEventListener('blur', function() {
+            const email = this.value.toLowerCase();
+            if (email && (email.includes('.edu') || email.includes('.ac.'))) {
+                this.style.borderColor = '#4caf50';
+            } else if (email) {
+                this.style.borderColor = '#ff9800';
+            }
+        });
+
+        // Position change handling
+        document.getElementById('position').addEventListener('change', function() {
+            const supervisorField = document.getElementById('supervisor');
+            if (this.value === 'undergrad' || this.value === 'grad' || this.value === 'phd') {
+                supervisorField.placeholder = "Required for students";
+            } else {
+                supervisorField.placeholder = "Optional";
+            }
+        });
+    </script>
+</body>
+</html>

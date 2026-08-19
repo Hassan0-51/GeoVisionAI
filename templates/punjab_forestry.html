@@ -1,0 +1,1470 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punjab Province-Wide Urban Forestry Policy Case Study - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --policy-green: #2e7d32;
+            --policy-light-green: #4caf50;
+            --policy-lighter-green: #c8e6c9;
+        }
+
+        .policy-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .policy-header {
+            background: linear-gradient(135deg, var(--policy-green), var(--policy-light-green));
+            color: white;
+            padding: 80px 60px;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(46, 125, 50, 0.2);
+        }
+
+        .policy-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+
+        .policy-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+        }
+
+        .policy-header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .policy-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .policy-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .policy-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .meta-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .meta-icon i {
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .meta-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .policy-content {
+            background: white;
+            border-radius: 15px;
+            padding: 60px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 50px;
+        }
+
+        .content-section {
+            margin-bottom: 60px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .content-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            color: var(--policy-green);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--policy-light-green);
+            font-size: 1.8rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title i {
+            background: var(--policy-lighter-green);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--policy-green);
+        }
+
+        .section-text {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+        }
+
+        .policy-timeline {
+            position: relative;
+            margin: 50px 0;
+            padding-left: 30px;
+        }
+
+        .policy-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--policy-green), var(--policy-light-green));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 40px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -42px;
+            top: 10px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 4px solid var(--policy-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 5px white;
+        }
+
+        .timeline-year {
+            font-weight: 800;
+            color: var(--policy-green);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timeline-year::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--policy-light-green);
+            border-radius: 50%;
+        }
+
+        .timeline-content {
+            background: linear-gradient(135deg, #f9fff9, #ffffff);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid var(--policy-light-green);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .impact-dashboard {
+            background: linear-gradient(135deg, #f0f9f0, #ffffff);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+            border: 1px solid #e0f2e0;
+        }
+
+        .dashboard-title {
+            text-align: center;
+            color: var(--policy-green);
+            margin-bottom: 40px;
+            font-size: 1.5rem;
+        }
+
+        .impact-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 30px 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--policy-green), var(--policy-light-green));
+        }
+
+        .metric-value {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--policy-green);
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+
+        .metric-label {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .metric-trend {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .trend-positive { background: #d4edda; color: #155724; }
+        .trend-negative { background: #f8d7da; color: #721c24; }
+        .trend-neutral { background: #fff3cd; color: #856404; }
+
+        .policy-framework {
+            background: linear-gradient(135deg, #e8f5e9, #ffffff);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .framework-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .framework-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--policy-green), transparent);
+            border-radius: 0 0 12px 12px;
+        }
+
+        .framework-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--policy-lighter-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .framework-icon i {
+            font-size: 1.8rem;
+            color: var(--policy-green);
+        }
+
+        .framework-status {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .status-active { background: #d4edda; color: #155724; }
+        .status-pilot { background: #fff3cd; color: #856404; }
+        .status-planned { background: #cce5ff; color: #004085; }
+
+        .district-comparison {
+            margin: 50px 0;
+        }
+
+        .district-table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 30px 0;
+        }
+
+        .district-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+        }
+
+        .district-table thead {
+            background: linear-gradient(135deg, var(--policy-green), var(--policy-light-green));
+        }
+
+        .district-table th {
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .district-table th:last-child {
+            border-right: none;
+        }
+
+        .district-table tbody tr {
+            transition: background 0.3s ease;
+        }
+
+        .district-table tbody tr:hover {
+            background: #f9fff9;
+        }
+
+        .district-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #eee;
+            color: #444;
+        }
+
+        .district-table tr:last-child td {
+            border-bottom: none;
+            font-weight: 700;
+            background: #f0f9f0;
+        }
+
+        .progress-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--policy-green), var(--policy-light-green));
+            border-radius: 4px;
+        }
+
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .challenge-card {
+            background: linear-gradient(135deg, #fff9f2, #ffffff);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid #ff9800;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 152, 0, 0.1);
+            border-radius: 0 0 0 60px;
+        }
+
+        .challenge-severity {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .severity-high { background: #ffebee; color: #c62828; }
+        .severity-medium { background: #fff3e0; color: #ef6c00; }
+        .severity-low { background: #f3e5f5; color: #7b1fa2; }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .recommendation-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid #2196f3;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommendation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.05), transparent);
+            border-radius: 0 0 0 100px;
+        }
+
+        .recommendation-priority {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .priority-high { background: #ffebee; color: #c62828; }
+        .priority-medium { background: #fff3e0; color: #ef6c00; }
+        .priority-low { background: #e8f5e9; color: #2e7d32; }
+
+        .methodology-section {
+            background: linear-gradient(135deg, #f5f5f5, #ffffff);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .methodology-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .methodology-step {
+            text-align: center;
+            padding: 30px 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--policy-green), var(--policy-light-green));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.2);
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, #e3f2fd, #ffffff);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: white;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .download-btn i {
+            color: var(--policy-green);
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .policy-header {
+                padding: 50px 25px;
+            }
+            
+            .policy-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .policy-content {
+                padding: 30px 20px;
+            }
+            
+            .policy-meta {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .impact-metrics,
+            .framework-grid,
+            .challenges-grid,
+            .recommendations-grid,
+            .methodology-steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Policy Case Study Content -->
+    <div class="policy-container">
+        <!-- Header -->
+        <div class="policy-header">
+            <div class="policy-header-content">
+                <h1>Punjab Province-Wide Urban Forestry Policy</h1>
+                <p class="policy-subtitle">
+                    A comprehensive analysis of Punjab's pioneering province-wide urban forestry initiatives, 
+                    evaluating their effectiveness across 36 urban centers and providing evidence-based recommendations 
+                    for sustainable urban green space management.
+                </p>
+                
+                <div class="policy-meta">
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div>
+                            <div class="meta-label">Study Period</div>
+                            <div class="meta-value">January 2020 - December 2024</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <div class="meta-label">Geographic Coverage</div>
+                            <div class="meta-value">36 Urban Centers</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div>
+                            <div class="meta-label">Lead Agency</div>
+                            <div class="meta-value">Punjab Forestry Department</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <div class="meta-label">Analysis Method</div>
+                            <div class="meta-value">Satellite + Ground Truth</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="policy-content">
+            <!-- Executive Summary -->
+            <section class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-file-alt"></i>
+                    Executive Summary
+                </h2>
+                <p class="section-text">
+                    This study presents a comprehensive evaluation of Punjab's province-wide urban forestry policy 
+                    framework implemented since 2020. Utilizing multi-temporal satellite imagery analysis combined 
+                    with ground truth validation, we assess the impact of the "Punjab Green Cities Initiative" across 
+                    all nine divisions.
+                </p>
+                <p class="section-text">
+                    The analysis reveals that Punjab has achieved a <strong>12.5% average increase in urban green cover</strong> 
+                    across monitored cities, with significant variations between divisions. The policy framework has 
+                    been particularly effective in <strong>Lahore and Rawalpindi divisions</strong>, while southern divisions 
+                    face unique challenges related to water scarcity and urban expansion pressures.
+                </p>
+
+                <!-- Impact Dashboard -->
+                <div class="impact-dashboard">
+                    <h3 class="dashboard-title">Policy Impact Dashboard (2020-2024)</h3>
+                    <div class="impact-metrics">
+                        <div class="metric-card">
+                            <div class="metric-value">12.5%</div>
+                            <div class="metric-label">Average Increase in Urban Green Cover</div>
+                            <span class="metric-trend trend-positive">+3.1%/year</span>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">2.3M</div>
+                            <div class="metric-label">Trees Planted Under Policy</div>
+                            <span class="metric-trend trend-positive">+18% survival rate</span>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">2.1°C</div>
+                            <div class="metric-label">Average Urban Heat Reduction</div>
+                            <span class="metric-trend trend-positive">In green zones</span>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">₹8.2B</div>
+                            <div class="metric-label">Economic Benefits Generated</div>
+                            <span class="metric-trend trend-positive">Annual savings</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Policy Evolution -->
+            <section class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i>
+                    Policy Evolution Timeline
+                </h2>
+                <p class="section-text">
+                    The Punjab Urban Forestry Policy has evolved through four distinct phases, each building upon 
+                    lessons learned and expanding the scope of implementation.
+                </p>
+
+                <div class="policy-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">2020 - Phase I: Foundation</div>
+                        <div class="timeline-content">
+                            <h4>Punjab Green Cities Initiative Launch</h4>
+                            <p><strong>Key Achievement:</strong> Established province-wide policy framework with mandatory 25% green cover targets for all cities with population exceeding 500,000.</p>
+                            <p><strong>Coverage:</strong> Initial rollout in 15 major urban centers including Lahore, Rawalpindi, and Faisalabad.</p>
+                            <div style="display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap;">
+                                <span style="background: var(--policy-lighter-green); padding: 5px 10px; border-radius: 4px; font-size: 0.85rem;">₹2.5B Budget Allocation</span>
+                                <span style="background: var(--policy-lighter-green); padding: 5px 10px; border-radius: 4px; font-size: 0.85rem;">500K Trees Planted</span>
+                                <span style="background: var(--policy-lighter-green); padding: 5px 10px; border-radius: 4px; font-size: 0.85rem;">15 Cities Covered</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">2021-2022 - Phase II: Expansion</div>
+                        <div class="timeline-content">
+                            <h4>Urban Forest Act & Smart Forestry Implementation</h4>
+                            <p><strong>Legislative Framework:</strong> Urban Forest Act passed, providing legal protection for urban green spaces and establishing penalties for unauthorized tree removal.</p>
+                            <p><strong>Technology Integration:</strong> Deployment of IoT sensors for real-time tree health monitoring and satellite-based change detection systems.</p>
+                            <p><strong>Expansion:</strong> Policy extended to all 36 urban centers with population > 200,000.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">2023 - Phase III: Community Engagement</div>
+                        <div class="timeline-content">
+                            <h4>Community Forestry & Climate Resilience</h4>
+                            <p><strong>Citizen Participation:</strong> Launch of "Har Punjab Hariyali" (Every Punjab Green) campaign engaging over 500,000 citizens in tree plantation drives.</p>
+                            <p><strong>Climate Focus:</strong> Integration of urban forestry into climate action plans with focus on heat island mitigation and carbon sequestration.</p>
+                            <p><strong>Innovation:</strong> Introduction of Miyawaki forest techniques for rapid urban afforestation.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">2024 - Phase IV: Sustainable Financing</div>
+                        <div class="timeline-content">
+                            <h4>Carbon Credit Mechanism & Private Sector Partnership</h4>
+                            <p><strong>Financial Innovation:</strong> Development of carbon credit system for urban forestry projects, creating sustainable financing model.</p>
+                            <p><strong>Private Sector:</strong> Partnership framework with corporate sector for adoption and maintenance of urban forests.</p>
+                            <p><strong>Monitoring:</strong> Full implementation of satellite-based monitoring system with monthly reporting.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Policy Framework Analysis -->
+            <section class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-sitemap"></i>
+                    Policy Framework Analysis
+                </h2>
+                <p class="section-text">
+                    The Punjab Urban Forestry Policy operates through a multi-layered framework integrating regulatory, 
+                    financial, and community components.
+                </p>
+
+                <div class="policy-framework">
+                    <h3 style="color: var(--policy-green); margin-bottom: 30px; text-align: center;">Core Policy Components</h3>
+                    
+                    <div class="framework-grid">
+                        <div class="framework-card">
+                            <div class="framework-icon">
+                                <i class="fas fa-gavel"></i>
+                            </div>
+                            <span class="framework-status status-active">Fully Implemented</span>
+                            <h4>Regulatory Framework</h4>
+                            <p><strong>Mandatory Green Cover:</strong> 25% minimum requirement for all new developments</p>
+                            <p><strong>Tree Protection:</strong> Legal protection for trees above specified girth</p>
+                            <p><strong>Compensatory Afforestation:</strong> Mandatory for tree removal in development projects</p>
+                            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                    <span>Compliance Rate:</span>
+                                    <span style="font-weight: 600; color: var(--policy-green)">82%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="framework-card">
+                            <div class="framework-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <span class="framework-status status-pilot">Pilot Phase</span>
+                            <h4>Financial Mechanisms</h4>
+                            <p><strong>Carbon Credits:</strong> Urban forestry projects eligible for carbon trading</p>
+                            <p><strong>Green Bonds:</strong> Municipal green bonds for urban forestry projects</p>
+                            <p><strong>Corporate CSR:</strong> Framework for corporate social responsibility funding</p>
+                            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                    <span>Funding Secured:</span>
+                                    <span style="font-weight: 600; color: var(--policy-green)">₹3.2B</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="framework-card">
+                            <div class="framework-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <span class="framework-status status-active">Active</span>
+                            <h4>Community Engagement</h4>
+                            <p><strong>Tree Guardians:</strong> Citizen adoption program for tree maintenance</p>
+                            <p><strong>School Programs:</strong> Environmental education and plantation drives</p>
+                            <p><strong>Mobile App:</strong> Public reporting of tree health issues</p>
+                            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                    <span>Citizen Participation:</span>
+                                    <span style="font-weight: 600; color: var(--policy-green)">45,000+</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- District Performance -->
+            <section class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    District Performance Analysis
+                </h2>
+                <p class="section-text">
+                    Performance varies significantly across divisions, with northern districts generally showing 
+                    better outcomes due to favorable climate conditions and stronger institutional capacity.
+                </p>
+
+                <div class="district-comparison">
+                    <div class="district-table-container">
+                        <table class="district-table">
+                            <thead>
+                                <tr>
+                                    <th>Division</th>
+                                    <th>Green Cover 2020</th>
+                                    <th>Green Cover 2024</th>
+                                    <th>Change</th>
+                                    <th>Policy Score</th>
+                                    <th>Implementation Progress</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Lahore Division</strong></td>
+                                    <td>18.7%</td>
+                                    <td>22.3%</td>
+                                    <td><span style="color: var(--policy-green); font-weight: 600;">+3.6%</span></td>
+                                    <td>88/100</td>
+                                    <td class="progress-cell">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 88%;"></div>
+                                        </div>
+                                        <span>88%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Rawalpindi Division</td>
+                                    <td>21.2%</td>
+                                    <td>25.1%</td>
+                                    <td><span style="color: var(--policy-green); font-weight: 600;">+3.9%</span></td>
+                                    <td>92/100</td>
+                                    <td class="progress-cell">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 92%;"></div>
+                                        </div>
+                                        <span>92%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Faisalabad Division</td>
+                                    <td>16.8%</td>
+                                    <td>19.5%</td>
+                                    <td><span style="color: var(--policy-green); font-weight: 600;">+2.7%</span></td>
+                                    <td>76/100</td>
+                                    <td class="progress-cell">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 76%;"></div>
+                                        </div>
+                                        <span>76%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Multan Division</td>
+                                    <td>15.3%</td>
+                                    <td>17.9%</td>
+                                    <td><span style="color: var(--policy-green); font-weight: 600;">+2.6%</span></td>
+                                    <td>71/100</td>
+                                    <td class="progress-cell">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 71%;"></div>
+                                        </div>
+                                        <span>71%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Gujranwala Division</td>
+                                    <td>17.5%</td>
+                                    <td>20.8%</td>
+                                    <td><span style="color: var(--policy-green); font-weight: 600;">+3.3%</span></td>
+                                    <td>85/100</td>
+                                    <td class="progress-cell">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 85%;"></div>
+                                        </div>
+                                        <span>85%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bahawalpur Division</td>
+                                    <td>14.2%</td>
+                                    <td>16.1%</td>
+                                    <td><span style="color: var(--policy-green); font-weight: 600;">+1.9%</span></td>
+                                    <td>65/100</td>
+                                    <td class="progress-cell">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 65%;"></div>
+                                        </div>
+                                        <span>65%</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Province Average</strong></td>
+                                    <td><strong>18.0%</strong></td>
+                                    <td><strong>20.5%</strong></td>
+                                    <td><strong><span style="color: var(--policy-green);">+2.5%</span></strong></td>
+                                    <td><strong>82/100</strong></td>
+                                    <td class="progress-cell">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 82%;"></div>
+                                        </div>
+                                        <span>82%</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="margin-top: 30px; padding: 25px; background: #f9fff9; border-radius: 10px;">
+                        <h4 style="color: var(--policy-green); margin-bottom: 15px;">Key Performance Insights:</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                            <div>
+                                <h5>Top Performers</h5>
+                                <p style="font-size: 0.95rem;">Rawalpindi Division leads with 92% policy implementation score and 3.9% green cover increase.</p>
+                            </div>
+                            <div>
+                                <h5>Challenged Regions</h5>
+                                <p style="font-size: 0.95rem;">Southern divisions face water scarcity and soil salinity challenges affecting tree survival rates.</p>
+                            </div>
+                            <div>
+                                <h5>Success Factors</h5>
+                                <p style="font-size: 0.95rem;">Strong local government involvement and community engagement correlate with higher success rates.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenges Analysis -->
+            <section class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Implementation Challenges
+                </h2>
+                <p class="section-text">
+                    Despite overall success, several challenges persist across the province, requiring targeted 
+                    interventions and policy adjustments.
+                </p>
+
+                <div class="challenges-grid">
+                    <div class="challenge-card">
+                        <span class="challenge-severity severity-high">High Severity</span>
+                        <h4>Water Scarcity & Irrigation</h4>
+                        <p><strong>Issue:</strong> Limited water availability for tree maintenance, especially in summer months and southern districts.</p>
+                        <p><strong>Impact:</strong> 30-40% tree mortality in first year in water-stressed regions.</p>
+                        <p><strong>Affected Areas:</strong> 18 cities across southern Punjab</p>
+                        <div style="margin-top: 20px; background: rgba(255, 152, 0, 0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-lightbulb" style="color: #ff9800;"></i>
+                                <span><strong>Recommendation:</strong> Implement IoT-based smart irrigation and drought-resistant species</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="challenge-card">
+                        <span class="challenge-severity severity-high">High Severity</span>
+                        <h4>Urban Encroachment</h4>
+                        <p><strong>Issue:</strong> Pressure from development projects and infrastructure expansion leading to green space loss.</p>
+                        <p><strong>Impact:</strong> 2,500 hectares of designated green spaces lost to development since 2020.</p>
+                        <p><strong>Affected Areas:</strong> 24 cities, particularly peri-urban zones</p>
+                        <div style="margin-top: 20px; background: rgba(255, 152, 0, 0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-lightbulb" style="color: #ff9800;"></i>
+                                <span><strong>Recommendation:</strong> Digital green space registry with real-time monitoring</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="challenge-card">
+                        <span class="challenge-severity severity-medium">Medium Severity</span>
+                        <h4>Maintenance Gaps</h4>
+                        <p><strong>Issue:</strong> Inconsistent maintenance regimes and lack of trained personnel for urban forestry management.</p>
+                        <p><strong>Impact:</strong> Reduced tree health and increased vulnerability to pests and diseases.</p>
+                        <p><strong>Affected Areas:</strong> 31 cities report maintenance capacity gaps</p>
+                        <div style="margin-top: 20px; background: rgba(255, 152, 0, 0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-lightbulb" style="color: #ff9800;"></i>
+                                <span><strong>Recommendation:</strong> Capacity building programs and maintenance contracts</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="challenge-card">
+                        <span class="challenge-severity severity-medium">Medium Severity</span>
+                        <h4>Financial Sustainability</h4>
+                        <p><strong>Issue:</strong> Dependence on government funding with limited private sector participation.</p>
+                        <p><strong>Impact:</strong> Budget constraints affecting scale and quality of implementation.</p>
+                        <p><strong>Affected Areas:</strong> All divisions report funding challenges</p>
+                        <div style="margin-top: 20px; background: rgba(255, 152, 0, 0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-lightbulb" style="color: #ff9800;"></i>
+                                <span><strong>Recommendation:</strong> Expand carbon credit and corporate partnership programs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recommendations -->
+            <section class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-bullseye"></i>
+                    Strategic Recommendations
+                </h2>
+                <p class="section-text">
+                    Based on the analysis, we recommend the following strategic interventions to enhance policy 
+                    effectiveness and sustainability.
+                </p>
+
+                <div class="recommendations-grid">
+                    <div class="recommendation-card">
+                        <span class="recommendation-priority priority-high">High Priority</span>
+                        <h4>Smart Urban Forestry Management System</h4>
+                        <p><strong>Objective:</strong> Deploy integrated IoT and satellite-based monitoring system across all urban centers.</p>
+                        <div style="margin: 20px 0;">
+                            <h5>Key Components:</h5>
+                            <ul style="margin-left: 20px; color: #555;">
+                                <li>IoT soil moisture sensors for efficient irrigation</li>
+                                <li>Satellite-based change detection alerts</li>
+                                <li>Mobile app for citizen reporting</li>
+                                <li>Centralized dashboard for monitoring</li>
+                            </ul>
+                        </div>
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                <span>Estimated Cost:</span>
+                                <span style="font-weight: 600;">₹500M</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 5px;">
+                                <span>Expected ROI:</span>
+                                <span style="font-weight: 600;">3:1 (Water savings)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-card">
+                        <span class="recommendation-priority priority-high">High Priority</span>
+                        <h4>Climate-Resilient Species Program</h4>
+                        <p><strong>Objective:</strong> Develop and propagate drought-resistant and heat-tolerant tree species for urban planting.</p>
+                        <div style="margin: 20px 0;">
+                            <h5>Implementation Plan:</h5>
+                            <ul style="margin-left: 20px; color: #555;">
+                                <li>Establish regional nurseries for climate-adapted species</li>
+                                <li>Develop species suitability maps for each district</li>
+                                <li>Train municipal staff in species selection</li>
+                                <li>Create public awareness campaigns</li>
+                            </ul>
+                        </div>
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                <span>Timeline:</span>
+                                <span style="font-weight: 600;">18-24 months</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 5px;">
+                                <span>Target Survival Rate:</span>
+                                <span style="font-weight: 600;">85% (from 60%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-card">
+                        <span class="recommendation-priority priority-medium">Medium Priority</span>
+                        <h4>Green Space Protection Framework</h4>
+                        <p><strong>Objective:</strong> Strengthen legal protection and monitoring of urban green spaces.</p>
+                        <div style="margin: 20px 0;">
+                            <h5>Key Actions:</h5>
+                            <ul style="margin-left: 20px; color: #555;">
+                                <li>Digital registry of all protected green spaces</li>
+                                <li>Real-time satellite monitoring of changes</li>
+                                <li>Strengthened enforcement mechanisms</li>
+                                <li>Public access to green space data</li>
+                            </ul>
+                        </div>
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                <span>Legal Framework:</span>
+                                <span style="font-weight: 600;">Urban Green Space Act 2025</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 5px;">
+                                <span>Monitoring Coverage:</span>
+                                <span style="font-weight: 600;">100% urban areas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Methodology -->
+            <section class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-flask"></i>
+                    Research Methodology
+                </h2>
+                <p class="section-text">
+                    This study employs a mixed-methods approach combining remote sensing analysis, ground truth 
+                    validation, and policy evaluation frameworks.
+                </p>
+
+                <div class="methodology-section">
+                    <div class="methodology-steps">
+                        <div class="methodology-step">
+                            <div class="step-number">1</div>
+                            <h4>Satellite Data Acquisition</h4>
+                            <p style="font-size: 0.95rem; color: #555; margin-top: 10px;">
+                                Sentinel-2 (10m), Landsat 8/9 (30m) imagery from 2020-2024 with monthly temporal resolution.
+                            </p>
+                        </div>
+                        <div class="methodology-step">
+                            <div class="step-number">2</div>
+                            <h4>Vegetation Analysis</h4>
+                            <p style="font-size: 0.95rem; color: #555; margin-top: 10px;">
+                                NDVI, EVI, and SAVI indices calculated using Google Earth Engine for all 36 urban centers.
+                            </p>
+                        </div>
+                        <div class="methodology-step">
+                            <div class="step-number">3</div>
+                            <h4>Ground Truth Validation</h4>
+                            <p style="font-size: 0.95rem; color: #555; margin-top: 10px;">
+                                1,500 verification points across Punjab with field surveys and drone validation.
+                            </p>
+                        </div>
+                        <div class="methodology-step">
+                            <div class="step-number">4</div>
+                            <h4>Policy Evaluation</h4>
+                            <p style="font-size: 0.95rem; color: #555; margin-top: 10px;">
+                                OECD-DAC criteria applied to assess policy relevance, effectiveness, efficiency, and sustainability.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px; padding: 25px; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                        <h4 style="color: var(--policy-green); margin-bottom: 15px;">Methodological Strengths</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                            <div>
+                                <h5>High Accuracy</h5>
+                                <p style="font-size: 0.9rem; color: #555;">95% accuracy in vegetation classification verified by ground truth.</p>
+                            </div>
+                            <div>
+                                <h5>Temporal Consistency</h5>
+                                <p style="font-size: 0.9rem; color: #555;">Monthly analysis enables precise tracking of seasonal changes.</p>
+                            </div>
+                            <div>
+                                <h5>Spatial Coverage</h5>
+                                <p style="font-size: 0.9rem; color: #555;">Complete coverage of all urban centers > 200,000 population.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Download Section -->
+            <div class="download-section">
+                <h3 style="color: #1976d2; margin-bottom: 15px;">Download Full Report & Data</h3>
+                <p style="color: #555; margin-bottom: 25px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    Access the complete research report, datasets, and policy briefs for detailed analysis and implementation guidance.
+                </p>
+                <div class="download-buttons">
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-file-pdf"></i>
+                        <div>
+                            <div>Full Research Report</div>
+                            <small style="font-size: 0.8rem; color: #666;">PDF, 120 pages</small>
+                        </div>
+                    </a>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-database"></i>
+                        <div>
+                            <div>Dataset Package</div>
+                            <small style="font-size: 0.8rem; color: #666;">GeoJSON, CSV, Shapefiles</small>
+                        </div>
+                    </a>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-chart-bar"></i>
+                        <div>
+                            <div>Policy Brief</div>
+                            <small style="font-size: 0.8rem; color: #666;">Executive Summary</small>
+                        </div>
+                    </a>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-map"></i>
+                        <div>
+                            <div>Interactive Maps</div>
+                            <small style="font-size: 0.8rem; color: #666;">Web GIS Platform</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Studies -->
+        <div style="background: linear-gradient(135deg, #f8f9fa, #ffffff); padding: 50px; border-radius: 15px; margin-top: 50px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+            <h3 style="text-align: center; margin-bottom: 40px; color: var(--policy-green);">Related Policy Studies</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="width: 50px; height: 50px; background: var(--policy-lighter-green); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-city" style="color: var(--policy-green);"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: var(--policy-green);">Sindh Urban Forestry</h4>
+                            <small style="color: #666;">Provincial Policy Analysis</small>
+                        </div>
+                    </div>
+                    <p style="color: #555; margin-bottom: 20px; font-size: 0.95rem;">
+                        Comparative analysis of Sindh's urban forestry initiatives and lessons for Punjab.
+                    </p>
+                    <a href="#" style="color: var(--policy-green); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                        Read Study <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="width: 50px; height: 50px; background: #e3f2fd; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-globe-asia" style="color: #1976d2;"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: #1976d2;">South Asia Comparison</h4>
+                            <small style="color: #666;">Regional Policy Framework</small>
+                        </div>
+                    </div>
+                    <p style="color: #555; margin-bottom: 20px; font-size: 0.95rem;">
+                        Comparative study of urban forestry policies across South Asian countries.
+                    </p>
+                    <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                        Read Study <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="width: 50px; height: 50px; background: #ffebee; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-thermometer-half" style="color: #d32f2f;"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: #d32f2f;">Heat Island Mitigation</h4>
+                            <small style="color: #666;">Climate Resilience Study</small>
+                        </div>
+                    </div>
+                    <p style="color: #555; margin-bottom: 20px; font-size: 0.95rem;">
+                        Effectiveness of urban forestry in reducing urban heat islands across Punjab.
+                    </p>
+                    <a href="#" style="color: #d32f2f; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                        Read Study <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced platform for urban green space analysis using remote sensing and deep learning.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Policy Components</h4>
+                <ul>
+                    <li><a href="#timeline">Implementation Timeline</a></li>
+                    <li><a href="#framework">Policy Framework</a></li>
+                    <li><a href="#performance">District Performance</a></li>
+                    <li><a href="#recommendations">Strategic Recommendations</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Government Partners</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-university"></i> Punjab Forestry Department</li>
+                    <li><i class="fas fa-city"></i> Punjab Urban Unit</li>
+                    <li><i class="fas fa-handshake"></i> Local Government Department</li>
+                    <li><i class="fas fa-water"></i> Punjab Irrigation Department</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Research Contact</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> policy.research@greenspaceai.com</li>
+                    <li><i class="fas fa-phone"></i> +92 42 111 111 111</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Punjab Forestry Department HQ</li>
+                    <li><i class="fas fa-clock"></i> Mon-Fri, 9AM-5PM PKT</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 GreenSpace AI - Punjab Urban Forestry Policy Case Study. In collaboration with Punjab Government. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Highlight table rows on hover
+        document.querySelectorAll('.district-table tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.backgroundColor = '#f9fff9';
+                row.style.transition = 'background-color 0.3s ease';
+            });
+            
+            row.addEventListener('mouseleave', () => {
+                if (!row.classList.contains('highlighted')) {
+                    row.style.backgroundColor = '';
+                }
+            });
+        });
+
+        // Add animation to metric cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe metric cards
+        document.querySelectorAll('.metric-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

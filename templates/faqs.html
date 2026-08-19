@@ -1,0 +1,1148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Asked Questions - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .faqs-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .faqs-header {
+            background: linear-gradient(135deg, #00695c, #00796b);
+            color: white;
+            padding: 80px 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .faqs-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .faqs-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 40px auto 0;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 25px 18px 60px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.7);
+            font-size: 1.2rem;
+        }
+
+        .categories-section {
+            margin-bottom: 50px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .category-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: #00796b;
+        }
+
+        .category-card.active {
+            background: #e0f2f1;
+            border-color: #00796b;
+        }
+
+        .category-icon {
+            width: 70px;
+            height: 70px;
+            background: #e0f2f1;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #00796b;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover .category-icon {
+            background: #00796b;
+            color: white;
+        }
+
+        .category-card.active .category-icon {
+            background: #00796b;
+            color: white;
+        }
+
+        .category-card h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+
+        .faqs-content {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .faq-category {
+            margin-bottom: 60px;
+        }
+
+        .faq-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .category-title {
+            color: #00695c;
+            margin-top: 0;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #b2dfdb;
+            font-size: 2rem;
+        }
+
+        .faq-item {
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: #b2dfdb;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .faq-item.active {
+            border-color: #00796b;
+            box-shadow: 0 5px 20px rgba(0,105,92,0.1);
+        }
+
+        .faq-question {
+            padding: 25px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-question {
+            background: #e0f2f1;
+        }
+
+        .question-text {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            margin: 0;
+            flex: 1;
+        }
+
+        .faq-icon {
+            color: #00796b;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            margin-left: 20px;
+            flex-shrink: 0;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 25px;
+            max-height: 1000px;
+        }
+
+        .answer-content {
+            color: #555;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .answer-content ul, .answer-content ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .answer-content li {
+            margin-bottom: 8px;
+        }
+
+        .related-links {
+            background: #e0f2f1;
+            padding: 15px 25px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .related-links strong {
+            color: #00695c;
+            margin-right: 10px;
+        }
+
+        .related-links a {
+            color: #00796b;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        .related-links a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-support {
+            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            padding: 60px 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .contact-support h2 {
+            color: #00695c;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .support-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .support-option {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .support-icon {
+            width: 80px;
+            height: 80px;
+            background: #e0f2f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #00796b;
+            font-size: 2rem;
+        }
+
+        .support-option h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+        }
+
+        .support-option p {
+            color: #666;
+            margin: 0 0 20px 0;
+            font-size: 0.95rem;
+        }
+
+        .btn-support {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #00796b;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-support:hover {
+            background: #00695c;
+            transform: translateY(-2px);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 40px;
+            display: none;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            color: #b2dfdb;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .faqs-container {
+                margin: 80px auto 30px;
+                padding: 0 15px;
+            }
+            
+            .faqs-header {
+                padding: 60px 20px;
+            }
+            
+            .faqs-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .faqs-content {
+                padding: 30px 20px;
+            }
+            
+            .faq-question {
+                padding: 20px;
+            }
+            
+            .question-text {
+                font-size: 1rem;
+            }
+            
+            .contact-support {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- FAQs Content -->
+    <div class="faqs-container">
+        <!-- Header -->
+        <div class="faqs-header">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about GreenSpace AI's platform, features, and services</p>
+            
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search for questions or topics...">
+            </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="categories-section">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">Browse by Category</h2>
+            
+            <div class="categories-grid">
+                <div class="category-card active" data-category="general">
+                    <div class="category-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <h3>General</h3>
+                </div>
+                
+                <div class="category-card" data-category="account">
+                    <div class="category-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3>Account & Billing</h3>
+                </div>
+                
+                <div class="category-card" data-category="analysis">
+                    <div class="category-icon">
+                        <i class="fas fa-satellite"></i>
+                    </div>
+                    <h3>Image Analysis</h3>
+                </div>
+                
+                <div class="category-card" data-category="models">
+                    <div class="category-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>AI Models</h3>
+                </div>
+                
+                <div class="category-card" data-category="api">
+                    <div class="category-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>API & Integration</h3>
+                </div>
+                
+                <div class="category-card" data-category="technical">
+                    <div class="category-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Technical Support</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQs Content -->
+        <div class="faqs-content">
+            <!-- No Results Message -->
+            <div class="no-results" id="noResults">
+                <i class="fas fa-search"></i>
+                <h3>No Results Found</h3>
+                <p>Try searching with different keywords or browse the categories above.</p>
+            </div>
+
+            <!-- General FAQs -->
+            <div class="faq-category" id="category-general">
+                <h2 class="category-title">General Questions</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">What is GreenSpace AI?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>GreenSpace AI is a cloud-based platform that uses artificial intelligence and deep learning to analyze satellite and aerial imagery. Our platform enables users to perform automated land cover classification, change detection, object identification, and custom model training for geospatial applications.</p>
+                            <p>We serve researchers, environmental organizations, urban planners, agricultural companies, and government agencies who need efficient, accurate analysis of large-scale geospatial data.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">Who can use GreenSpace AI?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>GreenSpace AI is designed for:</p>
+                            <ul>
+                                <li><strong>Researchers & Academics:</strong> Environmental science, geography, urban studies</li>
+                                <li><strong>Government Agencies:</strong> Environmental monitoring, urban planning, disaster response</li>
+                                <li><strong>Environmental Organizations:</strong> Conservation, climate change research</li>
+                                <li><strong>Agricultural Companies:</strong> Crop monitoring, yield prediction</li>
+                                <li><strong>Urban Planners:</strong> Infrastructure development, land use analysis</li>
+                                <li><strong>Insurance Companies:</strong> Risk assessment, damage evaluation</li>
+                            </ul>
+                            <p>We offer plans suitable for individual researchers up to large enterprise organizations.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">Do I need GIS expertise to use the platform?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>No, you don't need to be a GIS expert to use GreenSpace AI. Our platform is designed with user-friendly interfaces that guide you through the analysis process. However, having basic knowledge of geospatial concepts will help you get the most out of our platform.</p>
+                            <p>For advanced users, we provide full control over analysis parameters, custom model training, and API access for integration with existing GIS workflows.</p>
+                            <div class="related-links">
+                                <strong>Related:</strong>
+                                <a href="{% url 'getting_started' %}">Getting Started Tutorial</a>
+                                <a href="{% url 'documentation' %}">Documentation</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">What satellite imagery sources do you support?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>We support analysis of imagery from multiple sources:</p>
+                            <ul>
+                                <li><strong>Free Sources:</strong> Sentinel-2, Landsat 8/9</li>
+                                <li><strong>Commercial Sources:</strong> Maxar (WorldView), PlanetScope, Airbus</li>
+                                <li><strong>Aerial Imagery:</strong> Drone imagery, aerial photography</li>
+                                <li><strong>Custom Sources:</strong> Upload your own georeferenced imagery</li>
+                            </ul>
+                            <p>Our platform automatically handles different resolutions, coordinate systems, and file formats. For commercial imagery, you'll need to provide your own data access credentials.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account & Billing FAQs -->
+            <div class="faq-category" id="category-account" style="display: none;">
+                <h2 class="category-title">Account & Billing</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">How much does GreenSpace AI cost?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>We offer several pricing tiers:</p>
+                            <ul>
+                                <li><strong>Free Tier:</strong> 50 analysis credits/month, limited features</li>
+                                <li><strong>Basic:</strong> $29/month - 500 credits, standard features</li>
+                                <li><strong>Professional:</strong> $99/month - 2,500 credits, advanced features</li>
+                                <li><strong>Enterprise:</strong> Custom pricing - unlimited credits, full features</li>
+                            </ul>
+                            <p>All paid plans include a 14-day free trial. Annual billing offers discounts of 14-20%.</p>
+                            <div class="related-links">
+                                <strong>Related:</strong>
+                                <a href="{% url 'upgrade_plan' %}">View Pricing Plans</a>
+                                <a href="{% url 'contact_sales' %}">Contact Sales</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">What are analysis credits?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>Analysis credits are our unit of measurement for processing work. One credit typically represents:</p>
+                            <ul>
+                                <li>Processing 1 square kilometer of satellite imagery at 10m resolution</li>
+                                <li>OR analyzing 1 standard-sized image tile (512x512 pixels)</li>
+                                <li>OR 1 minute of model training on standard hardware</li>
+                            </ul>
+                            <p>Credits reset monthly and unused credits roll over up to 2x your monthly limit. You can purchase additional credits if needed.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">Can I upgrade or downgrade my plan?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>Yes, you can upgrade or downgrade your plan at any time:</p>
+                            <ul>
+                                <li><strong>Upgrades:</strong> Take effect immediately with pro-rated billing</li>
+                                <li><strong>Downgrades:</strong> Take effect at the start of your next billing cycle</li>
+                                <li><strong>Annual to Monthly:</strong> Available at the end of your annual term</li>
+                            </ul>
+                            <p>When downgrading, make sure your current usage fits within the limits of the new plan.</p>
+                            <div class="related-links">
+                                <strong>Related:</strong>
+                                <a href="{% url 'upgrade_plan' %}">Upgrade Your Plan</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">What payment methods do you accept?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>We accept:</p>
+                            <ul>
+                                <li>All major credit cards (Visa, Mastercard, American Express)</li>
+                                <li>PayPal</li>
+                                <li>Apple Pay and Google Pay</li>
+                                <li>Bank transfers (for enterprise customers)</li>
+                                <li>Purchase orders (for government and enterprise)</li>
+                            </ul>
+                            <p>All payments are processed securely through Stripe. We do not store your credit card information on our servers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Analysis FAQs -->
+            <div class="faq-category" id="category-analysis" style="display: none;">
+                <h2 class="category-title">Image Analysis</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">How accurate are your AI models?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>Our pre-trained models achieve the following accuracy levels:</p>
+                            <ul>
+                                <li><strong>Land Cover Classification:</strong> 92-96% overall accuracy</li>
+                                <li><strong>Change Detection:</strong> 89-93% accuracy for significant changes</li>
+                                <li><strong>Building Detection:</strong> 94-97% precision</li>
+                                <li><strong>Road Extraction:</strong> 91-95% accuracy</li>
+                            </ul>
+                            <p>Accuracy can vary based on image quality, resolution, and geographic region. For specialized applications, we recommend training custom models using your own annotated data.</p>
+                            <div class="related-links">
+                                <strong>Related:</strong>
+                                <a href="{% url 'custom_models' %}">Custom Model Training</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">How long does analysis take?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>Analysis time depends on several factors:</p>
+                            <ul>
+                                <li><strong>Image size:</strong> 1 sq km takes ~1-2 minutes</li>
+                                <li><strong>Complexity:</strong> More complex analyses take longer</li>
+                                <li><strong>Plan tier:</strong> Pro and Enterprise get priority processing</li>
+                                <li><strong>Current load:</strong> Server load can affect processing time</li>
+                            </ul>
+                            <p>Typical processing times:</p>
+                            <ul>
+                                <li>Small area (10 sq km): 5-10 minutes</li>
+                                <li>Medium area (100 sq km): 30-60 minutes</li>
+                                <li>Large area (1,000 sq km): 3-5 hours</li>
+                            </ul>
+                            <p>You'll receive email notifications when analysis is complete.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">What output formats do you provide?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>We support multiple output formats:</p>
+                            <ul>
+                                <li><strong>Geospatial Formats:</strong> GeoJSON, Shapefile, KML, GeoTIFF</li>
+                                <li><strong>Image Formats:</strong> PNG, JPEG (with georeferencing)</li>
+                                <li><strong>Data Formats:</strong> CSV, Excel, JSON</li>
+                                <li><strong>Reports:</strong> PDF reports with statistics and visualizations</li>
+                                <li><strong>Interactive:</strong> Web maps, 3D visualizations</li>
+                            </ul>
+                            <p>You can choose multiple output formats for each analysis. All outputs include metadata about the analysis parameters and accuracy metrics.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">Can I analyze historical satellite imagery?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>Yes, you can analyze historical imagery:</p>
+                            <ul>
+                                <li><strong>Sentinel-2:</strong> Archive back to 2015</li>
+                                <li><strong>Landsat:</strong> Archive back to the 1970s</li>
+                                <li><strong>Commercial archives:</strong> Varies by provider (contact us for details)</li>
+                            </ul>
+                            <p>For change detection over time, you can specify multiple dates and our platform will automatically align and compare the imagery. Historical analysis uses the same credits as current imagery analysis.</p>
+                            <div class="related-links">
+                                <strong>Related:</strong>
+                                <a href="{% url 'case_studies' %}">See Change Detection Case Studies</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Models FAQs -->
+            <div class="faq-category" id="category-models" style="display: none;">
+                <h2 class="category-title">AI Models</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">What AI models do you offer?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>We offer several pre-trained models:</p>
+                            <ul>
+                                <li><strong>Land Cover Classification:</strong> 10-class classification (urban, vegetation, water, etc.)</li>
+                                <li><strong>Change Detection:</strong> Identify changes between two dates</li>
+                                <li><strong>Building Detection:</strong> Detect and segment buildings</li>
+                                <li><strong>Road Extraction:</strong> Extract road networks</li>
+                                <li><strong>Water Body Detection:</strong> Identify lakes, rivers, ponds</li>
+                                <li><strong>Vegetation Health:</strong> NDVI and vegetation stress analysis</li>
+                                <li><strong>Crop Type Classification:</strong> Identify different crop types</li>
+                            </ul>
+                            <p>All models are regularly updated and improved based on new training data.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">Can I train custom models?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>Yes! Our custom model training feature allows you to:</p>
+                            <ul>
+                                <li>Upload your own annotated training data</li>
+                                <li>Choose from multiple model architectures (U-Net++, DeepLabv3+, Vision Transformers)</li>
+                                <li>Fine-tune hyperparameters for optimal performance</li>
+                                <li>Monitor training progress in real-time</li>
+                                <li>Deploy trained models for inference</li>
+                            </ul>
+                            <p>Custom models require Pro or Enterprise plans. We recommend at least 500 annotated images for good results.</p>
+                            <div class="related-links">
+                                <strong>Related:</strong>
+                                <a href="{% url 'custom_models' %}">Custom Model Training Guide</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">How much data do I need for custom training?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>Recommended dataset sizes:</p>
+                            <ul>
+                                <li><strong>Minimum:</strong> 200-300 annotated images</li>
+                                <li><strong>Good:</strong> 500-1000 annotated images</li>
+                                <li><strong>Excellent:</strong> 1000+ annotated images</li>
+                            </ul>
+                            <p>Additional recommendations:</p>
+                            <ul>
+                                <li>Include diverse examples (different seasons, lighting conditions)</li>
+                                <li>Ensure balanced class distribution</li>
+                                <li>Use precise annotations with clear boundaries</li>
+                                <li>Include validation and test sets (20% each)</li>
+                            </ul>
+                            <p>Our platform includes data augmentation to effectively multiply your training data.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API & Integration FAQs -->
+            <div class="faq-category" id="category-api" style="display: none;">
+                <h2 class="category-title">API & Integration</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">Do you offer an API?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>Yes, we offer a comprehensive REST API that allows you to:</p>
+                            <ul>
+                                <li>Submit analysis jobs programmatically</li>
+                                <li>Retrieve analysis results</li>
+                                <li>Manage projects and datasets</li>
+                                <li>Train and deploy custom models</li>
+                                <li>Monitor usage and billing</li>
+                            </ul>
+                            <p>API access is included with Pro and Enterprise plans. Basic plans can access the API with additional purchase.</p>
+                            <div class="related-links">
+                                <strong>Related:</strong>
+                                <a href="{% url 'api_documentation' %}">API Documentation</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">Can I integrate with QGIS or ArcGIS?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>Yes, we offer integration options for both:</p>
+                            <ul>
+                                <li><strong>QGIS Plugin:</strong> Free plugin available in the QGIS plugin repository</li>
+                                <li><strong>ArcGIS Integration:</strong> Python toolbox for ArcGIS Pro</li>
+                                <li><strong>Web Services:</strong> WMS/WFS services for integration with any GIS software</li>
+                                <li><strong>Python SDK:</strong> Full-featured Python library for custom integrations</li>
+                            </ul>
+                            <p>These integrations allow you to run GreenSpace AI analyses directly from your GIS software and import results seamlessly.</p>
+                            <div class="related-links">
+                                <strong>Related:</strong>
+                                <a href="{% url 'documentation' %}#integrations">Integration Guides</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Support FAQs -->
+            <div class="faq-category" id="category-technical" style="display: none;">
+                <h2 class="category-title">Technical Support</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">What browsers are supported?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>We support the latest versions of:</p>
+                            <ul>
+                                <li>Google Chrome (recommended)</li>
+                                <li>Mozilla Firefox</li>
+                                <li>Apple Safari</li>
+                                <li>Microsoft Edge</li>
+                            </ul>
+                            <p>For the best experience, we recommend:</p>
+                            <ul>
+                                <li>Keeping your browser updated</li>
+                                <li>Enabling JavaScript</li>
+                                <li>Using a screen resolution of 1920x1080 or higher</li>
+                                <li>A stable internet connection (minimum 10 Mbps)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p class="question-text">How do I get technical support?</p>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="answer-content">
+                            <p>Support options vary by plan:</p>
+                            <ul>
+                                <li><strong>Free/Basic:</strong> Community forum, documentation, email support (48-hour response)</li>
+                                <li><strong>Professional:</strong> Email and chat support (24-hour response)</li>
+                                <li><strong>Enterprise:</strong> 24/7 phone and chat support, dedicated account manager (1-hour response SLA)</li>
+                            </ul>
+                            <p>All users can access:</p>
+                            <ul>
+                                <li>Comprehensive documentation</li>
+                                <li>Video tutorials</li>
+                                <li>Community forum</li>
+                                <li>Knowledge base articles</li>
+                            </ul>
+                            <div class="related-links">
+                                <strong>Related:</strong>
+                                <a href="{% url 'support' %}">Contact Support</a>
+                                <a href="{% url 'documentation' %}">Documentation</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Support -->
+        <div class="contact-support">
+            <h2>Still Have Questions?</h2>
+            <p style="max-width: 700px; margin: 0 auto 30px; color: #555;">Our support team is here to help you get the most out of GreenSpace AI</p>
+            
+            <div class="support-options">
+                <div class="support-option">
+                    <div class="support-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h4>Documentation</h4>
+                    <p>Comprehensive guides, tutorials, and API references</p>
+                    <a href="{% url 'documentation' %}" class="btn-support">View Docs</a>
+                </div>
+                
+                <div class="support-option">
+                    <div class="support-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h4>Community Forum</h4>
+                    <p>Ask questions and share knowledge with other users</p>
+                    <a href="#" class="btn-support">Join Community</a>
+                </div>
+                
+                <div class="support-option">
+                    <div class="support-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h4>Contact Support</h4>
+                    <p>Get help from our technical support team</p>
+                    <a href="{% url 'contact_sales' %}" class="btn-support">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="margin-top: 60px; padding: 40px 0; border-top: 1px solid #eee; background: #f8f9fa;">
+        <div class="faqs-container" style="margin: 0 auto;">
+            <div style="text-align: center; color: #666; font-size: 0.9rem;">
+                <p>&copy; 2024 GreenSpace AI. All rights reserved.</p>
+                <p style="margin-top: 10px;">
+                    <a href="{% url 'privacy_policy' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                    <a href="{% url 'terms' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Terms of Service</a> | 
+                    <a href="{% url 'cookies_policy' %}" style="color: #666; text-decoration: none; margin: 0 10px;">Cookies Policy</a> | 
+                    <a href="{% url 'faqs' %}" style="color: #666; text-decoration: none; margin: 0 10px; font-weight: 600;">FAQs</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const faqItem = this.closest('.faq-item');
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Category Filtering
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const category = this.dataset.category;
+                
+                // Update active category
+                document.querySelectorAll('.category-card').forEach(c => {
+                    c.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Show selected category
+                document.querySelectorAll('.faq-category').forEach(cat => {
+                    cat.style.display = 'none';
+                });
+                
+                document.getElementById(`category-${category}`).style.display = 'block';
+                
+                // Reset search
+                document.querySelector('.search-input').value = '';
+                document.getElementById('noResults').style.display = 'none';
+            });
+        });
+
+        // Search Functionality
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            if (searchTerm.length < 2) {
+                // Show current category
+                const activeCategory = document.querySelector('.category-card.active').dataset.category;
+                document.querySelectorAll('.faq-category').forEach(cat => {
+                    cat.style.display = cat.id === `category-${activeCategory}` ? 'block' : 'none';
+                });
+                document.getElementById('noResults').style.display = 'none';
+                return;
+            }
+            
+            let hasResults = false;
+            
+            // Search through all FAQs
+            document.querySelectorAll('.faq-category').forEach(category => {
+                let categoryHasResults = false;
+                const questions = category.querySelectorAll('.faq-item');
+                
+                questions.forEach(item => {
+                    const questionText = item.querySelector('.question-text').textContent.toLowerCase();
+                    const answerText = item.querySelector('.answer-content').textContent.toLowerCase();
+                    
+                    if (questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
+                        item.style.display = 'block';
+                        categoryHasResults = true;
+                        hasResults = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Show category if it has results
+                category.style.display = categoryHasResults ? 'block' : 'none';
+            });
+            
+            // Show/hide no results message
+            document.getElementById('noResults').style.display = hasResults ? 'none' : 'block';
+        });
+
+        // URL parameter handling for direct category access
+        function handleUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category');
+            
+            if (category && document.querySelector(`[data-category="${category}"]`)) {
+                document.querySelector(`[data-category="${category}"]`).click();
+            }
+            
+            const search = urlParams.get('search');
+            if (search) {
+                searchInput.value = search;
+                searchInput.dispatchEvent(new Event('input'));
+            }
+        }
+        
+        handleUrlParams();
+
+        // Share FAQ functionality
+        function shareFAQ(faqId) {
+            const faqItem = document.getElementById(faqId);
+            const question = faqItem.querySelector('.question-text').textContent;
+            const url = `${window.location.origin}${window.location.pathname}?faq=${faqId}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: question,
+                    text: 'Check out this FAQ from GreenSpace AI',
+                    url: url
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Link copied to clipboard!');
+                });
+            }
+        }
+
+        // Add share buttons to FAQ items
+        document.querySelectorAll('.faq-item').forEach((item, index) => {
+            const shareBtn = document.createElement('button');
+            shareBtn.innerHTML = '<i class="fas fa-share-alt"></i>';
+            shareBtn.style.background = 'none';
+            shareBtn.style.border = 'none';
+            shareBtn.style.color = '#00796b';
+            shareBtn.style.cursor = 'pointer';
+            shareBtn.style.marginLeft = '10px';
+            shareBtn.style.fontSize = '0.9rem';
+            shareBtn.title = 'Share this FAQ';
+            
+            const faqId = `faq-${index}`;
+            item.id = faqId;
+            
+            shareBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                shareFAQ(faqId);
+            });
+            
+            item.querySelector('.faq-question').appendChild(shareBtn);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input'));
+            }
+            
+            if (e.key === '/' && e.target !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+            }
+        });
+
+        // Initialize first FAQ as open
+        document.querySelector('.faq-item').classList.add('active');
+
+        // Responsive adjustments
+        function handleResize() {
+            const container = document.querySelector('.faqs-container');
+            if (window.innerWidth < 768) {
+                container.style.padding = '0 15px';
+            } else {
+                container.style.padding = '0 20px';
+            }
+        }
+        
+        window.addEventListener('resize', handleResize);
+        handleResize();
+    </script>
+</body>
+</html>

@@ -1,0 +1,707 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Paper - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .paper-container {
+            max-width: 1000px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .paper-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 50px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .paper-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .paper-authors {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .paper-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .paper-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn-paper {
+            padding: 12px 25px;
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-paper:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .paper-content {
+            background: white;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .paper-section {
+            margin-bottom: 40px;
+        }
+
+        .paper-section h2 {
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .paper-section h3 {
+            color: var(--dark-color);
+            margin: 25px 0 15px;
+        }
+
+        .paper-section p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .abstract-box {
+            background: rgba(46, 125, 50, 0.1);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .figure {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .figure-caption {
+            font-style: italic;
+            color: var(--gray-color);
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .citation {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: 'Times New Roman', serif;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .methodology-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .method-step {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 30px;
+            height: 30px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .result-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .result-label {
+            text-align: center;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .reference-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            text-indent: -20px;
+        }
+
+        .doi-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .doi-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .paper-header {
+                padding: 30px 20px;
+            }
+            
+            .paper-title {
+                font-size: 2rem;
+            }
+            
+            .paper-content {
+                padding: 30px 20px;
+            }
+            
+            .paper-meta {
+                gap: 20px;
+            }
+            
+            .paper-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-paper {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'research_paper' %}" class="active">Research Paper</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Paper Header -->
+    <div class="paper-container">
+        <div class="paper-header">
+            <h1 class="paper-title">Evaluating the Cooling Effects of Urban Green Spaces Using Remote Sensing and Deep Learning: A Case Study of Lahore, Pakistan</h1>
+            
+            <div class="paper-authors">
+                M. Salman Younas, M. Hashir, Hassan Ali<br>
+                <em>Under the supervision of Dr. Syed M. Ali</em>
+            </div>
+            
+            <div class="paper-meta">
+                <div class="meta-item">
+                    <div class="meta-value">FCIT</div>
+                    <div class="meta-label">Faculty</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-value">2024</div>
+                    <div class="meta-label">Year</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-value">BSDS</div>
+                    <div class="meta-label">Program</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-value">PU, Lahore</div>
+                    <div class="meta-label">University</div>
+                </div>
+            </div>
+            
+            <div class="paper-actions">
+                <a href="#" class="btn-paper" id="downloadPdf">
+                    <i class="fas fa-download"></i> Download PDF
+                </a>
+                <a href="#" class="btn-paper" id="citePaper">
+                    <i class="fas fa-quote-right"></i> Cite This Paper
+                </a>
+                <a href="#" class="btn-paper" id="sharePaper">
+                    <i class="fas fa-share-alt"></i> Share
+                </a>
+            </div>
+        </div>
+
+        <!-- Paper Content -->
+        <div class="paper-content">
+            <!-- Abstract -->
+            <section class="paper-section">
+                <h2>Abstract</h2>
+                <div class="abstract-box">
+                    <p>This research presents a comprehensive framework for evaluating the cooling effects of Urban Green Spaces (UGS) in Lahore, Pakistan, using advanced remote sensing techniques and deep learning models. With rapid urbanization contributing to increased Urban Heat Island (UHI) effects, there is an urgent need for data-driven approaches to urban planning and climate resilience.</p>
+                    
+                    <p>We developed and trained multiple deep learning architectures, including U-Net and DeepLabv3+, on Sentinel-2 satellite imagery to accurately segment and classify green spaces within Lahore's metropolitan area. The segmentation results were correlated with Land Surface Temperature (LST) data derived from MODIS and Landsat 8 thermal bands to quantify the cooling impact of vegetated areas.</p>
+                    
+                    <p>Our findings reveal a significant inverse correlation between green space density and surface temperature, with well-maintained parks and tree-lined streets showing up to 3.2°C cooling compared to adjacent built-up areas. The study also identifies critical gaps in green space distribution across Lahore and provides evidence-based recommendations for urban planners and policymakers.</p>
+                </div>
+            </section>
+
+            <!-- Introduction -->
+            <section class="paper-section">
+                <h2>1. Introduction</h2>
+                <p>Lahore, Pakistan's second-largest city with a population exceeding 13 million, has experienced rapid urbanization over the past two decades. This growth has come at the cost of green spaces, exacerbating urban heat island effects and reducing the city's climate resilience. The average temperature in Lahore has increased by 1.5°C over the last 30 years, with heatwaves becoming more frequent and intense.</p>
+                
+                <p>Urban Green Spaces (UGS) play a crucial role in mitigating UHI effects through various mechanisms including evapotranspiration, shading, and albedo modification. However, traditional methods of UGS assessment are labor-intensive, subjective, and lack integration with temperature data. This research addresses these limitations by developing an automated, AI-driven framework for UGS evaluation.</p>
+                
+                <h3>1.1 Research Objectives</h3>
+                <ol>
+                    <li>Develop a deep learning pipeline for automatic segmentation of urban green spaces from satellite imagery</li>
+                    <li>Quantify the correlation between green space density and land surface temperature in Lahore</li>
+                    <li>Create a web-based platform for stakeholders to visualize and analyze UGS cooling effects</li>
+                    <li>Provide evidence-based recommendations for urban planning and climate resilience</li>
+                </ol>
+            </section>
+
+            <!-- Methodology -->
+            <section class="paper-section">
+                <h2>2. Methodology</h2>
+                
+                <div class="methodology-steps">
+                    <div class="method-step">
+                        <div class="step-number">1</div>
+                        <h4>Data Collection</h4>
+                        <p>Sentinel-2 imagery (10m resolution) for Lahore metropolitan area (2020-2023). MODIS and Landsat 8 thermal data for LST calculation.</p>
+                    </div>
+                    
+                    <div class="method-step">
+                        <div class="step-number">2</div>
+                        <h4>Data Preprocessing</h4>
+                        <p>Cloud masking, atmospheric correction, and radiometric calibration using Google Earth Engine API.</p>
+                    </div>
+                    
+                    <div class="method-step">
+                        <div class="step-number">3</div>
+                        <h4>Model Training</h4>
+                        <p>U-Net and DeepLabv3+ architectures trained on 5,000 annotated images. 80-10-10 train-validation-test split.</p>
+                    </div>
+                    
+                    <div class="method-step">
+                        <div class="step-number">4</div>
+                        <h4>Analysis</h4>
+                        <p>Spatial correlation between green space density and LST. Statistical analysis using Python (scikit-learn, pandas).</p>
+                    </div>
+                </div>
+
+                <h3>2.1 Dataset Description</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Dataset</th>
+                                <th>Source</th>
+                                <th>Resolution</th>
+                                <th>Temporal Coverage</th>
+                                <th>Usage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sentinel-2 MSI</td>
+                                <td>ESA Copernicus</td>
+                                <td>10m (RGB, NIR)</td>
+                                <td>2020-2023</td>
+                                <td>Vegetation segmentation</td>
+                            </tr>
+                            <tr>
+                                <td>MODIS LST</td>
+                                <td>NASA</td>
+                                <td>1km</td>
+                                <td>2020-2023</td>
+                                <td>Temperature analysis</td>
+                            </tr>
+                            <tr>
+                                <td>Landsat 8</td>
+                                <td>USGS</td>
+                                <td>30m (thermal)</td>
+                                <td>2020-2023</td>
+                                <td>LST validation</td>
+                            </tr>
+                            <tr>
+                                <td>Ground Truth</td>
+                                <td>Field survey</td>
+                                <td>N/A</td>
+                                <td>2023</td>
+                                <td>Model validation</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>2.2 Model Architecture</h3>
+                <p>We implemented two state-of-the-art segmentation architectures:</p>
+                
+                <div class="figure">
+                    <img src="https://via.placeholder.com/800x400/4caf50/ffffff?text=U-Net+Architecture+Diagram" alt="U-Net Architecture">
+                    <div class="figure-caption">Figure 1: U-Net architecture used for green space segmentation</div>
+                </div>
+            </section>
+
+            <!-- Results -->
+            <section class="paper-section">
+                <h2>3. Results</h2>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-value">94.2%</div>
+                        <div class="result-label">Segmentation Accuracy (IoU)</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-value">3.2°C</div>
+                        <div class="result-label">Max Temperature Reduction</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-value">18.7%</div>
+                        <div class="result-label">Green Coverage in Lahore</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-value">-0.82</div>
+                        <div class="result-label">Correlation Coefficient</div>
+                    </div>
+                </div>
+
+                <h3>3.1 Model Performance</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>IoU Score</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1-Score</th>
+                                <th>Inference Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>U-Net</td>
+                                <td>0.942</td>
+                                <td>0.958</td>
+                                <td>0.927</td>
+                                <td>0.942</td>
+                                <td>15.2s</td>
+                            </tr>
+                            <tr>
+                                <td>DeepLabv3+</td>
+                                <td>0.938</td>
+                                <td>0.952</td>
+                                <td>0.924</td>
+                                <td>0.938</td>
+                                <td>18.7s</td>
+                            </tr>
+                            <tr>
+                                <td>ResNet-50</td>
+                                <td>0.917</td>
+                                <td>0.931</td>
+                                <td>0.903</td>
+                                <td>0.917</td>
+                                <td>12.4s</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="figure">
+                    <img src="https://via.placeholder.com/800x400/2196f3/ffffff?text=Segmentation+Results+Comparison" alt="Segmentation Results">
+                    <div class="figure-caption">Figure 2: Comparison of segmentation results across different areas of Lahore</div>
+                </div>
+
+                <h3>3.2 Temperature Analysis</h3>
+                <p>Our analysis revealed a strong negative correlation (r = -0.82) between green space density and land surface temperature. Areas with dense vegetation showed consistently lower temperatures, with the cooling effect most pronounced during summer months (May-August).</p>
+            </section>
+
+            <!-- Discussion -->
+            <section class="paper-section">
+                <h2>4. Discussion</h2>
+                
+                <h3>4.1 Implications for Urban Planning</h3>
+                <p>The findings have significant implications for urban planning in Lahore and similar rapidly urbanizing cities:</p>
+                <ul>
+                    <li><strong>Strategic Green Space Placement:</strong> Our heat maps identify priority areas for new green infrastructure</li>
+                    <li><strong>Tree Species Selection:</strong> Analysis suggests certain native tree species provide greater cooling benefits</li>
+                    <li><strong>Maintenance Prioritization:</strong> Well-maintained parks showed 40% greater cooling effect than neglected ones</li>
+                </ul>
+
+                <h3>4.2 Limitations</h3>
+                <div class="warning-box">
+                    <p><strong>Cloud Cover:</strong> Sentinel-2 images were occasionally affected by cloud cover, requiring temporal compositing.</p>
+                    <p><strong>Seasonal Variation:</strong> Vegetation indices show significant seasonal variation affecting year-round analysis.</p>
+                    <p><strong>Ground Truth Data:</strong> Limited availability of high-resolution ground truth data for model validation.</p>
+                </div>
+            </section>
+
+            <!-- Conclusion -->
+            <section class="paper-section">
+                <h2>5. Conclusion</h2>
+                <p>This research successfully developed an AI-powered framework for evaluating urban green spaces and their cooling effects in Lahore. The developed platform provides urban planners, policymakers, and researchers with actionable insights for evidence-based decision making.</p>
+                
+                <p>Key contributions include:</p>
+                <ol>
+                    <li>A high-accuracy deep learning model for green space segmentation (94.2% IoU)</li>
+                    <li>Quantification of cooling effects across different green space types</li>
+                    <li>An accessible web platform for interactive analysis</li>
+                    <li>Policy recommendations for Lahore's urban development</li>
+                </ol>
+            </section>
+
+            <!-- References -->
+            <section class="paper-section">
+                <h2>References</h2>
+                <div class="citation">
+                    <p>Ronneberger, O., Fischer, P., & Brox, T. (2015). U-Net: Convolutional Networks for Biomedical Image Segmentation. In <em>Medical Image Computing and Computer-Assisted Intervention</em> (pp. 234-241). Springer.</p>
+                    
+                    <p>Chen, L. C., Zhu, Y., Papandreou, G., Schroff, F., & Adam, H. (2018). Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation. In <em>Proceedings of the European Conference on Computer Vision (ECCV)</em> (pp. 801-818).</p>
+                    
+                    <p>Zhao, H., Shi, J., Qi, X., Wang, X., & Jia, J. (2017). Pyramid Scene Parsing Network. In <em>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition</em> (pp. 2881-2890).</p>
+                    
+                    <p>Li, X., Zhou, Y., & Asrar, G. R. (2018). Developing a 1 km resolution daily air temperature dataset for urban and surrounding areas in the conterminous United States. <em>Remote Sensing of Environment</em>, 215, 74-84.</p>
+                </div>
+            </section>
+
+            <!-- Acknowledgements -->
+            <section class="paper-section">
+                <h2>Acknowledgements</h2>
+                <p>This research was supported by the Faculty of Computing & Information Technology, University of the Punjab, Lahore. We thank Dr. Syed M. Ali for his guidance and the Punjab Urban Unit for providing ground truth data. This work is part of the BS Data Science Final Year Project (2022-2026).</p>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced platform for urban green space analysis using remote sensing and deep learning.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Research</h4>
+                <ul>
+                    <li><a href="#abstract">Abstract</a></li>
+                    <li><a href="#methodology">Methodology</a></li>
+                    <li><a href="#results">Results</a></li>
+                    <li><a href="#references">References</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Cite This Paper</h4>
+                <div class="citation" style="margin: 0; padding: 15px; font-size: 0.9rem;">
+                    Younas, M. S., Hashir, M., & Ali, H. (2024). Evaluating the Cooling Effects of Urban Green Spaces Using Remote Sensing and Deep Learning: A Case Study of Lahore, Pakistan. <em>University of the Punjab</em>.
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact Researchers</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> research@greenspaceai.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> FCIT, University of the Punjab</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 GreenSpace AI - Research Paper. This work is licensed under CC BY-NC 4.0</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Paper actions
+        document.getElementById('downloadPdf').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Paper download will be available after final submission. For now, please contact the authors.');
+        });
+
+        document.getElementById('citePaper').addEventListener('click', function(e) {
+            e.preventDefault();
+            const citation = `Younas, M. S., Hashir, M., & Ali, H. (2024). Evaluating the Cooling Effects of Urban Green Spaces Using Remote Sensing and Deep Learning: A Case Study of Lahore, Pakistan. University of the Punjab.`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(citation).then(() => {
+                alert('Citation copied to clipboard!');
+            });
+        });
+
+        document.getElementById('sharePaper').addEventListener('click', function(e) {
+            e.preventDefault();
+            const shareData = {
+                title: 'Evaluating the Cooling Effects of Urban Green Spaces',
+                text: 'Check out this research paper on urban green space analysis using AI and remote sensing',
+                url: window.location.href
+            };
+            
+            if (navigator.share) {
+                navigator.share(shareData);
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('Paper link copied to clipboard!');
+                });
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

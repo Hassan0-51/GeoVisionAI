@@ -1,0 +1,898 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - GreenSpace AI</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .api-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .api-header {
+            background: linear-gradient(135deg, #263238, #37474f);
+            color: white;
+            padding: 50px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .api-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .api-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .meta-item i {
+            color: #4caf50;
+        }
+
+        .api-content {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        .api-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .api-nav {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .api-nav h3 {
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .api-nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .api-nav li {
+            margin-bottom: 10px;
+        }
+
+        .api-nav a {
+            color: var(--gray-color);
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .api-nav a:hover,
+        .api-nav a.active {
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .api-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .api-section {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            scroll-margin-top: 100px;
+        }
+
+        .api-section h2 {
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .api-section h3 {
+            color: var(--dark-color);
+            margin: 30px 0 15px;
+        }
+
+        .endpoint-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .method-badge {
+            padding: 6px 15px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .method-get { background: #4caf50; }
+        .method-post { background: #2196f3; }
+        .method-put { background: #ff9800; }
+        .method-delete { background: #f44336; }
+        .method-patch { background: #9c27b0; }
+
+        .endpoint-url {
+            font-family: 'Roboto Mono', monospace;
+            background: #263238;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .endpoint-description {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .parameter-section {
+            margin: 20px 0;
+        }
+
+        .parameter-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .parameter-table th {
+            background: #e0e0e0;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .parameter-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .parameter-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .required {
+            color: #e53935;
+            font-weight: 600;
+        }
+
+        .optional {
+            color: #757575;
+        }
+
+        .code-block {
+            background: #263238;
+            color: #e0e0e0;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .code-block .keyword { color: #569cd6; }
+        .code-block .string { color: #ce9178; }
+        .code-block .number { color: #b5cea8; }
+        .code-block .comment { color: #6a9955; }
+        .code-block .function { color: #dcdcaa; }
+        .code-block .property { color: #9cdcfe; }
+
+        .response-section {
+            margin: 25px 0;
+        }
+
+        .response-example {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .status-200 { background: #4caf50; color: white; }
+        .status-400 { background: #ff9800; color: white; }
+        .status-401 { background: #f44336; color: white; }
+        .status-404 { background: #9c27b0; color: white; }
+        .status-500 { background: #795548; color: white; }
+
+        .rate-limits {
+            background: rgba(33, 150, 243, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .try-api {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .try-api button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+
+        .try-api button:hover {
+            background: var(--primary-dark);
+        }
+
+        .api-key-generator {
+            background: #263238;
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .api-key-display {
+            background: #37474f;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            font-family: 'Roboto Mono', monospace;
+            display: none;
+        }
+
+        @media (max-width: 992px) {
+            .api-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .api-sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .api-header {
+                padding: 30px 20px;
+            }
+            
+            .api-section {
+                padding: 25px;
+            }
+            
+            .endpoint-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'api_documentation' %}" class="active">API Docs</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- API Header -->
+    <div class="api-container">
+        <div class="api-header">
+            <h1>GreenSpace AI API Documentation</h1>
+            <p>RESTful API for programmatic access to urban green space analysis</p>
+            
+            <div class="api-meta">
+                <div class="meta-item">
+                    <i class="fas fa-globe"></i>
+                    <span>Base URL: <code>https://api.greenspaceai.com/v1</code></span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Authentication: Bearer Token</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-code"></i>
+                    <span>Format: JSON</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-book"></i>
+                    <span>Version: 1.0.0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Content -->
+        <div class="api-content">
+            <!-- Sidebar Navigation -->
+            <aside class="api-sidebar">
+                <nav class="api-nav">
+                    <h3><i class="fas fa-bars"></i> API Reference</h3>
+                    <ul>
+                        <li><a href="#authentication" class="active">Authentication</a></li>
+                        <li><a href="#rate-limiting">Rate Limiting</a></li>
+                        <li><a href="#errors">Error Handling</a></li>
+                        <li><a href="#analysis">Analysis Endpoints</a></li>
+                        <li><a href="#results">Results Endpoints</a></li>
+                        <li><a href="#projects">Projects Endpoints</a></li>
+                        <li><a href="#users">User Endpoints</a></li>
+                        <li><a href="#webhooks">Webhooks</a></li>
+                        <li><a href="#sdks">SDKs & Libraries</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="api-sections">
+                <!-- Authentication -->
+                <section id="authentication" class="api-section">
+                    <h2>Authentication</h2>
+                    <p>All API requests require authentication using a Bearer token. You can generate your API key from the dashboard after registration.</p>
+                    
+                    <div class="api-key-generator">
+                        <h3 style="color: white;">Get Your API Key</h3>
+                        <p>Register for an account and navigate to Dashboard → API Settings to generate your key.</p>
+                        <button id="simulateApiKey" style="background: var(--accent-color);">Simulate API Key Generation</button>
+                        <div id="apiKeyDisplay" class="api-key-display">
+                            gsai_sk_test_51NabcDefGhiJklMnoPqrStuVwxYz1234567890
+                        </div>
+                    </div>
+
+                    <h3>Using the API Key</h3>
+                    <p>Include the API key in the Authorization header of all requests:</p>
+                    
+                    <div class="code-block">
+                        <span class="keyword">Authorization</span>: Bearer <span class="string">your_api_key_here</span>
+                    </div>
+
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method-badge method-post">POST</span>
+                            <span class="endpoint-url">/auth/token</span>
+                        </div>
+                        <div class="endpoint-description">
+                            Generate a new access token using your API credentials.
+                        </div>
+                        
+                        <div class="parameter-section">
+                            <h4>Request Body</h4>
+                            <table class="parameter-table">
+                                <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Required</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>api_key</td>
+                                        <td>string</td>
+                                        <td><span class="required">Yes</span></td>
+                                        <td>Your API key</td>
+                                    </tr>
+                                    <tr>
+                                        <td>expires_in</td>
+                                        <td>integer</td>
+                                        <td><span class="optional">No</span></td>
+                                        <td>Token expiry in seconds (default: 3600)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="response-section">
+                            <h4>Response</h4>
+                            <div class="response-example">
+                                <pre><code>{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "token_type": "bearer",
+  "expires_in": 3600,
+  "scope": "read write"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Rate Limiting -->
+                <section id="rate-limiting" class="api-section">
+                    <h2>Rate Limiting</h2>
+                    <div class="rate-limits">
+                        <p>API requests are limited based on your subscription plan:</p>
+                        <ul>
+                            <li><strong>Free Tier:</strong> 100 requests/month</li>
+                            <li><strong>Professional:</strong> 10,000 requests/month</li>
+                            <li><strong>Enterprise:</strong> Unlimited requests</li>
+                        </ul>
+                        <p>Rate limit headers are included in all responses:</p>
+                        <div class="code-block">
+                            X-RateLimit-Limit: 100<br>
+                            X-RateLimit-Remaining: 95<br>
+                            X-RateLimit-Reset: 1689876543
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analysis Endpoints -->
+                <section id="analysis" class="api-section">
+                    <h2>Analysis Endpoints</h2>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method-badge method-post">POST</span>
+                            <span class="endpoint-url">/analyze</span>
+                        </div>
+                        <div class="endpoint-description">
+                            Submit an image for green space segmentation and temperature analysis.
+                        </div>
+                        
+                        <h4>Parameters</h4>
+                        <table class="parameter-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>image</td>
+                                    <td>file</td>
+                                    <td><span class="required">Yes</span></td>
+                                    <td>Satellite image file (TIFF, JPEG, PNG)</td>
+                                </tr>
+                                <tr>
+                                    <td>model</td>
+                                    <td>string</td>
+                                    <td><span class="optional">No</span></td>
+                                    <td>Segmentation model: 'unet' (default), 'deeplab', 'custom'</td>
+                                </tr>
+                                <tr>
+                                    <td>include_temperature</td>
+                                    <td>boolean</td>
+                                    <td><span class="optional">No</span></td>
+                                    <td>Include temperature analysis (default: true)</td>
+                                </tr>
+                                <tr>
+                                    <td>region</td>
+                                    <td>string</td>
+                                    <td><span class="optional">No</span></td>
+                                    <td>Geographic region for better accuracy</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="try-api">
+                            <h4>Try This Endpoint</h4>
+                            <p>Test the analysis endpoint with a sample image:</p>
+                            <button onclick="testAnalysisEndpoint()">Test Analysis Request</button>
+                            <div id="analysisResult" style="margin-top: 15px; display: none;">
+                                <div class="code-block" style="background: #2e7d32; color: white;">
+                                    Analysis submitted successfully! Job ID: analysis_12345
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="response-section">
+                            <h4>Response Example</h4>
+                            <div class="response-example">
+                                <pre><code>{
+  "job_id": "analysis_1234567890",
+  "status": "processing",
+  "estimated_time": 45,
+  "webhook_url": "https://api.greenspaceai.com/v1/webhook/status",
+  "created_at": "2024-06-15T10:30:00Z"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method-badge method-get">GET</span>
+                            <span class="endpoint-url">/analyze/{job_id}</span>
+                        </div>
+                        <div class="endpoint-description">
+                            Get the status and results of an analysis job.
+                        </div>
+                        
+                        <div class="response-section">
+                            <h4>Response Example</h4>
+                            <div class="response-example">
+                                <pre><code>{
+  "job_id": "analysis_1234567890",
+  "status": "completed",
+  "results": {
+    "segmentation": {
+      "green_area_percentage": 24.5,
+      "green_area_hectares": 15.2,
+      "confidence_score": 0.94,
+      "mask_url": "https://storage.greenspaceai.com/masks/12345.png"
+    },
+    "temperature": {
+      "average_temperature": 32.5,
+      "green_space_temperature": 30.1,
+      "urban_temperature": 33.7,
+      "temperature_difference": 3.6
+    }
+  },
+  "downloads": {
+    "report_pdf": "https://storage.greenspaceai.com/reports/12345.pdf",
+    "geotiff": "https://storage.greenspaceai.com/data/12345.tif",
+    "geojson": "https://storage.greenspaceai.com/data/12345.geojson"
+  }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Results Endpoints -->
+                <section id="results" class="api-section">
+                    <h2>Results Endpoints</h2>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method-badge method-get">GET</span>
+                            <span class="endpoint-url">/results/{result_id}/download</span>
+                        </div>
+                        <div class="endpoint-description">
+                            Download analysis results in various formats.
+                        </div>
+                        
+                        <h4>Query Parameters</h4>
+                        <table class="parameter-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>format</td>
+                                    <td>string</td>
+                                    <td><span class="required">Yes</span></td>
+                                    <td>Output format: 'pdf', 'geotiff', 'geojson', 'png'</td>
+                                </tr>
+                                <tr>
+                                    <td>resolution</td>
+                                    <td>string</td>
+                                    <td><span class="optional">No</span></td>
+                                    <td>Image resolution: 'low', 'medium', 'high'</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Error Handling -->
+                <section id="errors" class="api-section">
+                    <h2>Error Handling</h2>
+                    <p>The API uses standard HTTP status codes and returns detailed error messages in JSON format.</p>
+                    
+                    <div class="response-section">
+                        <h4>Error Response Format</h4>
+                        <div class="response-example">
+                            <pre><code>{
+  "error": {
+    "code": "invalid_api_key",
+    "message": "The provided API key is invalid or has expired.",
+    "details": "Please generate a new API key from your dashboard.",
+    "documentation_url": "https://docs.greenspaceai.com/api/authentication"
+  }
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>Common Error Codes</h3>
+                    <table class="parameter-table">
+                        <thead>
+                            <tr>
+                                <th>Status Code</th>
+                                <th>Error Code</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="status-badge status-400">400</span></td>
+                                <td>invalid_request</td>
+                                <td>Malformed request or invalid parameters</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge status-401">401</span></td>
+                                <td>invalid_api_key</td>
+                                <td>Invalid or missing API key</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge status-404">404</span></td>
+                                <td>not_found</td>
+                                <td>Resource not found</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge status-500">500</span></td>
+                                <td>server_error</td>
+                                <td>Internal server error</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- SDKs -->
+                <section id="sdks" class="api-section">
+                    <h2>SDKs & Libraries</h2>
+                    
+                    <div class="methodology-steps" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                        <div class="method-step">
+                            <div class="step-number" style="background: #2196f3;">Py</div>
+                            <h4>Python SDK</h4>
+                            <p>Official Python client for GreenSpace AI API.</p>
+                            <div class="code-block" style="margin: 10px 0; padding: 10px; font-size: 0.8rem;">
+                                pip install greenspace-ai
+                            </div>
+                        </div>
+                        
+                        <div class="method-step">
+                            <div class="step-number" style="background: #f44336;">JS</div>
+                            <h4>JavaScript SDK</h4>
+                            <p>Browser and Node.js client library.</p>
+                            <div class="code-block" style="margin: 10px 0; padding: 10px; font-size: 0.8rem;">
+                                npm install greenspace-ai
+                            </div>
+                        </div>
+                        
+                        <div class="method-step">
+                            <div class="step-number" style="background: #9c27b0;">R</div>
+                            <h4>R Package</h4>
+                            <p>R interface for data scientists.</p>
+                            <div class="code-block" style="margin: 10px 0; padding: 10px; font-size: 0.8rem;">
+                                install.packages("greenspaceai")
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>GreenSpace<span class="logo-ai">AI</span></span>
+                </div>
+                <p>Advanced platform for urban green space analysis using remote sensing and deep learning.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>API Resources</h4>
+                <ul>
+                    <li><a href="#authentication">Authentication</a></li>
+                    <li><a href="#analysis">Analysis API</a></li>
+                    <li><a href="#errors">Error Codes</a></li>
+                    <li><a href="#sdks">SDKs</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> api-support@greenspaceai.com</li>
+                    <li><i class="fas fa-comments"></i> API Discord Channel</li>
+                    <li><i class="fab fa-github"></i> GitHub Examples</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Status</h4>
+                <ul>
+                    <li><a href="#" style="color: #4caf50;"><i class="fas fa-circle"></i> API Operational</a></li>
+                    <li><a href="#">Status Page</a></li>
+                    <li><a href="#">Changelog</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 GreenSpace AI - API Documentation v1.0.0</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = navMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // API Key generator simulation
+        document.getElementById('simulateApiKey').addEventListener('click', function() {
+            const display = document.getElementById('apiKeyDisplay');
+            display.style.display = 'block';
+            this.textContent = 'API Key Generated!';
+            this.disabled = true;
+            
+            // Copy to clipboard
+            const key = 'gsai_sk_test_51NabcDefGhiJklMnoPqrStuVwxYz1234567890';
+            navigator.clipboard.writeText(key).then(() => {
+                setTimeout(() => {
+                    alert('API key copied to clipboard! Use this for testing.');
+                }, 300);
+            });
+        });
+
+        // Test analysis endpoint
+        function testAnalysisEndpoint() {
+            const resultDiv = document.getElementById('analysisResult');
+            resultDiv.style.display = 'block';
+            
+            // Simulate API call
+            setTimeout(() => {
+                resultDiv.innerHTML = `
+                    <div class="code-block" style="background: #2e7d32; color: white;">
+                        ✅ Analysis submitted successfully!<br>
+                        Job ID: analysis_${Math.random().toString(36).substr(2, 9)}<br>
+                        Estimated time: 45 seconds<br>
+                        Check status with: GET /analyze/{job_id}
+                    </div>
+                `;
+            }, 1000);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('.api-nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Update active class
+                    document.querySelectorAll('.api-nav a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Smooth scroll
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Highlight current section in sidebar
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.api-section');
+            const navLinks = document.querySelectorAll('.api-nav a');
+            
+            let currentSection = '';
+            const scrollPosition = window.pageYOffset + 150;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Syntax highlighting for code blocks
+        function highlightCodeBlocks() {
+            const codeBlocks = document.querySelectorAll('.code-block, .response-example pre code');
+            codeBlocks.forEach(block => {
+                let code = block.textContent;
+                
+                // Simple highlighting
+                code = code.replace(/\b(POST|GET|PUT|DELETE|PATCH)\b/g, '<span class="keyword">$1</span>');
+                code = code.replace(/("([^"]*)")/g, '<span class="string">$1</span>');
+                code = code.replace(/\b(\d+)\b/g, '<span class="number">$1</span>');
+                code = code.replace(/\b(true|false|null)\b/g, '<span class="keyword">$1</span>');
+                code = code.replace(/(\{|\}|\[|\]|\,)/g, '<span class="property">$1</span>');
+                code = code.replace(/\/\/.*$/gm, '<span class="comment">$&</span>');
+                
+                block.innerHTML = code;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', highlightCodeBlocks);
+    </script>
+</body>
+</html>

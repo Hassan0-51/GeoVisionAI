@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles.css' %}">
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
+    rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section id="home" class="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1>Evaluating Urban Green Spaces with <span class="highlight">AI & Remote Sensing</span></h1>
+            <p class="subtitle">Advanced deep learning platform for analyzing cooling effects of urban vegetation in
+                Lahore, Pakistan</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn-primary">Try Free Analysis</a>
+                <a href="#features" class="btn-secondary">Learn More <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="image-placeholder">
+                <div class="satellite-view">
+                    <div class="grid-overlay"></div>
+                    <div class="green-area"></div>
+                    <div class="urban-area"></div>
+                    <div class="temperature-overlay"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features">
+    <div class="container">
+        <h2 class="section-title">Powerful Features for Urban Analysis</h2>
+        <p class="section-subtitle">Our platform combines remote sensing with deep learning for comprehensive green
+            space evaluation</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-satellite"></i>
+                </div>
+                <h3>Satellite Image Processing</h3>
+                <p>Upload and analyze high-resolution Sentinel-2 imagery with automatic preprocessing and enhancement.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>Deep Learning Segmentation</h3>
+                <p>State-of-the-art U-Net and DeepLabv3+ models for accurate green space identification and masking.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-thermometer-half"></i>
+                </div>
+                <h3>Temperature Analysis</h3>
+                <p>Calculate Land Surface Temperature (LST) correlations and cooling effects of identified green areas.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Temporal Analysis</h3>
+                <p>Track changes in green coverage and temperature patterns over time with interactive timelines.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <h3>GIS Integration</h3>
+                <p>Export results in multiple GIS formats and integrate with QGIS or ArcGIS for further analysis.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h3>Report Generation</h3>
+                <p>Generate comprehensive PDF reports with statistics, visualizations, and actionable insights.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="workflow">
+    <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <div class="workflow-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Upload Satellite Image</h3>
+                <p>Upload your Sentinel-2 or other satellite imagery through our secure platform</p>
+            </div>
+            <div class="step-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>AI Processing</h3>
+                <p>Our deep learning models automatically segment and classify green spaces</p>
+            </div>
+            <div class="step-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Analysis & Visualization</h3>
+                <p>View detailed analytics, temperature correlations, and interactive maps</p>
+            </div>
+            <div class="step-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Download Results</h3>
+                <p>Export masks, statistics, and reports for your research or planning needs</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section id="pricing" class="pricing">
+    <div class="container">
+        <h2 class="section-title">Flexible Pricing Plans</h2>
+        <p class="section-subtitle">Choose the plan that fits your needs</p>
+
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Free Tier</h3>
+                    <div class="price">$0<span>/month</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 5 image analyses per month</li>
+                    <li><i class="fas fa-check"></i> Basic segmentation results</li>
+                    <li><i class="fas fa-check"></i> Standard resolution exports</li>
+                    <li><i class="fas fa-times"></i> No temperature analysis</li>
+                    <li><i class="fas fa-times"></i> No temporal analysis</li>
+                    <li><i class="fas fa-times"></i> No priority processing</li>
+                </ul>
+                <a href="{% url 'register' %}" class="btn-pricing">Get Started</a>
+            </div>
+
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Most Popular</div>
+                <div class="pricing-header">
+                    <h3>Professional</h3>
+                    <div class="price">$49<span>/month</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 50 image analyses per month</li>
+                    <li><i class="fas fa-check"></i> Advanced segmentation models</li>
+                    <li><i class="fas fa-check"></i> High-resolution exports</li>
+                    <li><i class="fas fa-check"></i> Full temperature analysis</li>
+                    <li><i class="fas fa-check"></i> Basic temporal analysis</li>
+                    <li><i class="fas fa-check"></i> Priority processing</li>
+                </ul>
+                <a href="{% url 'register' %}" class="btn-pricing featured">Start Free Trial</a>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Enterprise</h3>
+                    <div class="price">Custom</div>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> Unlimited image analyses</li>
+                    <li><i class="fas fa-check"></i> Custom model training</li>
+                    <li><i class="fas fa-check"></i> API access</li>
+                    <li><i class="fas fa-check"></i> Advanced temporal analysis</li>
+                    <li><i class="fas fa-check"></i> Team collaboration tools</li>
+                    <li><i class="fas fa-check"></i> Dedicated support</li>
+                </ul>
+                <a href="{% url 'contact_sales' %}" class="btn-pricing">Contact Sales</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="about">
+    <div class="container">
+        <h2 class="section-title">About Our Research</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>This platform is developed as part of a final year research project at the University of the Punjab,
+                    Lahore, under the supervision of <strong>Dr. Syed M Ali</strong>.</p>
+                <p>Our research focuses on evaluating the cooling effects of Urban Green Spaces in Lahore using
+                    state-of-the-art remote sensing and deep learning techniques.</p>
+                <h4>Project Team:</h4>
+                <ul class="team-list">
+                    <li>M Salman Younas (BSDSF22M001)</li>
+                    <li>M Hashir (BSDSF22M017)</li>
+                    <li>Hassan Ali (BSDSF22M051)</li>
+                </ul>
+                <p>Bachelor of Science in Data Science (2022-2026)<br>
+                    Faculty of Computing & Information Technology</p>
+            </div>
+            <div class="about-image">
+                <div class="university-logo">
+                    <i class="fas fa-university"></i>
+                    <span>University of the Punjab</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Demo Section -->
+<section id="demo" class="demo">
+    <div class="container">
+        <h2 class="section-title">Try Our Demo</h2>
+        <p class="section-subtitle">Experience the power of AI-driven green space analysis</p>
+
+        <div class="demo-container">
+            <div class="demo-upload">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h4>Upload Satellite Image</h4>
+                    <p>Drag & drop or click to browse</p>
+                    <p class="upload-note">Supports: TIFF, JPEG, PNG (Max 100MB)</p>
+                    <input type="file" id="demoUpload" accept=".tif,.tiff,.jpg,.jpeg,.png" hidden>
+                    <button class="btn-upload" onclick="document.getElementById('demoUpload').click()">Browse
+                        Files</button>
+                </div>
+            </div>
+
+            <div class="demo-preview">
+                <div class="preview-placeholder">
+                    <div class="before-after">
+                        <div class="image-container">
+                            <h5>Original Image</h5>
+                            <div class="image-placeholder-small" id="originalPreview"></div>
+                        </div>
+                        <div class="image-container">
+                            <h5>AI Segmentation</h5>
+                            <div class="image-placeholder-small" id="segmentedPreview"></div>
+                        </div>
+                    </div>
+                    <div class="demo-stats">
+                        <div class="stat">
+                            <div class="stat-value" id="greenArea">0%</div>
+                            <div class="stat-label">Green Coverage</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="tempReduction">0°C</div>
+                            <div class="stat-label">Temp Reduction</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="areaSize">0 ha</div>
+                            <div class="stat-label">Total Area</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-notice">
+            <i class="fas fa-info-circle"></i>
+            <p>Demo results are simulated. <a href="{% url 'register' %}">Register for free</a> to get actual analysis
+                with our AI models.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="contact">
+    <div class="footer-container">
+        <div class="footer-section">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span style="color:black">GreenSpace<span class="logo-ai">AI</span></span>
+            </div>
+            <p>Advanced platform for urban green space analysis using remote sensing and deep learning.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-researchgate"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="{% url 'analysis' %}">Start Analysis</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'research_paper' %}">Research Paper</a></li>
+                <li><a href="{% url 'api_documentation' %}">API Documentation</a></li>
+                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li><a href="{% url 'case_studies' %}">Case Studies</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Contact Us</h4>
+            <ul class="contact-info">
+                <li><i class="fas fa-map-marker-alt"></i> Faculty of Computing & IT, University of the Punjab, Lahore
+                </li>
+                <li><i class="fas fa-envelope"></i> research.greenspace@pu.edu.pk</li>
+                <li><i class="fas fa-phone"></i> +92 334 157890</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2025 GreenSpace AI - Final Year Project, BS Data Science, University of the Punjab. All rights
+            reserved.</p>
+    </div>
+</footer>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'script.js' %}"></script>
+{% endblock %}
