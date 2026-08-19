@@ -184,20 +184,20 @@ The repository includes the full set of project screenshots from the provided im
 | Home | ![Screenshot 1](docs/screenshots/1.jpeg) |
 | Features | ![Screenshot 2](docs/screenshots/2.jpeg) |
 | Workflow | ![Screenshot 3](docs/screenshots/3.jpeg) |
-| 4 | ![Screenshot 4](docs/screenshots/4.jpeg) |
-| 5 | ![Screenshot 5](docs/screenshots/5.jpeg) |
-| 6 | ![Screenshot 6](docs/screenshots/6.jpeg) |
-| 7 | ![Screenshot 7](docs/screenshots/7.jpeg) |
-| 8 | ![Screenshot 8](docs/screenshots/8.jpeg) |
-| 9 | ![Screenshot 9](docs/screenshots/9.jpeg) |
-| 10 | ![Screenshot 10](docs/screenshots/10.jpeg) |
-| 11 | ![Screenshot 11](docs/screenshots/11.jpeg) |
-| 12 | ![Screenshot 12](docs/screenshots/12.jpeg) |
-| 13 | ![Screenshot 13](docs/screenshots/13.jpeg) |
-| 14 | ![Screenshot 14](docs/screenshots/14.jpeg) |
-| 15 | ![Screenshot 15](docs/screenshots/15.jpeg) |
-| 16 | ![Screenshot 16](docs/screenshots/16.jpeg) |
-| 18 | ![Screenshot 18](docs/screenshots/18.jpeg) |
+| Analysis | ![Screenshot 4](docs/screenshots/4.jpeg) |
+| Method | ![Screenshot 5](docs/screenshots/5.jpeg) |
+| Map | ![Screenshot 6](docs/screenshots/6.jpeg) |
+| Area Selection | ![Screenshot 7](docs/screenshots/7.jpeg) |
+| Model | ![Screenshot 8](docs/screenshots/8.jpeg) |
+| Processing | ![Screenshot 15](docs/screenshots/15.jpeg) |
+| Dashboard | ![Screenshot 9](docs/screenshots/9.jpeg) |
+| Temporal Analysis | ![Screenshot 10](docs/screenshots/10.jpeg) |
+| Temperature Trend | ![Screenshot 11](docs/screenshots/11.jpeg) |
+| Green vs NON-Green | ![Screenshot 12](docs/screenshots/12.jpeg) |
+| Area Trend | ![Screenshot 13](docs/screenshots/13.jpeg) |
+| Yearly treands | ![Screenshot 14](docs/screenshots/14.jpeg) |
+| login page  | ![Screenshot 16](docs/screenshots/16.jpeg) |
+| History | ![Screenshot 18](docs/screenshots/18.jpeg) |
 
 > The project includes all available numbered screenshots from the shared source folder in the correct numerical order so the README presents the full workflow and portfolio visually.
 
