@@ -1,0 +1,54 @@
+{
+  "season": {
+    "spring": {
+      "trend_summary": "Green\u2011space coverage has generally risen from ~57\u202f% in 2016 to a peak of ~70\u202f% in 2023, while non\u2011green areas have trended downward. Average spring temperatures have been relatively stable with a slight upward drift in recent years, suggesting a mild warming trend but still within historic bounds.",
+      "green_space_trend": "increasing",
+      "non_green_space_trend": "decreasing",
+      "temperature_trend": "slightly increasing",
+      "recommendations": [
+        "Prioritise the expansion of green infrastructure (parks, street trees, rooftop gardens) in urban districts to reinforce the observed rise in green cover and mitigate heat\u2011island effects.",
+        "Implement adaptive heat\u2011management strategies (cool roofs, reflective pavements) in any remaining non\u2011green parcels, especially where temperature anomalies exceed historical averages."
+      ]
+    },
+    "summer": {
+      "trend_summary": "Summer green\u2011space peaked dramatically in 2023 (\u224883\u202f%) before falling to ~63\u202f% in 2024, yet overall the period shows a positive trend. Non\u2011green areas have steadily declined, and summer temperatures have shown a mild upward trend, with 2022 as the warmest year in the dataset.",
+      "green_space_trend": "increasing",
+      "non_green_space_trend": "decreasing",
+      "temperature_trend": "increasing",
+      "recommendations": [
+        "Amplify green\u2011space expansion during the summer months, targeting high\u2011density urban cores where heat\u2011island intensity is greatest.",
+        "Deploy evaporative cooling strategies (urban wetlands, water features) in areas experiencing the highest temperature anomalies to offset the rising summer heat."
+      ]
+    },
+    "autumn": {
+      "trend_summary": "Autumn green space has consistently increased from 57\u202f% (2016) to a high of ~73\u202f% (2023). Non\u2011green cover has diminished steadily. Autumn temperatures have remained relatively steady with a mild warming trend.",
+      "green_space_trend": "increasing",
+      "non_green_space_trend": "decreasing",
+      "temperature_trend": "slightly increasing",
+      "recommendations": [
+        "Maintain the positive trend by protecting existing green patches from conversion to non\u2011green uses and by encouraging tree\u2011planting programmes during the autumn planting season.",
+        "Use autumn temperature data as a baseline for forecasting and monitoring climate\u2011change impacts on local ecosystems."
+      ]
+    },
+    "winter": {
+      "trend_summary": "Winter green\u2011space coverage has risen from 43\u202f% (2016) to a peak of ~71\u202f% (2023), though with notable year\u2011to\u2011year swings. Non\u2011green areas have steadily fallen. Winter temperatures show a modest upward drift, but remain within the historical range.",
+      "green_space_trend": "increasing",
+      "non_green_space_trend": "decreasing",
+      "temperature_trend": "slightly increasing",
+      "recommendations": [
+        "Encourage winter\u2011resilient vegetation (evergreen shrubs, coniferous trees) to sustain green cover during low\u2011temperature periods and to maintain cooling benefits.",
+        "Introduce winter\u2011specific heat\u2011management measures (snow\u2011melt ponds, insulated green walls) to mitigate any potential rise in winter temperatures."
+      ]
+    },
+    "average": {
+      "trend_summary": "Across the full annual cycle, green space has shown a clear upward trend, reaching a high of ~70\u202f% in 2023, while non\u2011green space has been consistently reduced. Average temperatures have hovered around 34\u201135\u202f\u00b0C, with a slight long\u2011term uptick but no dramatic anomalies.",
+      "green_space_trend": "increasing",
+      "non_green_space_trend": "decreasing",
+      "temperature_trend": "slightly increasing",
+      "recommendations": [
+        "Implement a city\u2011wide green\u2011space policy that targets a minimum of 70\u202f% coverage by 2030, leveraging the observed trend as a baseline.",
+        "Integrate temperature monitoring with land\u2011cover mapping to create early\u2011warning systems for heatwaves, guiding adaptive management actions such as temporary shading, water\u2011sprinkling, or public cooling centres."
+      ]
+    }
+  }
+}

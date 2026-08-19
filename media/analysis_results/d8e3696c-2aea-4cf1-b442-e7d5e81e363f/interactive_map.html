@@ -1,0 +1,239 @@
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+    
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_42fce9a2ad47577a4be939a8e9b87182 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            &lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+        
+    
+            
+                &lt;style&gt;
+                    .leaflet-image-layer {
+                        /* old android/safari*/
+                        image-rendering: -webkit-optimize-contrast;
+                        image-rendering: crisp-edges; /* safari */
+                        image-rendering: pixelated; /* chrome */
+                        image-rendering: -moz-crisp-edges; /* firefox */
+                        image-rendering: -o-crisp-edges; /* opera */
+                        -ms-interpolation-mode: nearest-neighbor; /* ie */
+                    }
+                &lt;/style&gt;
+            
+        
+    &lt;script src=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css&quot;/&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    
+        &lt;div style=&quot;position: fixed; 
+                    bottom: 50px; left: 50px; width: 150px; 
+                    border:2px solid grey; z-index:9999; font-size:14px;
+                    background-color:white;
+                    opacity: 0.8;&quot;&gt;
+        &lt;p style=&quot;margin: 10px;&quot;&gt;&lt;b&gt;Land Cover Classes&lt;/b&gt;&lt;/p&gt;
+        
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#000000; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Background
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#3CB043; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Agricultural Land
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#FFFF00; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Grasses &amp; Bushes
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#FF0000; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Urban Area
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#8B4513; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Soil
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#0000FF; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Water
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#008000; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Trees
+            &lt;/p&gt;
+            &lt;/div&gt;
+    
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_42fce9a2ad47577a4be939a8e9b87182&quot; &gt;&lt;/div&gt;
+        
+&lt;/body&gt;
+&lt;script&gt;
+    
+    
+            var map_42fce9a2ad47577a4be939a8e9b87182 = L.map(
+                &quot;map_42fce9a2ad47577a4be939a8e9b87182&quot;,
+                {
+                    center: [31.52129941481934, 74.39680994750314],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 12,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_6a47d97a59fbf7c3e5eeaf9bffd74efc = L.tileLayer(
+                &quot;https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 20,
+  &quot;maxNativeZoom&quot;: 20,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\&quot;https://carto.com/attributions\&quot;\u003eCARTO\u003c/a\u003e&quot;,
+  &quot;subdomains&quot;: &quot;abcd&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            tile_layer_6a47d97a59fbf7c3e5eeaf9bffd74efc.addTo(map_42fce9a2ad47577a4be939a8e9b87182);
+        
+    
+            var image_overlay_23cef8584e948b65c9336c19bb7c8c01 = L.imageOverlay(
+                &quot;data:image/png;base64,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&quot;,
+                [[31.51775106944706, 74.38445811234651], [31.5248477601916, 74.4091617826598]],
+                {
+  &quot;opacity&quot;: 0.7,
+}
+            );
+        
+    
+            image_overlay_23cef8584e948b65c9336c19bb7c8c01.addTo(map_42fce9a2ad47577a4be939a8e9b87182);
+        
+    
+            var layer_control_65c6c7eb9eddd1e8e27a74141ba2a967_layers = {
+                base_layers : {
+                    &quot;cartodbpositron&quot; : tile_layer_6a47d97a59fbf7c3e5eeaf9bffd74efc,
+                },
+                overlays :  {
+                    &quot;Land Cover&quot; : image_overlay_23cef8584e948b65c9336c19bb7c8c01,
+                },
+            };
+            let layer_control_65c6c7eb9eddd1e8e27a74141ba2a967 = L.control.layers(
+                layer_control_65c6c7eb9eddd1e8e27a74141ba2a967_layers.base_layers,
+                layer_control_65c6c7eb9eddd1e8e27a74141ba2a967_layers.overlays,
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;collapsed&quot;: true,
+  &quot;autoZIndex&quot;: true,
+}
+            ).addTo(map_42fce9a2ad47577a4be939a8e9b87182);
+
+        
+    
+            var measure_control_5509507851197105d5c104ff90d67340 = new L.Control.Measure(
+                {
+  &quot;position&quot;: &quot;topleft&quot;,
+  &quot;primaryLengthUnit&quot;: &quot;meters&quot;,
+  &quot;secondaryLengthUnit&quot;: &quot;miles&quot;,
+  &quot;primaryAreaUnit&quot;: &quot;sqmeters&quot;,
+  &quot;secondaryAreaUnit&quot;: &quot;acres&quot;,
+});
+            map_42fce9a2ad47577a4be939a8e9b87182.addControl(measure_control_5509507851197105d5c104ff90d67340);
+
+            // Workaround for using this plugin with Leaflet&gt;=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+    
+            L.control.fullscreen(
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;title&quot;: &quot;Full Screen&quot;,
+  &quot;titleCancel&quot;: &quot;Exit Full Screen&quot;,
+  &quot;forceSeparateButton&quot;: false,
+}
+            ).addTo(map_42fce9a2ad47577a4be939a8e9b87182);
+        
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div>

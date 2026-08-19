@@ -1,0 +1,54 @@
+{
+  "season": {
+    "spring": {
+      "trend_summary": "Green\u2011space coverage in spring has steadily declined from ~78\u202f% in 2016 to ~68\u202f% in 2024, while non\u2011green surfaces have risen correspondingly. Mean temperatures show a modest downward drift after the high 2016 values but remain broadly stable otherwise. The decline in green cover is linked to slightly warmer spring days, especially in the later years.",
+      "green_space_trend": "decreasing",
+      "non_green_space_trend": "increasing",
+      "temperature_trend": "stable",
+      "recommendations": [
+        "Implement tree\u2011planting and green\u2011roof pilots in high\u2011value spring neighborhoods to restore shade and evapotranspiration.",
+        "Encourage the use of reflective or cool\u2011coated surfaces on new developments to offset the loss of natural cooling."
+      ]
+    },
+    "summer": {
+      "trend_summary": "Summer green\u2011space percentages hover around 70\u202f% with a noticeable dip in 2022. Non\u2011green surfaces have risen steadily, driving higher summer maximum temperatures, particularly in 2022 (\u224850\u202f\u00b0C mean) and 2024. The temperature trend is erratic but overall warming pressure is evident when non\u2011green land cover expands.",
+      "green_space_trend": "stable",
+      "non_green_space_trend": "increasing",
+      "temperature_trend": "increasing",
+      "recommendations": [
+        "Expand urban parklands and street\u2011level green canopy to provide shade during peak heat events.",
+        "Deploy shade nets and water\u2011feature installations in commercial districts to reduce local maximums."
+      ]
+    },
+    "autumn": {
+      "trend_summary": "Autumn green\u2011space shows a mild upward swing after 2018, while non\u2011green surfaces continue to climb. Mean autumn temperatures remain fairly constant but have a slight upward bias in the last three years. The growing non\u2011green share is the main driver of higher autumn heat\u2011waves.",
+      "green_space_trend": "increasing",
+      "non_green_space_trend": "increasing",
+      "temperature_trend": "stable",
+      "recommendations": [
+        "Preserve and expand green corridors that connect parks to waterways to aid cooling in fall.",
+        "Introduce permeable paving in high\u2011traffic zones to reduce heat absorption."
+      ]
+    },
+    "winter": {
+      "trend_summary": "Winter green\u2011space fell from nearly 78\u202f% in 2016 to about 59\u202f% in 2024, while non\u2011green surfaces rose sharply. Mean winter temperatures show a slight upward trend, and periods of low green cover (e.g., 2018) correlate with the lowest winter minima. The loss of vegetated areas is a key factor in warming winter days.",
+      "green_space_trend": "decreasing",
+      "non_green_space_trend": "increasing",
+      "temperature_trend": "increasing",
+      "recommendations": [
+        "Promote winter landscaping by using deciduous trees that provide canopy in summer but leave open ground in winter to reduce snow melt while still maintaining vegetation.",
+        "Invest in green roof systems that remain vegetated during winter to mitigate urban heat island effects."
+      ]
+    },
+    "average": {
+      "trend_summary": "Across all seasons, the city\u2019s average green\u2011space coverage has dropped from ~76\u202f% in 2016 to ~67\u202f% in 2024, while non\u2011green land cover has risen. The mean annual temperature has climbed modestly from ~30.65\u202f\u00b0C to ~30.97\u202f\u00b0C. The overall pattern suggests that the expansion of impervious and built surfaces is contributing to a mild warming trend across the year.",
+      "green_space_trend": "decreasing",
+      "non_green_space_trend": "increasing",
+      "temperature_trend": "increasing",
+      "recommendations": [
+        "Adopt city\u2011wide green\u2011infrastructure targets that aim to increase overall green cover by 10\u202f% over the next decade.",
+        "Integrate climate\u2011adaptation policies (e.g., mandatory green roofs, urban forestry) into zoning and building codes to curb the warming trend."
+      ]
+    }
+  }
+}

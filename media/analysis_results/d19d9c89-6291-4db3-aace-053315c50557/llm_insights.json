@@ -1,0 +1,54 @@
+{
+  "season": {
+    "spring": {
+      "trend_summary": "Green\u2011space has been marginally lower in 2024 (\u224850.5\u202f%) compared to 2016 (\u224850.9\u202f%), while non\u2011green land grew slightly. Average temperatures in spring have edged down by ~0.8\u202f\u00b0C over the same period.",
+      "green_space_trend": "decreasing",
+      "non_green_space_trend": "increasing",
+      "temperature_trend": "decreasing",
+      "recommendations": [
+        "Implement rain\u2011water harvesting and green roofs in suburban areas to increase green cover and reduce heat\u2011island effects.",
+        "Use reflective or light\u2011colored pavement in high\u2011traffic zones to offset the slight temperature rise."
+      ]
+    },
+    "summer": {
+      "trend_summary": "Summer green\u2011space rose from ~52\u202f% (2017) to ~56\u202f% (2024). Non\u2011green land fell by ~4\u202f%, and summer temperatures climbed by roughly 4\u202f\u00b0C, showing a clear warming trend during the hottest part of the year.",
+      "green_space_trend": "increasing",
+      "non_green_space_trend": "decreasing",
+      "temperature_trend": "increasing",
+      "recommendations": [
+        "Prioritize tree planting along major road corridors to increase shade and lower ambient temperatures.",
+        "Introduce urban green corridors that link existing parks to encourage ecological continuity and cooler micro\u2011climates."
+      ]
+    },
+    "autumn": {
+      "trend_summary": "Green cover in autumn grew from ~47\u202f% (2016) to ~55\u202f% (2024), while non\u2011green land fell. Autumn temperatures have risen slightly, suggesting that the higher green cover is not yet offsetting the overall warming trend.",
+      "green_space_trend": "increasing",
+      "non_green_space_trend": "decreasing",
+      "temperature_trend": "increasing",
+      "recommendations": [
+        "Adopt mixed\u2011species planting in parks to improve carbon sequestration and cooling capacity.",
+        "Upgrade existing landscaping with drought\u2011resistant native species to maintain green cover during cooler seasons."
+      ]
+    },
+    "winter": {
+      "trend_summary": "Winter green\u2011space dropped from ~57\u202f% (2016) to ~47\u202f% (2024) and non\u2011green land grew. Winter temperatures fell by ~1.6\u202f\u00b0C, indicating that the loss of green space may have contributed to a modest cooling during winter months.",
+      "green_space_trend": "decreasing",
+      "non_green_space_trend": "increasing",
+      "temperature_trend": "decreasing",
+      "recommendations": [
+        "Plant winter\u2011green shrubs and perennials that retain foliage to sustain green cover throughout the year.",
+        "Enhance insulation and thermal performance of buildings to reduce heat loss to the environment."
+      ]
+    },
+    "average": {
+      "trend_summary": "Overall green\u2011space remained relatively stable (51.6\u202f% in 2016 to 52.0\u202f% in 2024), while non\u2011green land declined slightly. Average temperatures rose by ~2.4\u202f\u00b0C, indicating a general warming trend across all seasons.",
+      "green_space_trend": "stable",
+      "non_green_space_trend": "decreasing",
+      "temperature_trend": "increasing",
+      "recommendations": [
+        "Integrate green infrastructure city\u2011wide, including parks, green roofs, and street trees, to counteract the rising average temperatures.",
+        "Develop a city\u2011wide monitoring program using high\u2011resolution satellite data to track land\u2011cover changes and temperature fluctuations in real time."
+      ]
+    }
+  }
+}

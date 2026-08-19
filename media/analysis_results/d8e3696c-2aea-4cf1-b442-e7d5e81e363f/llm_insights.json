@@ -1,0 +1,54 @@
+{
+  "season": {
+    "spring": {
+      "trend_summary": "In spring the landscape is moderately green (\u224854\u202f% of the area) with a corresponding moderate temperature (~31\u202f\u00b0C). The non\u2011green fraction (\u224845\u202f%) is slightly higher than green, indicating a balanced mix of vegetation and built/open spaces. No dramatic anomalies are evident from the available data.",
+      "green_space_trend": "stable",
+      "non_green_space_trend": "stable",
+      "temperature_trend": "stable",
+      "recommendations": [
+        "Continue monitoring irrigation practices to keep soil moisture balanced and prevent excessive heat buildup.",
+        "Implement targeted storm\u2011water retention (e.g., rain gardens) to leverage the moderate green cover for urban cooling."
+      ]
+    },
+    "summer": {
+      "trend_summary": "Summer shows the highest green space (\u224865\u202f%) and the lowest non\u2011green area (\u224835\u202f%). The mean temperature peaks at ~36\u202f\u00b0C, reflecting the typical warm\u2011season heat wave. The strong correlation between high green cover and high temperature suggests that existing vegetation is not yet providing adequate shade or evapotranspiration cooling.",
+      "green_space_trend": "increasing",
+      "non_green_space_trend": "decreasing",
+      "temperature_trend": "increasing",
+      "recommendations": [
+        "Introduce shade trees and dense canopy cover in open spaces to reduce surface temperatures.",
+        "Adopt reflective or green roofing in the 35\u202f% non\u2011green area to lower urban heat island intensity."
+      ]
+    },
+    "autumn": {
+      "trend_summary": "In autumn green space falls to ~55\u202f% while non\u2011green rises to ~45\u202f%. Temperature drops to around 28\u202f\u00b0C, a moderate cooling relative to summer. The land\u2011cover shift suggests leaf litter accumulation and reduced evapotranspiration, which may slightly raise surface temperatures compared to spring.",
+      "green_space_trend": "decreasing",
+      "non_green_space_trend": "increasing",
+      "temperature_trend": "decreasing",
+      "recommendations": [
+        "Clear leaf litter from grass and shrub areas to maintain transpiration rates and reduce surface heating.",
+        "Use mulch in agricultural zones to preserve soil moisture and mitigate temperature spikes during late\u2011autumn heat waves."
+      ]
+    },
+    "winter": {
+      "trend_summary": "Winter presents the lowest green cover (~49\u202f%) and the highest non\u2011green area (~51\u202f%). Mean temperatures fall sharply to ~16\u202f\u00b0C. The reduced vegetation cover limits evapotranspiration and contributes to cooler surface temperatures, but also reduces the potential for passive heating.",
+      "green_space_trend": "decreasing",
+      "non_green_space_trend": "increasing",
+      "temperature_trend": "decreasing",
+      "recommendations": [
+        "Introduce winter cover crops or hardy grasses in agricultural and open areas to maintain some green cover and improve soil stability.",
+        "Apply ground\u2011cover mulch or low\u2011profile plantings in residential zones to reduce soil freeze\u2011thaw cycles and preserve moderate temperatures."
+      ]
+    },
+    "average": {
+      "trend_summary": "Across the year, green space averages ~56\u202f% and non\u2011green ~44\u202f%, with an overall mean temperature of ~27.5\u202f\u00b0C. The average figures reflect the seasonal swings: high green cover in summer and low in winter. No single trend dominates, but the data suggest a seasonal oscillation in both land cover and temperature.",
+      "green_space_trend": "stable",
+      "non_green_space_trend": "stable",
+      "temperature_trend": "stable",
+      "recommendations": [
+        "Adopt an integrated land\u2011management plan that balances green infrastructure with built\u2011up areas to mitigate extreme temperatures throughout the year.",
+        "Implement continuous monitoring of temperature and vegetation indices to detect early signs of heat\u2011stress or drought and adjust irrigation or planting schedules accordingly."
+      ]
+    }
+  }
+}

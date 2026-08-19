@@ -1,0 +1,109 @@
+============================================================
+LAND COVER ANALYSIS SUMMARY
+============================================================
+
+Generated: 2026-06-22 13:46:26
+Purpose: temporal
+
+DATA SUMMARY:
+----------------------------------------
+Area records: 35
+Temperature records: 140
+Historical masks stored: 35
+
+OUTPUT FILES:
+----------------------------------------
+  • advanced_analyses.json
+  • analysis_summary.txt
+  • area_analysis.csv
+  • area_trends_2class.png
+  • area_trends_6class.png
+  • interactive_map.html
+  • llm_insights.json
+  • mask_2016_autumn.tif
+  • mask_2016_spring.tif
+  • mask_2016_winter.tif
+  • mask_2017_autumn.tif
+  • mask_2017_spring.tif
+  • mask_2017_summer.tif
+  • mask_2017_winter.tif
+  • mask_2018_autumn.tif
+  • mask_2018_spring.tif
+  • mask_2018_summer.tif
+  • mask_2018_winter.tif
+  • mask_2019_autumn.tif
+  • mask_2019_spring.tif
+  • mask_2019_summer.tif
+  • mask_2019_winter.tif
+  • mask_2020_autumn.tif
+  • mask_2020_spring.tif
+  • mask_2020_summer.tif
+  • mask_2020_winter.tif
+  • mask_2021_autumn.tif
+  • mask_2021_spring.tif
+  • mask_2021_summer.tif
+  • mask_2021_winter.tif
+  • mask_2022_autumn.tif
+  • mask_2022_spring.tif
+  • mask_2022_summer.tif
+  • mask_2022_winter.tif
+  • mask_2023_autumn.tif
+  • mask_2023_spring.tif
+  • mask_2023_summer.tif
+  • mask_2023_winter.tif
+  • mask_2024_autumn.tif
+  • mask_2024_spring.tif
+  • mask_2024_summer.tif
+  • mask_2024_winter.tif
+  • rgb_2016_autumn.tif
+  • rgb_2016_spring.tif
+  • rgb_2016_winter.tif
+  • rgb_2017_autumn.tif
+  • rgb_2017_spring.tif
+  • rgb_2017_summer.tif
+  • rgb_2017_winter.tif
+  • rgb_2018_autumn.tif
+  • rgb_2018_spring.tif
+  • rgb_2018_summer.tif
+  • rgb_2018_winter.tif
+  • rgb_2019_autumn.tif
+  • rgb_2019_spring.tif
+  • rgb_2019_summer.tif
+  • rgb_2019_winter.tif
+  • rgb_2020_autumn.tif
+  • rgb_2020_spring.tif
+  • rgb_2020_summer.tif
+  • rgb_2020_winter.tif
+  • rgb_2021_autumn.tif
+  • rgb_2021_spring.tif
+  • rgb_2021_summer.tif
+  • rgb_2021_winter.tif
+  • rgb_2022_autumn.tif
+  • rgb_2022_spring.tif
+  • rgb_2022_summer.tif
+  • rgb_2022_winter.tif
+  • rgb_2023_autumn.tif
+  • rgb_2023_spring.tif
+  • rgb_2023_summer.tif
+  • rgb_2023_winter.tif
+  • rgb_2024_autumn.tif
+  • rgb_2024_spring.tif
+  • rgb_2024_summer.tif
+  • rgb_2024_winter.tif
+  • temperature_analysis.csv
+  • temperature_trend_0.png
+  • temperature_trend_1.png
+  • temperature_trend_2.png
+  • temperature_trend_3.png
+
+ANALYSIS MODULES USED:
+----------------------------------------
+  • Change Detection
+  • Urban Heat Island Analysis
+  • Carbon Sequestration Estimation
+  • Spatial Pattern Metrics
+  • Anomaly Detection
+  • Model Validation
+  • Interactive Dashboard
+
+PROCESSING COMPLETE

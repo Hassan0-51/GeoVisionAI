@@ -1,0 +1,239 @@
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+    
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_02fabe02e8876e0cabb4c7ccf33ae655 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            &lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+        
+    
+            
+                &lt;style&gt;
+                    .leaflet-image-layer {
+                        /* old android/safari*/
+                        image-rendering: -webkit-optimize-contrast;
+                        image-rendering: crisp-edges; /* safari */
+                        image-rendering: pixelated; /* chrome */
+                        image-rendering: -moz-crisp-edges; /* firefox */
+                        image-rendering: -o-crisp-edges; /* opera */
+                        -ms-interpolation-mode: nearest-neighbor; /* ie */
+                    }
+                &lt;/style&gt;
+            
+        
+    &lt;script src=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css&quot;/&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    
+        &lt;div style=&quot;position: fixed; 
+                    bottom: 50px; left: 50px; width: 150px; 
+                    border:2px solid grey; z-index:9999; font-size:14px;
+                    background-color:white;
+                    opacity: 0.8;&quot;&gt;
+        &lt;p style=&quot;margin: 10px;&quot;&gt;&lt;b&gt;Land Cover Classes&lt;/b&gt;&lt;/p&gt;
+        
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#000000; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Background
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#3CB043; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Agricultural Land
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#FFFF00; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Grasses &amp; Bushes
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#FF0000; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Urban Area
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#8B4513; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Soil
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#0000FF; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Water
+            &lt;/p&gt;
+            
+            &lt;p style=&quot;margin: 5px 10px;&quot;&gt;
+                &lt;i style=&quot;background:#008000; width:20px; height:20px; 
+                         display:inline-block; margin-right:5px;&quot;&gt;&lt;/i&gt;
+                Trees
+            &lt;/p&gt;
+            &lt;/div&gt;
+    
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_02fabe02e8876e0cabb4c7ccf33ae655&quot; &gt;&lt;/div&gt;
+        
+&lt;/body&gt;
+&lt;script&gt;
+    
+    
+            var map_02fabe02e8876e0cabb4c7ccf33ae655 = L.map(
+                &quot;map_02fabe02e8876e0cabb4c7ccf33ae655&quot;,
+                {
+                    center: [31.533875828797004, 74.39595654798323],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 12,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_ec6639ed6d60ba15e906061e720216ab = L.tileLayer(
+                &quot;https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 20,
+  &quot;maxNativeZoom&quot;: 20,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\&quot;https://carto.com/attributions\&quot;\u003eCARTO\u003c/a\u003e&quot;,
+  &quot;subdomains&quot;: &quot;abcd&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            tile_layer_ec6639ed6d60ba15e906061e720216ab.addTo(map_02fabe02e8876e0cabb4c7ccf33ae655);
+        
+    
+            var image_overlay_82f1c7ae0b2cc10f91585588f1156c94 = L.imageOverlay(
+                &quot;data:image/png;base64,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&quot;,
+                [[31.528351189799668, 74.38194282955097], [31.539400467794337, 74.4099702664155]],
+                {
+  &quot;opacity&quot;: 0.7,
+}
+            );
+        
+    
+            image_overlay_82f1c7ae0b2cc10f91585588f1156c94.addTo(map_02fabe02e8876e0cabb4c7ccf33ae655);
+        
+    
+            var layer_control_f826ac7afb56eadaf89e1ab28f2f061b_layers = {
+                base_layers : {
+                    &quot;cartodbpositron&quot; : tile_layer_ec6639ed6d60ba15e906061e720216ab,
+                },
+                overlays :  {
+                    &quot;Land Cover&quot; : image_overlay_82f1c7ae0b2cc10f91585588f1156c94,
+                },
+            };
+            let layer_control_f826ac7afb56eadaf89e1ab28f2f061b = L.control.layers(
+                layer_control_f826ac7afb56eadaf89e1ab28f2f061b_layers.base_layers,
+                layer_control_f826ac7afb56eadaf89e1ab28f2f061b_layers.overlays,
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;collapsed&quot;: true,
+  &quot;autoZIndex&quot;: true,
+}
+            ).addTo(map_02fabe02e8876e0cabb4c7ccf33ae655);
+
+        
+    
+            var measure_control_441e7e335f99ecfa90400767f33354ed = new L.Control.Measure(
+                {
+  &quot;position&quot;: &quot;topleft&quot;,
+  &quot;primaryLengthUnit&quot;: &quot;meters&quot;,
+  &quot;secondaryLengthUnit&quot;: &quot;miles&quot;,
+  &quot;primaryAreaUnit&quot;: &quot;sqmeters&quot;,
+  &quot;secondaryAreaUnit&quot;: &quot;acres&quot;,
+});
+            map_02fabe02e8876e0cabb4c7ccf33ae655.addControl(measure_control_441e7e335f99ecfa90400767f33354ed);
+
+            // Workaround for using this plugin with Leaflet&gt;=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+    
+            L.control.fullscreen(
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;title&quot;: &quot;Full Screen&quot;,
+  &quot;titleCancel&quot;: &quot;Exit Full Screen&quot;,
+  &quot;forceSeparateButton&quot;: false,
+}
+            ).addTo(map_02fabe02e8876e0cabb4c7ccf33ae655);
+        
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div>

@@ -1,0 +1,47 @@
+============================================================
+LAND COVER ANALYSIS SUMMARY
+============================================================
+
+Generated: 2026-06-23 17:34:09
+Purpose: current
+
+DATA SUMMARY:
+----------------------------------------
+Area records: 4
+Temperature records: 16
+Historical masks stored: 4
+
+OUTPUT FILES:
+----------------------------------------
+  • advanced_analyses.json
+  • analysis_summary.txt
+  • area_analysis.csv
+  • area_trends_2class.png
+  • area_trends_6class.png
+  • interactive_map.html
+  • llm_insights.json
+  • mask_2024_autumn.tif
+  • mask_2024_spring.tif
+  • mask_2024_summer.tif
+  • mask_2024_winter.tif
+  • rgb_2024_autumn.tif
+  • rgb_2024_spring.tif
+  • rgb_2024_summer.tif
+  • rgb_2024_winter.tif
+  • temperature_analysis.csv
+  • temperature_trend_0.png
+  • temperature_trend_1.png
+  • temperature_trend_2.png
+  • temperature_trend_3.png
+
+ANALYSIS MODULES USED:
+----------------------------------------
+  • Change Detection
+  • Urban Heat Island Analysis
+  • Carbon Sequestration Estimation
+  • Spatial Pattern Metrics
+  • Anomaly Detection
+  • Model Validation
+  • Interactive Dashboard
+
+PROCESSING COMPLETE

@@ -1,0 +1,43 @@
+============================================================
+LAND COVER ANALYSIS SUMMARY
+============================================================
+
+Generated: 2026-05-05 11:04:43
+Purpose: temporal
+
+DATA SUMMARY:
+----------------------------------------
+Area records: 1
+Temperature records: 0
+Historical masks stored: 1
+
+OUTPUT FILES:
+----------------------------------------
+  • advanced_analyses.json
+  • analysis_summary.txt
+  • area_analysis.csv
+  • area_trends_2class.png
+  • area_trends_6class.png
+  • interactive_map.html
+  • llm_insights.json
+  • mask_2026_single.tif
+  • predicted_mask.tif
+  • rgb_2024_single.tif
+  • temperature_analysis.csv
+  • temperature_trend_0.png
+  • temperature_trend_1.png
+  • temperature_trend_2.png
+  • temperature_trend_3.png
+  • uploaded_image.tif
+
+ANALYSIS MODULES USED:
+----------------------------------------
+  • Change Detection
+  • Urban Heat Island Analysis
+  • Carbon Sequestration Estimation
+  • Spatial Pattern Metrics
+  • Anomaly Detection
+  • Model Validation
+  • Interactive Dashboard
+
+PROCESSING COMPLETE

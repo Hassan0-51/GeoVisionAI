@@ -1,0 +1,54 @@
+{
+  "season": {
+    "spring": {
+      "trend_summary": "No historical time\u2011series data are available for this season, so no trend can be inferred.",
+      "green_space_trend": "stable",
+      "non_green_space_trend": "stable",
+      "temperature_trend": "insufficient data",
+      "recommendations": [
+        "Maintain the current 56.49\u202f% green space to support ecosystem services.",
+        "Implement additional urban greening (e.g., rooftop gardens, street trees) to reduce heat\u2011island effects."
+      ]
+    },
+    "summer": {
+      "trend_summary": "No historical time\u2011series data are available for this season, so no trend can be inferred.",
+      "green_space_trend": "stable",
+      "non_green_space_trend": "stable",
+      "temperature_trend": "insufficient data",
+      "recommendations": [
+        "Maintain the current 56.49\u202f% green space to support ecosystem services.",
+        "Implement additional urban greening (e.g., rooftop gardens, street trees) to reduce heat\u2011island effects."
+      ]
+    },
+    "autumn": {
+      "trend_summary": "No historical time\u2011series data are available for this season, so no trend can be inferred.",
+      "green_space_trend": "stable",
+      "non_green_space_trend": "stable",
+      "temperature_trend": "insufficient data",
+      "recommendations": [
+        "Maintain the current 56.49\u202f% green space to support ecosystem services.",
+        "Implement additional urban greening (e.g., rooftop gardens, street trees) to reduce heat\u2011island effects."
+      ]
+    },
+    "winter": {
+      "trend_summary": "No historical time\u2011series data are available for this season, so no trend can be inferred.",
+      "green_space_trend": "stable",
+      "non_green_space_trend": "stable",
+      "temperature_trend": "insufficient data",
+      "recommendations": [
+        "Maintain the current 56.49\u202f% green space to support ecosystem services.",
+        "Implement additional urban greening (e.g., rooftop gardens, street trees) to reduce heat\u2011island effects."
+      ]
+    },
+    "average": {
+      "trend_summary": "The average for 2026 shows 56.49\u202f% green space and 43.51\u202f% non\u2011green space. Without multi\u2011year data, longitudinal trends cannot be assessed.",
+      "green_space_trend": "stable",
+      "non_green_space_trend": "stable",
+      "temperature_trend": "insufficient data",
+      "recommendations": [
+        "Maintain the current 56.49\u202f% green space to support ecosystem services.",
+        "Implement additional urban greening (e.g., rooftop gardens, street trees) to reduce heat\u2011island effects."
+      ]
+    }
+  }
+}
