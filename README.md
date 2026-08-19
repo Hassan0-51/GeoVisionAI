@@ -507,13 +507,13 @@ For production deployment:
 
 ## 👥 Team
 
-This project was developed as a Final Year Project at **Punjab University**.
+This project was developed as a Final Year Project at **University of the Punjab**.
 
 | Name | Role |
 |------|------|
 | Hassan Ali | Lead Developer — ML Pipeline, Backend, GIS |
-| Salman Younas | [Role] |
-| M.Hashir | [Role] |
+| Salman Younas | Computer Vision & Deep Learning Engineer |
+| M.Hashir | GIS Visualization, UI/UX |
 
 **Supervisor**: DR.Ali
 **Department**: BS Data Science  
