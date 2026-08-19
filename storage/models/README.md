@@ -1,10 +1,3 @@
-# Model storage
-
-Place the trained segmentation model weights for this project in this folder before running full analysis.
-
-Recommended file names:
-
-- best_multiclass_model.pth
-- best_model.pth
-
-Do not commit large model files to GitHub unless you are using Git LFS or a separate hosting solution.
+version https://git-lfs.github.com/spec/v1
+oid sha256:9daa3c453ab0b686ccf8e3bbedc8f9118e4eb5adb47a989b4c15804445c63f3e
+size 1216
