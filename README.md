@@ -182,8 +182,8 @@ The repository includes the full set of project screenshots from the provided im
 | No. | Screenshot |
 |-----|------------|
 | Home | ![Screenshot 1](docs/screenshots/1.jpeg) |
-| 2 | ![Screenshot 2](docs/screenshots/2.jpeg) |
-| 3 | ![Screenshot 3](docs/screenshots/3.jpeg) |
+| Features | ![Screenshot 2](docs/screenshots/2.jpeg) |
+| Workflow | ![Screenshot 3](docs/screenshots/3.jpeg) |
 | 4 | ![Screenshot 4](docs/screenshots/4.jpeg) |
 | 5 | ![Screenshot 5](docs/screenshots/5.jpeg) |
 | 6 | ![Screenshot 6](docs/screenshots/6.jpeg) |
